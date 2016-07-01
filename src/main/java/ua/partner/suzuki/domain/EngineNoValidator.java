@@ -1,17 +1,105 @@
 package ua.partner.suzuki.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ua.partner.suzuki.exceptions.EngineNoValidatorException;
+import ua.partner.suzuki.exceptions.ModelException;
+
+enum Model {
+	DF2_5("00252F"), DF4("00402F"), DF4A("00403F"), DF5("00502F"), DF5A(
+			"00503F"), DF6("00602F"), DF6A("00603F"), DF8A("00801F"), DF9_9A(
+			"00994F"), DF9_9B("00995F"), DF15A("01504F"), DF20A("02002F"), DF25VTwin(
+			"02503F"), DF25A("02504F"), DF30A("03003F"), DF40A("04003F"), DF40AST(
+			"04004F"), DF50A("05003F"), DF50AV("05004F"), DF60A("06002F"), DF60AV(
+			"06003F"), DF70A("07003F"), DF80A("08002F"), DF90A("09003F"), DF100A(
+			"10003F"), DF115AT("11503F"), DF115AZ("11503Z"), DF115AST("11504F"), DF140AT(
+			"14003F"), DF140AZ("14003Z"), DF150T("15002F"), DF150Z("15002Z"), DF175T(
+			"17502F"), DF175Z("17502Z"), DF200AP("20003P"), DF200T("20002F"), DF200Z(
+			"20002Z"), DF200AT("20003F"), DF200AZ("20003Z"), DF225T("22503F"), DF225Z(
+			"22503Z"), DF250T("25003F"), DF250Z("25003Z"), DF250S("25004F"), DF250AP(
+			"25003P"), DF300AP("30002P"), DT9_9A("00996"), DT9_9AK("00993K"), DT15A(
+			"01504"), DT15AK("01503K"), DT25K("02503K"), DT30("03005"), DT40W(
+			"04005");
+
+	private String modelCode;
+
+	private static Map<String, Model> map = new HashMap<String, Model>();
+	static {
+		for (Model modelEnum : Model.values()) {
+			map.put(modelEnum.modelCode, modelEnum);
+		}
+	}
+
+	private Model(String modelCode) {
+		this.modelCode = modelCode;
+	}
+
+	public static String modelFromPrefix(String modelCode)
+			throws ModelException {
+		if (map.containsKey(modelCode)) {
+			return map.get(modelCode).toString();
+		}
+		throw new IllegalArgumentException("Model number not found.");
+	}
+}
+
+enum Status {
+	IN_STOCK, PROCESSED, NEEDS_CLARIFICATION, APPROVED, REJECTED, ON_CONSIGNATION, STOLEN
+}
+
 public class EngineNoValidator {
-	
-	enum Model {
-		DF2_5, DF4, DF5, DF6, DF8A, DF9_9A, DF9_9, DF15, DF25VTwin, DF25, DF30, DF40, DF50, DF60, DF70, DF40A, DF50A, DF60A, DF70A, DF80A, DF90A, DF100, DF115, DF140, DF150, DF175, DF200, DF225, DF250, DF300, DT9_9, DT15, DT25, DT30, DT40
+
+	private String patternExpresion;
+
+	public void setPatternExpresion(String exp) {
+		this.patternExpresion = exp;
 	}
 
-	enum WarrantyType {
-		PRIVATE, COMMERCE, SPORT
-	}
-	
-	public String modelValidator(){
-		
+	public String getPatternExpresion() {
+		return patternExpresion;
 	}
 
+	/**
+	 * Validate customer input depending on regular expression *
+	 * 
+	 * @param source
+	 *            . Input source address for validation
+	 * @return true valid customer input, false invalid customer input
+	 */
+
+	public boolean checkWithRegExp(final String source) {
+		Pattern p = Pattern.compile(getPatternExpresion());
+		Matcher m = p.matcher(source);
+		return m.matches();
+	}
+
+	public String statusValidator(String status) {
+		String validStatus;
+		try {
+			Status obmStatus = Enum.valueOf(Status.class, status.toUpperCase());
+			validStatus = obmStatus.toString();
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException(
+					"There is no such OBM Status identifier. Please, correct it!");
+		} catch (NullPointerException e) {
+			throw new NullPointerException("The OBM Status can not be NULL!");
+		}
+		return validStatus;
+	}
+
+	public String findModelYear(String serialNumber)
+			throws EngineNoValidatorException {
+		String modelYear;
+		try {
+			char number = serialNumber.charAt(0);
+			modelYear = "1" + number;
+		} catch (StringIndexOutOfBoundsException e) {
+			throw new StringIndexOutOfBoundsException(
+					"The serialNumber must be specified. Please, correct it!");
+		}
+		return modelYear;
+	}
 }
