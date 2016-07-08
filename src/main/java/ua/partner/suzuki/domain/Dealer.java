@@ -1,13 +1,11 @@
 package ua.partner.suzuki.domain;
 
-import ua.partner.suzuki.exceptions.DealerException;
-
 import com.google.common.base.Preconditions;
 
 public class Dealer {
 	
 	public Dealer(String name, Adress adress, String phone, String email,
-			String login, String password) throws DealerException {
+			String login, String password) throws DomainException {
 		setName(name);
 		setAdress(adress);
 		setPhone(phone);
@@ -29,7 +27,7 @@ public class Dealer {
 		return name;
 	}
 
-	public void setName(String name) throws DealerException {
+	public void setName(String name) throws DomainException {
 		Preconditions.checkState(!(name.length() <= 1),
 				"The Customer name is not valid!");
 		this.name = name;
@@ -39,7 +37,7 @@ public class Dealer {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) throws DealerException {
+	public void setAdress(Adress adress) throws DomainException {
 		Preconditions.checkNotNull(adress,
 				"The Customer adress can not be NULL!");
 		this.adress = adress;
@@ -51,7 +49,7 @@ public class Dealer {
 
 	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
 	
-	public void setPhone(String phone) throws DealerException {
+	public void setPhone(String phone) throws DomainException {
 		validator.setPatternExpresion(PHONE_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(phone)),
 				"The phone is not valid!");
@@ -64,7 +62,7 @@ public class Dealer {
 
 	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
 	
-	public void setEmail(String email) throws DealerException {
+	public void setEmail(String email) throws DomainException {
 		validator.setPatternExpresion(EMAIL_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(email)),
 				"The email is not valid!");
@@ -75,7 +73,7 @@ public class Dealer {
 		return login;
 	}
 
-	public void setLogin(String login) throws DealerException {
+	public void setLogin(String login) throws DomainException {
 		Preconditions.checkState(!(login.length() <= 3),
 				"The Dealer login is not valid!");
 		this.login = login;
@@ -86,7 +84,7 @@ public class Dealer {
 		return dealerPassword;
 	}
 
-	public void setPassword(String password) throws DealerException {
+	public void setPassword(String password) throws DomainException {
 		Preconditions.checkState(!(password.length() <= 5),
 				"The Dealer password is not valid!");
 		this.password = password;

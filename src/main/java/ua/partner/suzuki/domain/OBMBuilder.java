@@ -6,15 +6,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ua.partner.suzuki.exceptions.EngineNoLoaderException;
-import ua.partner.suzuki.exceptions.EngineNoValidatorException;
-import ua.partner.suzuki.exceptions.ModelException;
-import ua.partner.suzuki.exceptions.OBMException;
-
 public class OBMBuilder {
 
 	public OBMBuilder(Collection<String> engineNumbers)
-			throws EngineNoValidatorException, OBMException, ModelException {
+			throws DomainException {
 		setObms(engineNumbers);
 	}
 
@@ -25,13 +20,13 @@ public class OBMBuilder {
 	}
 
 	public void setObms(Collection<String> engineNumbers)
-			throws EngineNoValidatorException, OBMException, ModelException {
+			throws DomainException {
 		this.obms = buildOBMFromEngineNumberList(engineNumbers);
 	}
 
 	public Collection<OBM> buildOBMFromEngineNumberList(
 			Collection<String> engineNumbers)
-			throws EngineNoValidatorException, OBMException, ModelException {
+			throws DomainException {
 		Collection<OBM> localObms = new ArrayList<OBM>();
 		for (String number : engineNumbers) {
 			OBM obm = new OBM(number);
@@ -40,8 +35,7 @@ public class OBMBuilder {
 		return localObms;
 	}
 
-	public static void main(String args[]) throws EngineNoValidatorException,
-			OBMException, ModelException, EngineNoLoaderException {
+	public static void main(String args[]) throws DomainException, EngineNoLoaderException {
 		String source = "01504F-123456 00602F-123456 05003F-123456 15002F-123456 03005-123456";
 		InputStream stream = new ByteArrayInputStream(
 				source.getBytes(StandardCharsets.UTF_8));

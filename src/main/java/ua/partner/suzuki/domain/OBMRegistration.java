@@ -4,7 +4,7 @@ enum WarrantyType {
 	PRIVATE, COMMERCE, SPORT, DEMO
 }
 
-public class OBMRegistration {
+public class OBMRegistration extends AbstractEngineNumberEntity {
 
 	public OBMRegistration(String inputEngineNumber, String usage,
 			String dealer, String dateSold, String dateRegistered,
@@ -23,6 +23,7 @@ public class OBMRegistration {
 	private int penalty;
 	private String warrantyCampaign;
 
+	@Override
 	public String getEngineNumber() {
 		return engineNumber;
 	}

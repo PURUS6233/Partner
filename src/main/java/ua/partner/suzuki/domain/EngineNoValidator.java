@@ -5,9 +5,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ua.partner.suzuki.exceptions.EngineNoValidatorException;
-import ua.partner.suzuki.exceptions.ModelException;
-
 enum Model {
 	DF2_5("00252F"), DF4("00402F"), DF4A("00403F"), DF5("00502F"), DF5A(
 			"00503F"), DF6("00602F"), DF6A("00603F"), DF8A("00801F"), DF9_9A(
@@ -38,7 +35,7 @@ enum Model {
 	}
 
 	public static String modelFromPrefix(String modelCode)
-			throws ModelException {
+			throws DomainException {
 		if (map.containsKey(modelCode)) {
 			return map.get(modelCode).toString();
 		}
@@ -91,7 +88,7 @@ public class EngineNoValidator {
 	}
 
 	public String findModelYear(String serialNumber)
-			throws EngineNoValidatorException {
+			throws DomainException {
 		String modelYear;
 		try {
 			char number = serialNumber.charAt(0);

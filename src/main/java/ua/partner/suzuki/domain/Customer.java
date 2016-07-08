@@ -1,14 +1,12 @@
 package ua.partner.suzuki.domain;
 
-import ua.partner.suzuki.exceptions.CustomerException;
-
 import com.google.common.base.Preconditions;
 
-public class Customer {
+public class Customer extends AbstractEngineNumberEntity {
 
 	public Customer(String engineNumber, String name, String surname,
 			String male, Adress adress, String phone, String email,
-			String buyerType) throws CustomerException {
+			String buyerType) throws DomainException {
 		setEngineNumber(engineNumber);
 		setName(name);
 		setSurname(surname);
@@ -29,7 +27,8 @@ public class Customer {
 	private String buyerType;
 
 	PersonalDataValidator validator = new PersonalDataValidator();
-
+	
+	@Override
 	public String getEngineNumber() {
 		return engineNumber;
 	}
@@ -42,7 +41,7 @@ public class Customer {
 		return name;
 	}
 
-	public void setName(String name) throws CustomerException {
+	public void setName(String name) throws DomainException {
 		Preconditions.checkState(!(name.length() <= 1),
 				"The Customer name is not valid!");
 		this.name = name;
@@ -52,7 +51,7 @@ public class Customer {
 		return surname;
 	}
 
-	public void setSurname(String surname) throws CustomerException {
+	public void setSurname(String surname) throws DomainException {
 		Preconditions.checkState(!(surname.length() <= 1),
 				"The Customer surname is not valid!");
 		this.surname = surname;
@@ -62,7 +61,7 @@ public class Customer {
 		return male;
 	}
 
-	public void setMale(String male) throws CustomerException {
+	public void setMale(String male) throws DomainException {
 		this.male = validator.maleValidator(male);
 	}
 
@@ -70,7 +69,7 @@ public class Customer {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) throws CustomerException {
+	public void setAdress(Adress adress) throws DomainException {
 		Preconditions.checkNotNull(adress,
 				"The Customer adress can not be NULL!");
 		this.adress = adress;
@@ -82,7 +81,7 @@ public class Customer {
 
 	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
 
-	public void setPhone(String phone) throws CustomerException {
+	public void setPhone(String phone) throws DomainException {
 		validator.setPatternExpresion(PHONE_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(phone)),
 				"The phone is not valid!");
@@ -95,7 +94,7 @@ public class Customer {
 
 	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
 
-	public void setEmail(String email) throws CustomerException {
+	public void setEmail(String email) throws DomainException {
 		validator.setPatternExpresion(EMAIL_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(email)),
 				"The email is not valid!");
@@ -106,7 +105,7 @@ public class Customer {
 		return buyerType;
 	}
 
-	public void setBuyerType(String buyerType) throws CustomerException {
+	public void setBuyerType(String buyerType) throws DomainException {
 		this.buyerType = validator.buyerTypeValidator(buyerType);
 	}
 }

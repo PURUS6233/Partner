@@ -1,11 +1,6 @@
 package ua.partner.suzuki.domain;
 
-import ua.partner.suzuki.exceptions.EngineNoLoaderException;
-import ua.partner.suzuki.exceptions.EngineNoValidatorException;
-import ua.partner.suzuki.exceptions.ModelException;
-import ua.partner.suzuki.exceptions.OBMException;
-
-public class OBM { // FIXME Builder Pattern
+public class OBM extends AbstractEngineNumberEntity { // FIXME Builder Pattern
 
 	/**
 	 * This constructor is must be used when receiving data from UI Forms.
@@ -26,7 +21,7 @@ public class OBM { // FIXME Builder Pattern
 	 */
 
 	public OBM(String prefix, String serialNumber, String status)
-			throws ModelException, OBMException, EngineNoValidatorException {
+			throws DomainException {
 		setEngineNumber(prefix, serialNumber);
 		setModelYear(serialNumber);
 		setModel(prefix);
@@ -44,8 +39,7 @@ public class OBM { // FIXME Builder Pattern
 	 *             constructor
 	 */
 
-	public OBM(String engineNumber) throws ModelException, OBMException,
-			EngineNoValidatorException {
+	public OBM(String engineNumber) throws DomainException {
 		setEngineNumber(engineNumber);
 		setModelYear(serialNumber);
 		setModel(prefix);
@@ -61,11 +55,12 @@ public class OBM { // FIXME Builder Pattern
 
 	EngineNoValidator validator = new EngineNoValidator();
 
+	@Override
 	public String getEngineNumber() {
 		return engineNumber;
 	}
 
-	private void setEngineNumber(String sourceEngineNumber) throws OBMException {
+	private void setEngineNumber(String sourceEngineNumber) throws DomainException {
 
 		String[] str = sourceEngineNumber.split("-");
 		String sourcePrefix = str[0];
@@ -83,7 +78,7 @@ public class OBM { // FIXME Builder Pattern
 	}
 
 	public void setEngineNumber(String prefix, String serialNumber)
-			throws OBMException {
+			throws DomainException {
 		setPrefix(prefix);
 		setSerialNumber(serialNumber);
 
@@ -100,7 +95,7 @@ public class OBM { // FIXME Builder Pattern
 	}
 
 	public void setModelYear(String serialNumber)
-			throws EngineNoValidatorException {
+			throws DomainException {
 		String modelYear = validator.findModelYear(serialNumber);
 		this.modelYear = modelYear;
 	}
@@ -109,7 +104,7 @@ public class OBM { // FIXME Builder Pattern
 		return model;
 	}
 
-	public void setModel(String prefix) throws ModelException {
+	public void setModel(String prefix) throws DomainException {
 		String model = Model.modelFromPrefix(prefix);
 		this.model = model;
 	}
@@ -128,14 +123,14 @@ public class OBM { // FIXME Builder Pattern
 
 	private static final String PREFIX_PATTERN = "^\\d\\d\\d\\d\\d(K|P|F)?$";
 
-	public void setPrefix(String prefix) throws OBMException {
+	public void setPrefix(String prefix) throws DomainException {
 		boolean valid;
 		validator.setPatternExpresion(PREFIX_PATTERN);
 		valid = validator.checkWithRegExp(prefix);
 		if (valid) {
 			this.prefix = prefix;
 		} else {
-			throw new OBMException("Correct prefix number!!!" + "\n"
+			throw new DomainException("Correct prefix number!!!" + "\n"
 					+ " Prefix number length 6 chars for 4stroke engines,"
 					+ " ends with F,K or P.");
 		}
@@ -147,14 +142,14 @@ public class OBM { // FIXME Builder Pattern
 
 	private static final String SERIAL_NUMBER_PATTERN = "^\\d\\d\\d\\d\\d\\d?$";
 
-	public void setSerialNumber(String serialNumber) throws OBMException {
+	public void setSerialNumber(String serialNumber) throws DomainException {
 		boolean valid;
 		validator.setPatternExpresion(SERIAL_NUMBER_PATTERN);
 		valid = validator.checkWithRegExp(serialNumber);
 		if (valid) {
 			this.serialNumber = serialNumber;
 		} else {
-			throw new OBMException("Serial Number:" + serialNumber + ";\n"
+			throw new DomainException("Serial Number:" + serialNumber + ";\n"
 					+ "Correct serial number!!! Serial number lenghth 6 chars.");
 		}
 	}

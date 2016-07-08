@@ -8,8 +8,6 @@ import java.util.Scanner;
 
 import com.google.common.base.Preconditions;
 
-import ua.partner.suzuki.exceptions.EngineNoLoaderException;
-
 public class EngineNumbersLoader {
 
 	private Collection<String> engineNumbers;
