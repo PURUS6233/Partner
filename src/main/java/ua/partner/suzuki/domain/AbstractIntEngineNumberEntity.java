@@ -1,6 +1,6 @@
 package ua.partner.suzuki.domain;
 
-public abstract class AbstractEngineNumberEntity {
+public abstract class AbstractIntEngineNumberEntity {
 	
 	public abstract String getEngineNumber();
 

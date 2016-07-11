@@ -4,10 +4,10 @@ enum WarrantyType {
 	PRIVATE, COMMERCE, SPORT, DEMO
 }
 
-public class OBMRegistration extends AbstractEngineNumberEntity {
+public class OBMRegistration extends AbstractIntEngineNumberEntity {
 
 	public OBMRegistration(String inputEngineNumber, String usage,
-			String dealer, String dateSold, String dateRegistered,
+			String dealerName, String dateSold, String dateRegistered,
 			String dateDelivered) {
 		
 	}
@@ -15,7 +15,7 @@ public class OBMRegistration extends AbstractEngineNumberEntity {
 	private String engineNumber;
 	private String usageType;
 	private OBM obm;
-	private String dealer;
+	private String dealerName;
 	private String dateSold;
 	private String dateRegistered;
 	private String dateDelivered;
@@ -46,10 +46,10 @@ public class OBMRegistration extends AbstractEngineNumberEntity {
 	}
 
 	public String getDealer() {
-		return dealer;
+		return dealerName;
 	}
-	public void setDealer(String dealer) {
-		this.dealer = dealer;
+	public void setDealer(String dealerName) {
+		this.dealerName = dealerName;
 	}
 
 	public String getDateSold() {
@@ -98,5 +98,20 @@ public class OBMRegistration extends AbstractEngineNumberEntity {
 
 	public void setWarrantyCampaign(String warrantyCampaign) {
 		this.warrantyCampaign = warrantyCampaign;
+	}
+	
+	public String toString() {
+
+		return "OBMRegistration{" +
+				"Engine Number=" + engineNumber +
+				", Usage Type='" + usageType + 
+				", Dealer Name=" + dealerName +
+				", Date Sold=" + dateSold +
+				", Date Registered=" + dateRegistered +
+				", Date Delivered=" + dateDelivered +
+				", Warranty Expiration=" + warrantyExpiration +
+				", Penalty=" + penalty +
+				", Warranty Campaign=" + warrantyCampaign +
+				'}';
 	}
 }

@@ -89,5 +89,17 @@ public class Dealer {
 				"The Dealer password is not valid!");
 		this.password = password;
 	}
+	
+	public String toString() {
+
+		return "Dealer{" +
+				"Name='" + name + 
+				", Adress=" + adress.toString() +
+				", Phone=" + phone +
+				", Email=" + email +
+				", Login=" + login +
+				", Password=" + password +
+				'}';
+	}
 
 }

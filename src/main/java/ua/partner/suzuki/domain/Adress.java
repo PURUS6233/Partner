@@ -73,4 +73,15 @@ public class Adress {
 				"The postCode is not valid!");
 		this.postCode = postCode;
 	}
+	
+	public String toString() {
+
+		return "Address :" +
+				" Street=" + street +
+				", City='" + city + 
+				", District=" + district +
+				", Country=" + country +
+				", Post Code=" + postCode +
+				'}';
+	}
 }

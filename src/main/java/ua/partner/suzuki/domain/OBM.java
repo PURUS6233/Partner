@@ -1,6 +1,6 @@
 package ua.partner.suzuki.domain;
 
-public class OBM extends AbstractEngineNumberEntity { // FIXME Builder Pattern
+public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Pattern
 
 	/**
 	 * This constructor is must be used when receiving data from UI Forms.
@@ -156,14 +156,12 @@ public class OBM extends AbstractEngineNumberEntity { // FIXME Builder Pattern
 
 	public String toString() {
 
-		String model = getModel();
-		String engineNumber = getEngineNumber();
-		String modelYear = getModelYear();
-		String status = getStatus();
-
-		return new StringBuffer("Model= " + model + ";\n" + "Engine Number= "
-				+ engineNumber + ";\n" + "Model Year= " + modelYear + ";\n"
-				+ "Status= " + status).toString();
+		return "OBM{" +
+				"Engine Number=" + engineNumber +
+				", Model='" + model + 
+				", Model Year=" + modelYear +
+				", Statusr=" + status +
+				'}';
 	}
 
 	public boolean checkExistance(String inputEngineNo) {// TODO

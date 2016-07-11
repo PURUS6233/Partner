@@ -2,7 +2,7 @@ package ua.partner.suzuki.domain;
 
 import com.google.common.base.Preconditions;
 
-public class Customer extends AbstractEngineNumberEntity {
+public class Customer extends AbstractIntEngineNumberEntity {
 
 	public Customer(String engineNumber, String name, String surname,
 			String male, Adress adress, String phone, String email,
@@ -107,5 +107,19 @@ public class Customer extends AbstractEngineNumberEntity {
 
 	public void setBuyerType(String buyerType) throws DomainException {
 		this.buyerType = validator.buyerTypeValidator(buyerType);
+	}
+	
+	public String toString() {
+
+		return "Customer{" +
+				"Engine Number=" + engineNumber +
+				", Name='" + name + 
+				", Surname=" + surname +
+				", Male=" + male +
+				", Adress=" + adress.toString() +
+				", Phone=" + phone +
+				", Email=" + email +
+				", Buyer Type=" + buyerType +
+				'}';
 	}
 }
