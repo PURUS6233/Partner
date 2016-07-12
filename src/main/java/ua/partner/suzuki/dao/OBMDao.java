@@ -5,16 +5,16 @@ import java.util.List;
 import ua.partner.suzuki.domain.OBM;
 
 public interface OBMDao {
-	
-	void create (OBM obm);
-	
+
 	boolean find (String engineNumber);
+	
+	void add (OBM entity);
 	
 	OBM get(String engineNumber);
 	
 	List<OBM> getAll();
 	
-	OBM change (OBM obm);
+	void put (OBM entity, String engineNumber);
 	
 	void delete (String engineNumber);
 

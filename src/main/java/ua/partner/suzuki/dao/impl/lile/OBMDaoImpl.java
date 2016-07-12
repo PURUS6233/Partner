@@ -25,10 +25,4 @@ public class OBMDaoImpl extends AbstractFileDao<OBM> implements OBMDao {
 	protected String getFileName() {
 		return "OBMs.json";
 	}
-
-	@Override
-	public String create(OBM obm) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

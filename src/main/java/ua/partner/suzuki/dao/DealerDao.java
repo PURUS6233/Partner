@@ -6,8 +6,15 @@ import ua.partner.suzuki.domain.Dealer;
 
 public interface DealerDao {
 	
-	Dealer get(String name);
+	boolean find (String login);
+	
+	void add (Dealer entity);
+	
+	Dealer get(String login, String password) throws DAOException;
 	
 	List<Dealer> getAll();
-
+	
+	void put (Dealer entity, String login);
+	
+	void delete (String login);
 }
