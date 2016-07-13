@@ -46,7 +46,7 @@ public class OBMBuilder {
 
 		OBM obm1 = new OBM("05003F-123456");
 		
-		OBM obm2 = new OBM("15002F", "923456", "APPROVED");
+		OBM obm2 = new OBM("15002F", "923456", Status.APPROVED);
 
 		System.out.println(obm1.toString());
 		System.out.println();

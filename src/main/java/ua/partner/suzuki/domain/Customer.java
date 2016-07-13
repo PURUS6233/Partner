@@ -5,29 +5,25 @@ import com.google.common.base.Preconditions;
 public class Customer extends AbstractIntEngineNumberEntity {
 
 	public Customer(String engineNumber, String name, String surname,
-			String male, Adress adress, String phone, String email,
-			String buyerType) throws DomainException {
+			SexType sex, Adress adress, String phone, String email,
+			BuyerType buyerType){
 		setEngineNumber(engineNumber);
 		setName(name);
 		setSurname(surname);
-		setMale(male);
+		setSex(sex);
 		setAdress(adress);
-		setPhone(phone);
-		setEmail(email);
 		setBuyerType(buyerType);
 	}
 
 	private String engineNumber;
 	private String name;
 	private String surname;
-	private String male;
+	private SexType sex;
 	private Adress adress;
-	private String phone;
-	private String email;
-	private String buyerType;
+	private BuyerType buyerType;
 
 	PersonalDataValidator validator = new PersonalDataValidator();
-	
+
 	@Override
 	public String getEngineNumber() {
 		return engineNumber;
@@ -41,9 +37,7 @@ public class Customer extends AbstractIntEngineNumberEntity {
 		return name;
 	}
 
-	public void setName(String name) throws DomainException {
-		Preconditions.checkState(!(name.length() <= 1),
-				"The Customer name is not valid!");
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -51,75 +45,59 @@ public class Customer extends AbstractIntEngineNumberEntity {
 		return surname;
 	}
 
-	public void setSurname(String surname) throws DomainException {
-		Preconditions.checkState(!(surname.length() <= 1),
-				"The Customer surname is not valid!");
+	public void setSurname(String surname) {
 		this.surname = surname;
 	}
 
-	public String getMale() {
-		return male;
+	public SexType getSex() {
+		return sex;
 	}
 
-	public void setMale(String male) throws DomainException {
-		this.male = validator.maleValidator(male);
+	public void setSex(SexType sex) {
+		this.sex = sex;
 	}
 
 	public Adress getAdress() {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) throws DomainException {
-		Preconditions.checkNotNull(adress,
-				"The Customer adress can not be NULL!");
+	public void setAdress(Adress adress) {
 		this.adress = adress;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
-
-	public void setPhone(String phone) throws DomainException {
-		validator.setPatternExpresion(PHONE_PATTERN);
-		Preconditions.checkState(!(validator.checkWithRegExp(phone)),
-				"The phone is not valid!");
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
-
-	public void setEmail(String email) throws DomainException {
-		validator.setPatternExpresion(EMAIL_PATTERN);
-		Preconditions.checkState(!(validator.checkWithRegExp(email)),
-				"The email is not valid!");
-		this.email = email;
-	}
-
-	public String getBuyerType() {
+	public BuyerType getBuyerType() {
 		return buyerType;
 	}
 
-	public void setBuyerType(String buyerType) throws DomainException {
-		this.buyerType = validator.buyerTypeValidator(buyerType);
+	public void setBuyerType(BuyerType buyerType) {
+		this.buyerType = buyerType;
 	}
-	
+
+	public void validate() throws DomainException {
+		// Name validate
+		Preconditions.checkState(!(getName().length() <= 1),
+				"The Customer name is not valid!");
+		// Surname validate
+		Preconditions.checkState(!(getSurname().length() <= 1),
+				"The Customer surname is not valid!");
+		// Male validate
+		Preconditions.checkState(!(validator.maleValidator(getSex())),
+				"There is no such buyerType identifier. Please, correct it!\n"
+						+ "You may use: COMPANY or PRIVATE_PERSON");
+		// Address validate
+		Preconditions.checkNotNull(adress,
+				"The Customer adress can not be NULL!");
+		// BuyerType validate
+		Preconditions.checkState(!(validator.buyerTypeValidator(getBuyerType())),
+				"There is no such buyerType identifier. Please, correct it!\n"
+						+ "You may use: COMPANY or PRIVATE_PERSON");
+	}
+
 	public String toString() {
 
-		return "Customer{" +
-				"Engine Number=" + engineNumber +
-				", Name='" + name + 
-				", Surname=" + surname +
-				", Male=" + male +
-				", Adress=" + adress.toString() +
-				", Phone=" + phone +
-				", Email=" + email +
-				", Buyer Type=" + buyerType +
-				'}';
+		return "Customer{" + "Engine Number=" + engineNumber + ", Name='"
+				+ name + ", Surname=" + surname + ", Male=" + sex
+				+ ", Adress=" + adress.toString() + ", Buyer Type=" + buyerType
+				+ '}';
 	}
 }

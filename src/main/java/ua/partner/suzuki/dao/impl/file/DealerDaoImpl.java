@@ -1,4 +1,4 @@
-package ua.partner.suzuki.dao.impl.lile;
+package ua.partner.suzuki.dao.impl.file;
 
 import java.io.FileWriter;
 import java.io.IOException;

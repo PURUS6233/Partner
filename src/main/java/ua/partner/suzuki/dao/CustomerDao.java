@@ -8,13 +8,13 @@ public interface CustomerDao {
 	
 	boolean find (String engineNumber);
 	
-	void add (Customer entity);
+	void add (Customer entity) throws DAOException;
 	
 	Customer get(String engineNumber);
 	
 	List<Customer> getAll();
 	
-	void put (Customer entity, String engineNumber);
+	void put (String engineNumber, Customer entity);
 	
 	void delete (String engineNumber);
 }

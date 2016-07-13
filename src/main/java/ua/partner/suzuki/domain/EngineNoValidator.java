@@ -34,10 +34,10 @@ enum Model {
 		this.modelCode = modelCode;
 	}
 
-	public static String modelFromPrefix(String modelCode)
+	public static Model modelFromPrefix(String modelCode)
 			throws DomainException {
 		if (map.containsKey(modelCode)) {
-			return map.get(modelCode).toString();
+			return map.get(modelCode);
 		}
 		throw new IllegalArgumentException("Model number not found.");
 	}
@@ -73,18 +73,14 @@ public class EngineNoValidator {
 		return m.matches();
 	}
 
-	public String statusValidator(String status) {
-		String validStatus;
-		try {
-			Status obmStatus = Enum.valueOf(Status.class, status.toUpperCase());
-			validStatus = obmStatus.toString();
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException(
-					"There is no such OBM Status identifier. Please, correct it!");
-		} catch (NullPointerException e) {
-			throw new NullPointerException("The OBM Status can not be NULL!");
+	public boolean statusValidator(Status status) {
+		boolean valid = false;
+		for (Status obmStatus : Status.values()) {
+			if (obmStatus.equals(status)){
+				valid = true;
+			}
 		}
-		return validStatus;
+		return valid;
 	}
 
 	public String findModelYear(String serialNumber)

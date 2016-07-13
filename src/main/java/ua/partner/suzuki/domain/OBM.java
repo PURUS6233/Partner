@@ -1,6 +1,8 @@
 package ua.partner.suzuki.domain;
 
-public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Pattern
+import com.google.common.base.Preconditions;
+
+public class OBM extends AbstractIntEngineNumberEntity {
 
 	/**
 	 * This constructor is must be used when receiving data from UI Forms.
@@ -20,7 +22,7 @@ public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Patter
 	 * 
 	 */
 
-	public OBM(String prefix, String serialNumber, String status)
+	public OBM(String prefix, String serialNumber, Status status)
 			throws DomainException {
 		setEngineNumber(prefix, serialNumber);
 		setModelYear(serialNumber);
@@ -48,8 +50,8 @@ public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Patter
 
 	private String engineNumber;
 	private String modelYear;
-	private String model;
-	private String status = "IN_STOCK";
+	private Model model;
+	private Status status = Status.IN_STOCK;
 	private String prefix;
 	private String serialNumber;
 
@@ -60,7 +62,8 @@ public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Patter
 		return engineNumber;
 	}
 
-	private void setEngineNumber(String sourceEngineNumber) throws DomainException {
+	private void setEngineNumber(String sourceEngineNumber)
+			throws DomainException {
 
 		String[] str = sourceEngineNumber.split("-");
 		String sourcePrefix = str[0];
@@ -94,27 +97,28 @@ public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Patter
 		return modelYear;
 	}
 
-	public void setModelYear(String serialNumber)
-			throws DomainException {
+	public void setModelYear(String serialNumber) throws DomainException {
 		String modelYear = validator.findModelYear(serialNumber);
 		this.modelYear = modelYear;
 	}
 
-	public String getModel() {
+	public Model getModel() {
 		return model;
 	}
 
 	public void setModel(String prefix) throws DomainException {
-		String model = Model.modelFromPrefix(prefix);
+		Model model = Model.modelFromPrefix(prefix);
 		this.model = model;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = validator.statusValidator(status);
+	public void setStatus(Status status) {
+		Preconditions.checkState(!(validator.statusValidator(getStatus())),
+				"There is no such status identifier. Please, correct it!\n");
+		this.status = status;
 	}
 
 	public String getPrefix() {
@@ -156,16 +160,12 @@ public class OBM extends AbstractIntEngineNumberEntity { // FIXME Builder Patter
 
 	public String toString() {
 
-		return "OBM{" +
-				"Engine Number=" + engineNumber +
-				", Model='" + model + 
-				", Model Year=" + modelYear +
-				", Statusr=" + status +
-				'}';
+		return "OBM{" + "Engine Number=" + engineNumber + ", Model='" + model
+				+ ", Model Year=" + modelYear + ", Statusr=" + status + '}';
 	}
 
 	public boolean checkExistance(String inputEngineNo) {// TODO
-		
+
 		return true;
 	}
 }

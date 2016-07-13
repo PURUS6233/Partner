@@ -8,13 +8,13 @@ public interface OBMDao {
 
 	boolean find (String engineNumber);
 	
-	void add (OBM entity);
+	void add (OBM entity) throws DAOException;
 	
 	OBM get(String engineNumber);
 	
 	List<OBM> getAll();
 	
-	void put (OBM entity, String engineNumber);
+	void put (String engineNumber, OBM entity);
 	
 	void delete (String engineNumber);
 
