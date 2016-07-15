@@ -1,8 +1,15 @@
 package ua.partner.suzuki.dao.impl.file;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,9 +43,10 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		String json = "";
 		try {
 			json = Resources.toString(
-					Resources.getResource("data/" + getFileName()), Charsets.UTF_8);
+					Resources.getResource("data/" + getFileName()),
+					Charsets.UTF_8);
 		} catch (IOException e) {
-			logger.error("Can not read json file",e);
+			logger.error("Can not read json file", e);
 			throw new DAOException("Can not read json file", e);
 		}
 		List<T> entities = gson.fromJson(json, getListType());
@@ -58,15 +66,34 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	public void add(T entity) throws DAOException {
 		Preconditions.checkState(!find(entity.getEngineNumber()),
 				"Entity with this engine number already exists!");
-		
-		getMap().put(entity.getEngineNumber(), entity);
-		String jsonObject = gson.toJson(entity);
-		try (FileWriter writer = new FileWriter(getFileName(), true)) {
 
+		try (FileWriter writer = new FileWriter(getFileName(), true)) {
+			getMap().put(entity.getEngineNumber(), entity);
+			String jsonObject = gson.toJson(entity);
 			gson.toJson(jsonObject, writer);
 
+		} catch (UnsupportedOperationException e) {
+			logger.error(
+					"Can not add entity to map. put() operation is not supported by this map",
+					e);
+			throw new DAOException("Can not add entity to map.", e);
+		} catch (ClassCastException e) {
+			logger.error(
+					"Can not add entity to map. Class of the specified key or value prevents it from being stored in this map",
+					e);
+			throw new DAOException("Can not add entity to map.", e);
+		} catch (NullPointerException e) {
+			logger.error(
+					"Can not add entity to map. The specified key or value is null",
+					e);
+			throw new DAOException("Can not add entity to map.", e);
+		} catch (IllegalArgumentException e) {
+			logger.error(
+					"Can not add entity to map. Property of the specified key or value prevents it from being stored in this map",
+					e);
+			throw new DAOException("Can not add entity to map.", e);
 		} catch (IOException e) {
-			logger.error("Can not add jsonObject to file",e);
+			logger.error("Can not add jsonObject to file", e);
 			throw new DAOException("Can not add jsonObject to file", e);
 		}
 	}
@@ -79,31 +106,46 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		return FluentIterable.from(getMap().values()).toList();
 	}
 
-	public void put(String engineNumber, T entity) {
+	public void update(String engineNumber, T entity) throws DAOException {
 		getMap().put(engineNumber, entity);
 		writeMapToJson();
 	}
 
-	public void delete(String engineNumber) {
+	public void delete(String engineNumber) throws DAOException {
 		getMap().remove(engineNumber);
 		writeMapToJson();
 	}
-	
-	public void writeMapToJson(){
+
+	public void writeMapToJson() throws DAOException {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
 		StringBuffer buffer = new StringBuffer();
-		for (T t: mapValues){
+		for (T t : mapValues) {
 			buffer.append(gson.toJson(t));
-		} 
-		String dataToJsonFile =buffer.toString();
-		try (FileWriter writer = new FileWriter(getFileName())) {
+		}
+		String dataToJsonFile = buffer.toString();
+		Writer writer = null;
+		ClassLoader classLoader = getClass().getClassLoader();
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(classLoader.getResource(getFileName())
+							.getFile()), StandardCharsets.UTF_8.name()));
 
-            gson.toJson(dataToJsonFile, writer);
+			gson.toJson(dataToJsonFile, writer);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					logger.error("Can not write map o file.", e);
+					throw new DAOException("Can not write map o file.", e);
+				}
+			}
+		}
 	}
 
 	protected abstract Class<T> getEntityClass();

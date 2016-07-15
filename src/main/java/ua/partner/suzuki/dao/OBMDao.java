@@ -14,8 +14,8 @@ public interface OBMDao {
 	
 	List<OBM> getAll();
 	
-	void put (String engineNumber, OBM entity);
+	void update (String engineNumber, OBM entity) throws DAOException;
 	
-	void delete (String engineNumber);
+	void delete (String engineNumber) throws DAOException;
 
 }

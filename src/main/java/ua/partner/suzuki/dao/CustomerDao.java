@@ -14,7 +14,7 @@ public interface CustomerDao {
 	
 	List<Customer> getAll();
 	
-	void put (String engineNumber, Customer entity);
+	void update (String engineNumber, Customer entity) throws DAOException ;
 	
-	void delete (String engineNumber);
+	void delete (String engineNumber) throws DAOException ;
 }

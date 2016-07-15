@@ -14,7 +14,7 @@ public interface DealerDao {
 	
 	List<Dealer> getAll();
 	
-	void put (Dealer entity, String login);
+	void update (Dealer entity, String login);
 	
 	void delete (String login);
 }

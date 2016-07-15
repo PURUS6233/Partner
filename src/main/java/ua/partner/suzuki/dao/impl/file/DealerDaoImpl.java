@@ -84,7 +84,7 @@ public class DealerDaoImpl implements DealerDao{
 		return FluentIterable.from(map.values()).toList();
 	}
 	
-	public void put(Dealer entity, String login){
+	public void update(Dealer entity, String login){
 		map.put(login, entity);
 	}
 	

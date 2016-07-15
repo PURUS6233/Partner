@@ -72,15 +72,41 @@ public class EngineNoValidator {
 		Matcher m = p.matcher(source);
 		return m.matches();
 	}
+	
+	public String[] divideEngineNumberToPrefixAndSerialNumber(String sourceEngineNumber)
+			throws DomainException {
 
-	public boolean statusValidator(Status status) {
-		boolean valid = false;
-		for (Status obmStatus : Status.values()) {
-			if (obmStatus.equals(status)){
-				valid = true;
-			}
+		String[] str = sourceEngineNumber.split("-");
+		return str;
+	}
+	
+	private static final String PREFIX_PATTERN = "^\\d\\d\\d\\d\\d(K|P|F)?$";
+
+	public String checkPrefix(String prefix) throws DomainException {
+		boolean valid;
+		setPatternExpresion(PREFIX_PATTERN);
+		valid = checkWithRegExp(prefix);
+		if (valid) {
+			return prefix;
+		} else {
+			throw new DomainException("Correct prefix number!!!" + "\n"
+					+ " Prefix number length 6 chars for 4stroke engines,"
+					+ " ends with F,K or P.");
 		}
-		return valid;
+	}
+
+	private static final String SERIAL_NUMBER_PATTERN = "^\\d\\d\\d\\d\\d\\d?$";
+
+	public String checkSerialNumber(String serialNumber) throws DomainException {
+		boolean valid;
+		setPatternExpresion(SERIAL_NUMBER_PATTERN);
+		valid = checkWithRegExp(serialNumber);
+		if (valid) {
+			return serialNumber;
+		} else {
+			throw new DomainException("Serial Number:" + serialNumber + ";\n"
+					+ "Correct serial number!!! Serial number lenghth 6 chars.");
+		}
 	}
 
 	public String findModelYear(String serialNumber)

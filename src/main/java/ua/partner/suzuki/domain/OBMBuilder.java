@@ -29,7 +29,7 @@ public class OBMBuilder {
 			throws DomainException {
 		Collection<OBM> localObms = new ArrayList<OBM>();
 		for (String number : engineNumbers) {
-			OBM obm = new OBM(number);
+			OBM obm = OBM.createOBMFromEngineNumber(number);
 			localObms.add(obm);
 		}
 		return localObms;
@@ -44,9 +44,9 @@ public class OBMBuilder {
 		OBMBuilder builder = new OBMBuilder(engineNumbers);
 		Collection<OBM> obms = builder.getObms();
 
-		OBM obm1 = new OBM("05003F-123456");
+		OBM obm1 = OBM.createOBMFromEngineNumber("05003F-123456");
 		
-		OBM obm2 = new OBM("15002F", "923456", Status.APPROVED);
+		OBM obm2 = OBM.createOBMFromEngineNumber("15002F-923456", Status.APPROVED);
 
 		System.out.println(obm1.toString());
 		System.out.println();
