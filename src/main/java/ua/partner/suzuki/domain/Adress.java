@@ -64,7 +64,7 @@ public class Adress {
 	public void setPostCode(String postCode) throws DomainException {
 		this.postCode = postCode;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
@@ -80,50 +80,44 @@ public class Adress {
 	public void setEmail(String email) throws DomainException {
 		this.email = email;
 	}
-	
+
 	private static final String POSTCODE_PATTERN = "^\\d\\d\\d\\d\\d$";
 	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
 	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
-	
-	public void validate(){
-		//Street validate
+
+	public void validate() {
+		// Street validate
 		Preconditions.checkState(!(getStreet().length() <= 1),
 				"The street name is not valid!");
-		//City validate
+		// City validate
 		Preconditions.checkState(!(getCity().length() <= 1),
 				"The city name is not valid!");
-		//District validate
+		// District validate
 		Preconditions.checkState(!(getDistrict().length() <= 1),
 				"The district name is not valid!");
-		//Country validate
+		// Country validate
 		Preconditions.checkState(!(getCountry().length() <= 1),
 				"The country name is not valid!");
-		//PostCode validate
+		// PostCode validate
 		validator.setPatternExpresion(POSTCODE_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(getPostCode())),
 				"The postCode is not valid!");
-		//Phone validate
+		// Phone validate
 		validator.setPatternExpresion(PHONE_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(getPhone())),
 				"The phone is not valid!");
-		//Email validate
+		// Email validate
 		validator.setPatternExpresion(EMAIL_PATTERN);
 		Preconditions.checkState(!(validator.checkWithRegExp(getEmail())),
 				"The email is not valid!");
-		
-		
+
 	}
-	
+
 	public String toString() {
 
-		return "Address :" +
-				" Street=" + street +
-				", City='" + city + 
-				", District=" + district +
-				", Country=" + country +
-				", Post Code=" + postCode +
-				", Phone=" + phone +
-				", Email=" + email +
-				'}';
+		return "Address {" + " Street=" + street + ", City=" + city
+				+ ", District=" + district + ", Country=" + country
+				+ ", Post Code=" + postCode + ", Phone=" + phone + ", Email="
+				+ email + '}';
 	}
 }

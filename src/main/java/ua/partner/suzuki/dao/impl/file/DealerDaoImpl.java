@@ -92,6 +92,7 @@ public class DealerDaoImpl implements DealerDao{
 		map.remove(login);
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected Class getEntityClass() {
 		return Customer.class;
 	}
