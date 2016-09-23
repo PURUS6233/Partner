@@ -1,4 +1,7 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.adress;
+
+import ua.partner.suzuki.domain.DomainException;
+import ua.partner.suzuki.domain.PersonalDataValidator;
 
 import com.google.common.base.Preconditions;
 

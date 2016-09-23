@@ -1,10 +1,12 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.obm;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
+
+import ua.partner.suzuki.domain.EngineNoValidator;
 
 import com.google.common.base.Preconditions;
 

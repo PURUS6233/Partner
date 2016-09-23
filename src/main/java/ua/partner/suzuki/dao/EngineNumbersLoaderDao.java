@@ -2,7 +2,7 @@ package ua.partner.suzuki.dao;
 
 import java.util.Collection;
 
-import ua.partner.suzuki.domain.EngineNumbersLoader;
+import ua.partner.suzuki.domain.obm.EngineNumbersLoader;
 
 public interface EngineNumbersLoaderDao {
 

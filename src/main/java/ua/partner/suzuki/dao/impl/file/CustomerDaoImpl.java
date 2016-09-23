@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
 import ua.partner.suzuki.dao.CustomerDao;
-import ua.partner.suzuki.domain.Customer;
+import ua.partner.suzuki.domain.customer.Customer;
 
 public class CustomerDaoImpl extends AbstractFileDao<Customer> implements CustomerDao {
 

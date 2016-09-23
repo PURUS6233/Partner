@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.EngineNumbersLoaderDao;
-import ua.partner.suzuki.domain.EngineNumbersLoader;
+import ua.partner.suzuki.domain.obm.EngineNumbersLoader;
 
 public class EngineNumberLoaderDaoImpl implements EngineNumbersLoaderDao {
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());

@@ -1,12 +1,16 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.customer;
+
+import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
+import ua.partner.suzuki.domain.DomainException;
+import ua.partner.suzuki.domain.PersonalDataValidator;
+import ua.partner.suzuki.domain.adress.Adress;
 
 import com.google.common.base.Preconditions;
 
 public class Customer extends AbstractIntEngineNumberEntity {
 
 	public Customer(String engineNumber, String name, String surname,
-			SexType sex, Adress adress, String phone, String email,
-			BuyerType buyerType){
+			SexType sex, Adress adress,	BuyerType buyerType) {
 		setEngineNumber(engineNumber);
 		setName(name);
 		setSurname(surname);
@@ -88,7 +92,8 @@ public class Customer extends AbstractIntEngineNumberEntity {
 		Preconditions.checkNotNull(adress,
 				"The Customer adress can not be NULL!");
 		// BuyerType validate
-		Preconditions.checkState(!(validator.buyerTypeValidator(getBuyerType())),
+		Preconditions.checkState(
+				!(validator.buyerTypeValidator(getBuyerType())),
 				"There is no such buyerType identifier. Please, correct it!\n"
 						+ "You may use: COMPANY or PRIVATE_PERSON");
 	}
@@ -96,8 +101,7 @@ public class Customer extends AbstractIntEngineNumberEntity {
 	public String toString() {
 
 		return "Customer{" + "Engine Number=" + engineNumber + ", Name='"
-				+ name + ", Surname=" + surname + ", Male=" + sex
-				+ ", Adress=" + adress.toString() + ", Buyer Type=" + buyerType
-				+ '}';
+				+ name + ", Surname=" + surname + ", Male=" + sex + ", Adress="
+				+ adress.toString() + ", Buyer Type=" + buyerType + '}';
 	}
 }

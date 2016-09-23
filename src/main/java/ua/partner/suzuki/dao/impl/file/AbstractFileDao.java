@@ -22,7 +22,6 @@ import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -32,7 +31,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
 	private static final Gson gson = new Gson();
 	private Map<String, T> map = new ConcurrentHashMap<String, T>();
-
+ 
 	public Map<String, T> getMap() {
 		return map;
 	}
@@ -62,8 +61,6 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	public void add(T entity) throws DAOException {
-		Preconditions.checkState(!find(entity.getEngineNumber()),
-				"Entity with this engine number already exists!");
 
 		try (FileWriter writer = new FileWriter(getFileName(), true)) {
 			getMap().put(entity.getEngineNumber(), entity);
@@ -106,12 +103,10 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 
 	public void update(String engineNumber, T entity) throws DAOException {
 		getMap().put(engineNumber, entity);
-		writeMapToJson();
 	}
 
 	public void delete(String engineNumber) throws DAOException {
 		getMap().remove(engineNumber);
-		writeMapToJson();
 	}
 
 	public void writeMapToJson() throws DAOException {
@@ -132,20 +127,20 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 			gson.toJson(dataToJsonFile, writer);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Can not write map to file.", e);
+			throw new DAOException("Can not write map to file.", e);
 		} finally {
 			if (writer != null) {
 				try {
 					writer.flush();
 					writer.close();
 				} catch (IOException e) {
-					logger.error("Can not write map o file.", e);
-					throw new DAOException("Can not write map o file.", e);
+					logger.error("Can not close writer.", e);
+					throw new DAOException("Can not close writer.", e);
 				}
 			}
 		}
 	}
-
 	protected abstract Class<T> getEntityClass();
 
 	protected abstract Type getListType();

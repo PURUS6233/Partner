@@ -2,7 +2,7 @@ package ua.partner.suzuki.dao;
 
 import java.util.List;
 
-import ua.partner.suzuki.domain.OBMRegistration;
+import ua.partner.suzuki.domain.obm.OBMRegistration;
 
 public interface OBMRegistrationDao {
 	
@@ -17,6 +17,4 @@ public interface OBMRegistrationDao {
 	void update (String engineNumber, OBMRegistration entity) throws DAOException;
 	
 	void delete (String engineNumber) throws DAOException;
-	
-
 }

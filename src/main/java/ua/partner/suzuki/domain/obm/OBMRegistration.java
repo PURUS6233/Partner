@@ -1,8 +1,6 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.obm;
 
-enum WarrantyType {
-	PRIVATE, COMMERCE, SPORT, DEMO
-}
+import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 public class OBMRegistration extends AbstractIntEngineNumberEntity {
 

@@ -1,4 +1,6 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.obm;
+
+import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 public class OBM extends AbstractIntEngineNumberEntity {
 
@@ -64,38 +66,11 @@ public class OBM extends AbstractIntEngineNumberEntity {
 		this.status = status;
 	}
 
-	public static OBM createOBMFromEngineNumber(String engineNumber) throws DomainException {
-		
-		EngineNoValidator validator = new EngineNoValidator();
-		String[] engineNumberData = validator.divideEngineNumberToPrefixAndSerialNumber(engineNumber);
-		String prefix = validator.checkPrefix(engineNumberData[0]);
-		String serialNumber = validator.checkSerialNumber(engineNumberData[1]);
-		String modelYear = validator.findModelYear(serialNumber);
-		Model model = Model.modelFromPrefix(prefix);
-		OBM obm = new OBM(engineNumber, modelYear, model);
-		return obm;
-	}
-	
-public static OBM createOBMFromEngineNumber(String engineNumber, Status status) throws DomainException {
-		
-		EngineNoValidator validator = new EngineNoValidator();
-		String[] engineNumberData = validator.divideEngineNumberToPrefixAndSerialNumber(engineNumber);
-		String prefix = validator.checkPrefix(engineNumberData[0]);
-		String serialNumber = validator.checkSerialNumber(engineNumberData[1]);
-		String modelYear = validator.findModelYear(serialNumber);
-		Model model = Model.modelFromPrefix(prefix);
-		OBM obm = new OBM(engineNumber, modelYear, model, status);
-		return obm;
-	}
-
 	public String toString() {
 
 		return "OBM{" + "Engine Number=" + engineNumber + ", Model='" + model
 				+ ", Model Year=" + modelYear + ", Status=" + status + '}';
 	}
 
-	public boolean checkExistance(String inputEngineNo) {// TODO
-
-		return true;
-	}
+	
 }

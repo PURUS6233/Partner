@@ -2,7 +2,7 @@ package ua.partner.suzuki.dao;
 
 import java.util.List;
 
-import ua.partner.suzuki.domain.Dealer;
+import ua.partner.suzuki.domain.dealer.Dealer;
 
 public interface DealerDao {
 	

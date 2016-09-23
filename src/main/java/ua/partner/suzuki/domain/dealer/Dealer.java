@@ -1,4 +1,8 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.dealer;
+
+import ua.partner.suzuki.domain.DomainException;
+import ua.partner.suzuki.domain.PersonalDataValidator;
+import ua.partner.suzuki.domain.adress.Adress;
 
 import com.google.common.base.Preconditions;
 

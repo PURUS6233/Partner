@@ -6,13 +6,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-enum BuyerType {
-	COMPANY, PRIVATE_PERSON
-}
-
-enum SexType {
-	MALE, FEMALE
-}
+import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.customer.SexType;
 
 public class PersonalDataValidator {
 	

@@ -6,8 +6,8 @@ import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
 import ua.partner.suzuki.dao.OBMDao;
-import ua.partner.suzuki.domain.Customer;
-import ua.partner.suzuki.domain.OBM;
+import ua.partner.suzuki.domain.customer.Customer;
+import ua.partner.suzuki.domain.obm.OBM;
 
 public class OBMDaoImpl extends AbstractFileDao<OBM> implements OBMDao {
 

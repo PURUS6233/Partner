@@ -24,8 +24,8 @@ import com.google.gson.reflect.TypeToken;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.DealerDao;
-import ua.partner.suzuki.domain.Customer;
-import ua.partner.suzuki.domain.Dealer;
+import ua.partner.suzuki.domain.customer.Customer;
+import ua.partner.suzuki.domain.dealer.Dealer;
 
 public class DealerDaoImpl implements DealerDao{
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());;

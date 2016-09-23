@@ -1,9 +1,12 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.adress;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+
+import ua.partner.suzuki.domain.DomainException;
+import ua.partner.suzuki.domain.adress.Adress;
 
 public class AdressTest {
 
@@ -25,9 +28,14 @@ public class AdressTest {
 			+ COUNTRY + ", Post Code=" + POST_CODE + ", Phone=" + PHONE
 			+ ", Email=" + EMAIL + '}';
 
-	protected static Adress getCommonAdressData() throws DomainException {
-		Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
-				PHONE, EMAIL);
+	public static Adress getCommonAdressData() {
+		Adress adress = null;
+		try {
+			adress = new Adress(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
+					PHONE, EMAIL);
+		} catch (DomainException e) {
+			e.printStackTrace();
+		}
 		return adress;
 	}
 

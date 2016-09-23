@@ -1,4 +1,4 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.obm;
 
 @SuppressWarnings("serial")
 public class EngineNoLoaderException extends Exception {

@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
 import ua.partner.suzuki.dao.OBMRegistrationDao;
-import ua.partner.suzuki.domain.OBMRegistration;
+import ua.partner.suzuki.domain.obm.OBMRegistration;
 
 public class OBMRegistrationDaoImpl extends AbstractFileDao<OBMRegistration> implements
 		OBMRegistrationDao {

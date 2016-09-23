@@ -1,4 +1,6 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.obm;
+
+import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 public class OBMMaintenance extends AbstractIntEngineNumberEntity {
 

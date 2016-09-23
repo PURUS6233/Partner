@@ -1,4 +1,4 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.dealer;
 
 import java.util.ArrayList;
 import java.util.Collection;
