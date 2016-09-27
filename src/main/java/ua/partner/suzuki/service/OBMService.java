@@ -1,10 +1,10 @@
-package ua.partner.suzuki.services;
+package ua.partner.suzuki.service;
 
 import java.util.List;
 
 import ua.partner.suzuki.domain.obm.OBM;
 
-public interface OBMServices {
+public interface OBMService {
 	
 	void add (OBM entity) throws ServiceException;
 	
@@ -15,5 +15,4 @@ public interface OBMServices {
 	void update (String engineNumber, OBM entity) throws ServiceException ;
 	
 	void delete (String engineNumber) throws ServiceException ;
-
 }

@@ -1,10 +1,11 @@
-package ua.partner.suzuki.domain;
+package ua.partner.suzuki.domain.customer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.adress.Adress;
 import ua.partner.suzuki.domain.adress.AdressTest;
 import ua.partner.suzuki.domain.customer.BuyerType;

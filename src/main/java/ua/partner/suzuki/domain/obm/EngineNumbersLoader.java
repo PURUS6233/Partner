@@ -22,7 +22,7 @@ public class EngineNumbersLoader {
 	 * @param inStream
 	 *            Represent the source data.
 	 * @throws EngineNoLoaderException
-	 *             Exception is throws when incorrect source is putting into the
+	 *             Exception is thrown when incorrect source attached into the
 	 *             constructor
 	 */
 
@@ -67,7 +67,7 @@ public class EngineNumbersLoader {
 			}
 		}
 		Preconditions.checkArgument(!blankInputTermination(engineNumberList),
-				"No valid Engine Numbers. Program exit.");
+				"Input contains no valid Engine Numbers.");
 		return engineNumberList;
 	}
 
@@ -75,7 +75,7 @@ public class EngineNumbersLoader {
 		if (list.isEmpty()) {
 			return true;
 		}
-		return false;
+		return false;	
 	}
 
 }

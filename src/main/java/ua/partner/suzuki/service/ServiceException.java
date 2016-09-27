@@ -1,4 +1,4 @@
-package ua.partner.suzuki.services;
+package ua.partner.suzuki.service;
 
 @SuppressWarnings("serial")
 public class ServiceException extends Exception {

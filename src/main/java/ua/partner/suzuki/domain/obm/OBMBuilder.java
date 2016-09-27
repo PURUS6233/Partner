@@ -7,6 +7,9 @@ import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.EngineNoValidator;
 
 public class OBMBuilder {
+	
+	public OBMBuilder(){
+	}
 
 	public OBMBuilder(Collection<String> engineNumbers)
 			throws DomainException {
@@ -24,6 +27,7 @@ public class OBMBuilder {
 		this.obms = buildOBMFromEngineNumberList(engineNumbers);
 	}
 
+	
 	public Collection<OBM> buildOBMFromEngineNumberList(
 			Collection<String> engineNumbers)
 			throws DomainException {
@@ -35,12 +39,7 @@ public class OBMBuilder {
 		return localObms;
 	}
 	
-	public boolean checkExistance(String inputEngineNo) {// TODO
-
-		return true;
-	}
-	
-	public static OBM createOBMFromEngineNumber(String engineNumber) throws DomainException {
+	public OBM createOBMFromEngineNumber(String engineNumber) throws DomainException {
 		
 		EngineNoValidator validator = new EngineNoValidator();
 		String[] engineNumberData = validator.divideEngineNumberToPrefixAndSerialNumber(engineNumber);
@@ -52,7 +51,7 @@ public class OBMBuilder {
 		return obm;
 	}
 	
-	public static OBM createOBMFromEngineNumber(String engineNumber, Status status) throws DomainException {
+	public OBM createOBMFromEngineNumber(String engineNumber, Status status) throws DomainException {
 		
 		EngineNoValidator validator = new EngineNoValidator();
 		String[] engineNumberData = validator.divideEngineNumberToPrefixAndSerialNumber(engineNumber);

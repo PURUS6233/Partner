@@ -1,4 +1,4 @@
-package ua.partner.suzuki.dao.impl.file;
+package ua.partner.suzuki.dao.impl;
 
 import java.lang.reflect.Type;
 import java.util.List;

@@ -23,19 +23,18 @@ public class EngineNoValidator {
 	 * @return true valid customer input, false invalid customer input
 	 */
 
+	public String[] divideEngineNumberToPrefixAndSerialNumber(
+			String sourceEngineNumber) {
+		String[] str = sourceEngineNumber.split("-");
+		return str;
+	}
+
 	public boolean checkWithRegExp(final String source) {
 		Pattern p = Pattern.compile(getPatternExpresion());
 		Matcher m = p.matcher(source);
 		return m.matches();
 	}
-	
-	public String[] divideEngineNumberToPrefixAndSerialNumber(String sourceEngineNumber)
-			throws DomainException {
 
-		String[] str = sourceEngineNumber.split("-");
-		return str;
-	}
-	
 	private static final String PREFIX_PATTERN = "^\\d\\d\\d\\d\\d(K|P|F)?$";
 
 	public String checkPrefix(String prefix) throws DomainException {
@@ -65,8 +64,7 @@ public class EngineNoValidator {
 		}
 	}
 
-	public String findModelYear(String serialNumber)
-			throws DomainException {
+	public String findModelYear(String serialNumber) throws DomainException {
 		String modelYear;
 		try {
 			char number = serialNumber.charAt(0);
