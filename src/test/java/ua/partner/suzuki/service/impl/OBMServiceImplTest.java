@@ -22,6 +22,7 @@ public class OBMServiceImplTest {
 	public void test_add() throws DAOException, ServiceException{
 		OBMDao obmDao = mock(OBMDao.class);
 		OBMServiceImpl service = new OBMServiceImpl(obmDao);
+		
 		service.add(null);
 		verify(service).add(null);
 	}

@@ -83,11 +83,15 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 		return entity;
 	}
 
+	@SuppressWarnings("unchecked")
 	public T remove(String engineNumber) throws ServiceException {
+		T entity;
 		try {
 			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
+			Preconditions.checkState(!getDaoEntity().find(engineNumber));
+			entity = (T) getDaoEntity().get(engineNumber);
 			getDaoEntity().delete(engineNumber);
 			getDaoEntity().writeMapToJson();
 		} catch (DAOException e) {
@@ -96,7 +100,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			throw new ServiceException(
 					"Problem occured during entity deleating", e);
 		}
-		return null;
+		return entity;
 	}
 
 	@SuppressWarnings("rawtypes")
