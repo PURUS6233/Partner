@@ -5,7 +5,7 @@ import java.util.Map;
 
 import ua.partner.suzuki.domain.DomainException;
 
-enum Model {
+public enum Model {
 	DF2_5("00252F"), DF4("00402F"), DF4A("00403F"), DF5("00502F"), DF5A(
 			"00503F"), DF6("00602F"), DF6A("00603F"), DF8A("00801F"), DF9_9A(
 			"00994F"), DF9_9B("00995F"), DF15A("01504F"), DF20A("02002F"), DF25VTwin(

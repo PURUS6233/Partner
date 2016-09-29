@@ -1,4 +1,4 @@
-package ua.partner.suzuki.services.impl;
+package ua.partner.suzuki.service.impl;
 
 import java.util.List;
 
@@ -15,18 +15,18 @@ import ua.partner.suzuki.service.ServiceException;
 public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
-
+	
 	@SuppressWarnings("unchecked")
-	public void add(T entity) throws ServiceException {
+	public T add(T entity) throws ServiceException {
 		try {
 			// Read Data from Json file to map
-			getEntity().init();
-			// Check if the entity is already exists in database
+			getDaoEntity().init();
+			// Check if the entity already exists in database
 			logger.info("Check if entity is already exist", getEntityClass()
 					.getSimpleName());
-			Preconditions.checkState(!getEntity()
+			Preconditions.checkState(!getDaoEntity()
 					.find(entity.getEngineNumber()));
-			getEntity().add(entity);
+			getDaoEntity().add(entity);
 		} catch (IllegalStateException e) {
 			logger.error("Entity with this engine number already exists!", e);
 			throw new ServiceException("Can not add entity to map.", e);
@@ -34,13 +34,14 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			logger.error("Problems occured while writing entity to json!", e);
 			throw new ServiceException("Can not add entity to file.", e);
 		}
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
-	public T retrieve(String engineNumber) throws ServiceException {
+	public T get(String engineNumber) throws ServiceException {
 		try {
-			getEntity().init();
-			Preconditions.checkState(!getEntity().find(engineNumber));
+			getDaoEntity().init();
+			Preconditions.checkState(!getDaoEntity().find(engineNumber));
 		} catch (IllegalStateException e) {
 			logger.error("Entity with this engine number already exists!", e);
 			throw new ServiceException("Can not retrieve entity.", e);
@@ -48,14 +49,14 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			logger.error("Can not read json file", e);
 			throw new ServiceException("Can not retrieve entity", e);
 		}
-		return (T) getEntity().get(engineNumber);
+		return (T) getDaoEntity().get(engineNumber);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> retrieveAll() throws ServiceException {
+	public List<T> getAll() throws ServiceException {
 		try {
-			getEntity().init();
-			return (List<T>) getEntity().getAll();
+			getDaoEntity().init();
+			return (List<T>) getDaoEntity().getAll();
 		} catch (DAOException e) {
 			logger.error("Can not read entities from database", e);
 			throw new ServiceException("Can not read entities from database", e);
@@ -64,41 +65,43 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void update(String engineNumber, T entity) throws ServiceException {
+	public T update(String engineNumber, T entity) throws ServiceException {
 		try {
-			getEntity().init();
+			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
-			getEntity().update(engineNumber, entity);
+			getDaoEntity().update(engineNumber, entity);
 			logger.info("Writing data to json '{}'", getEntityClass()
 					.getSimpleName());
-			getEntity().writeMapToJson();
+			getDaoEntity().writeMapToJson();
 		} catch (DAOException e) {
 			logger.error("Problem occured during updating entitye"
 					+ getEntityClass().getSimpleName(), e);
 			throw new ServiceException(
 					"Problem occured during updating entity", e);
 		}
+		return entity;
 	}
 
-	public void delete(String engineNumber) throws ServiceException {
+	public T remove(String engineNumber) throws ServiceException {
 		try {
-			getEntity().init();
+			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
-			getEntity().delete(engineNumber);
-			getEntity().writeMapToJson();
+			getDaoEntity().delete(engineNumber);
+			getDaoEntity().writeMapToJson();
 		} catch (DAOException e) {
 			logger.error("Problem occured during entity deleating"
 					+ getEntityClass().getSimpleName(), e);
 			throw new ServiceException(
 					"Problem occured during entity deleating", e);
 		}
+		return null;
 	}
 
 	@SuppressWarnings("rawtypes")
 	protected abstract Class<? extends AbstractService> getEntityClass();
-
+	
 	@SuppressWarnings("rawtypes")
-	protected abstract EngineNumberDao getEntity();
+	protected abstract EngineNumberDao getDaoEntity();
 }
