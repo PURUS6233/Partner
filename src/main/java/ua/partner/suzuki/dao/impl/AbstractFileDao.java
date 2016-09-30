@@ -36,7 +36,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		return map;
 	}
 
-	public void init() throws DAOException {
+	public boolean init() throws DAOException {
 		String json = "";
 		try {
 			json = Resources.toString(
@@ -54,13 +54,14 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		}));
 		logger.info("Entities of class '{}' loaded from json", getEntityClass()
 				.getSimpleName());
+		return true;
 	}
 
 	public boolean find(String engineNumber) {
 		return getMap().containsKey(engineNumber);
 	}
 
-	public void add(T entity) throws DAOException {
+	public T add(T entity) throws DAOException {
 
 		try (FileWriter writer = new FileWriter(getFileName(), true)) {
 			getMap().put(entity.getEngineNumber(), entity);
@@ -91,6 +92,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 			logger.error("Can not add jsonObject to file", e);
 			throw new DAOException("Can not add jsonObject to file", e);
 		}
+		return entity;
 	}
 
 	public T get(String engineNumber) {
@@ -101,15 +103,17 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		return FluentIterable.from(getMap().values()).toList();
 	}
 
-	public void update(String engineNumber, T entity) throws DAOException {
+	public T update(String engineNumber, T entity) throws DAOException {
 		getMap().put(engineNumber, entity);
+		return entity;
 	}
 
-	public void delete(String engineNumber) throws DAOException {
+	public boolean delete(String engineNumber) throws DAOException {
 		getMap().remove(engineNumber);
+		return true;
 	}
 
-	public void writeMapToJson() throws DAOException {
+	public boolean writeMapToJson() throws DAOException {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
 		StringBuffer buffer = new StringBuffer();
@@ -140,6 +144,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 				}
 			}
 		}
+		return true;
 	}
 	protected abstract Class<T> getEntityClass();
 

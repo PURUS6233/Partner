@@ -8,10 +8,6 @@ public class OBMServiceImpl extends AbstractService<OBM> implements OBMService {
 
 	private OBMDao obmDao;
 	
-	public OBMServiceImpl(OBMDao obmDao){
-		this.obmDao = obmDao;
-	}
-	
 	@Override
 	protected Class<OBMServiceImpl> getEntityClass() {
 		return OBMServiceImpl.class;
