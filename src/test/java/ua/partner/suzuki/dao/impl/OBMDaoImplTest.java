@@ -43,10 +43,10 @@ public class OBMDaoImplTest {
 
 	@Mock
 	private final ClassLoader classLoader = mock(ClassLoader.class);
-	
+
 	@Mock
 	private final PropertiesReader prop = mock(PropertiesReader.class);
-	
+
 	@Mock
 	private final FileWriter writer = mock(FileWriter.class);
 
@@ -98,12 +98,13 @@ public class OBMDaoImplTest {
 		verify(map).remove("02002F-414778");
 	}
 
-	@Test(expected = DAOException.class) //TODO change test 
+	@Test(expected = DAOException.class)
+	// TODO change test
 	public void test_writeMapToJson() throws DAOException {
 		assertEquals(true, obmDao.writeMapToFile());
 		verify(map).values();
 		verify(gson).toJson(anyCollection());
 		verify(prop).getDatabaseLocation();
-		verify(gson).toJson(anyString(), any());
+		//verify(gson).toJson(anyString(), any());
 	}
 }
