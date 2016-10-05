@@ -78,7 +78,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			response = (T) getDaoEntity().update(engineNumber, entity);
 			logger.info("Writing data to json '{}'", getEntityClass()
 					.getSimpleName());
-			getDaoEntity().writeMapToJson();
+			getDaoEntity().writeMapToFile();
 		} catch (DAOException e) {
 			logger.error("Problem occured during updating entitye"
 					+ getEntityClass().getSimpleName(), e);
@@ -98,7 +98,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			Preconditions.checkState(!getDaoEntity().find(engineNumber));
 			response = (T) getDaoEntity().get(engineNumber);
 			getDaoEntity().delete(engineNumber);
-			getDaoEntity().writeMapToJson();
+			getDaoEntity().writeMapToFile();
 		} catch (DAOException e) {
 			logger.error("Problem occured during entity deleating"
 					+ getEntityClass().getSimpleName(), e);

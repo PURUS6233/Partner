@@ -3,8 +3,7 @@ package ua.partner.suzuki.dao.impl;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.FileWriter;
 import java.util.Map;
 
 import org.junit.Test;
@@ -16,6 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.dao.properties.PropertiesReader;
 import ua.partner.suzuki.domain.obm.Model;
 import ua.partner.suzuki.domain.obm.OBM;
 import ua.partner.suzuki.domain.obm.Status;
@@ -25,28 +25,34 @@ import com.google.common.io.Resources;
 import com.google.gson.Gson;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Gson.class,Maps.class, Resources.class})
+@PrepareForTest({ Gson.class, Maps.class, Resources.class })
 public class OBMDaoImplTest {
 
 	private static final String ENGINE_NUMBER = "02002F-414778";
 	private static final String MODEL_YEAR = "14";
 	private static final Model MODEL = Model.DF20A;
 	private static final Status STATUS = Status.STOLEN;
-	private static final OBM obm_A = new OBM(ENGINE_NUMBER, MODEL_YEAR, MODEL,
+	private static final OBM obm = new OBM(ENGINE_NUMBER, MODEL_YEAR, MODEL,
 			STATUS);
-	private static final OBM obm_B = new OBM(ENGINE_NUMBER, MODEL_YEAR, MODEL);
-	private static final List<OBM> listOBM_A = Arrays.asList(obm_A);
-
 	@Mock
 	private final Gson gson = PowerMockito.mock(Gson.class);
-	
+
 	@SuppressWarnings("unchecked")
 	@Mock
-	private Map<String, OBM> map = PowerMockito.mock(Map.class);
+	private final Map<String, OBM> map = PowerMockito.mock(Map.class);
+
+	@Mock
+	private final ClassLoader classLoader = mock(ClassLoader.class);
+	
+	@Mock
+	private final PropertiesReader prop = mock(PropertiesReader.class);
+	
+	@Mock
+	private final FileWriter writer = mock(FileWriter.class);
 
 	@InjectMocks
 	private OBMDaoImpl obmDao = new OBMDaoImpl();
-	
+
 	@Test
 	public void test_init() throws DAOException {
 		PowerMockito.mockStatic(Maps.class);
@@ -61,10 +67,43 @@ public class OBMDaoImplTest {
 		assertEquals(true, obmDao.find("02002F-414778"));
 		verify(map).containsKey("02002F-414778");
 	}
-	
+
 	@Test
 	public void test_add() throws DAOException {
-		assertEquals(obm_B, obmDao.add(obm_B));
-		verify(map).put("02002F-414778", obm_B);
+		assertEquals(obm, obmDao.add(obm));
+		verify(map).put("02002F-414778", obm);
+	}
+
+	@Test
+	public void test_get() throws DAOException {
+		obmDao.get("02002F-414778");
+		verify(map).get("02002F-414778");
+	}
+
+	@Test
+	public void test_getAll() throws DAOException {
+		obmDao.getAll();
+		verify(map).values();
+	}
+
+	@Test
+	public void test_update() throws DAOException {
+		assertEquals(obm, obmDao.update("02002F-414778", obm));
+		verify(map).put("02002F-414778", obm);
+	}
+
+	@Test
+	public void test_delete() throws DAOException {
+		assertEquals(true, obmDao.delete("02002F-414778"));
+		verify(map).remove("02002F-414778");
+	}
+
+	@Test(expected = DAOException.class) //TODO change test 
+	public void test_writeMapToJson() throws DAOException {
+		assertEquals(true, obmDao.writeMapToFile());
+		verify(map).values();
+		verify(gson).toJson(anyCollection());
+		verify(prop).getDatabaseLocation();
+		verify(gson).toJson(anyString(), any());
 	}
 }

@@ -11,12 +11,12 @@ public class EngineNoValidatorTest {
 	
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(EngineNoValidatorTest.class);
+		assertNotNull(EngineNoValidator.class);
 	}
 	
 	@Test
 	public void test_instantiation() throws Exception {
-		EngineNoValidatorTest valid = new EngineNoValidatorTest();
+		EngineNoValidator valid = new EngineNoValidator();
 		assertNotNull(valid);
 	}
 	

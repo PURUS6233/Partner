@@ -46,7 +46,7 @@ public class OBMServiceImplTest {
 		when(engineNumberDao.getAll()).thenReturn(listOBM_A);
 		when(engineNumberDao.init()).thenReturn(true);
 		when(engineNumberDao.update("02002F-414778", obm_B)).thenReturn(obm_A);
-		when(engineNumberDao.writeMapToJson()).thenReturn(true);
+		when(engineNumberDao.writeMapToFile()).thenReturn(true);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class OBMServiceImplTest {
 		assertEquals(obm_A, service.update("02002F-414778", obm_B));
 		verify(engineNumberDao).init();
 		verify(engineNumberDao).update("02002F-414778", obm_B);
-		verify(engineNumberDao).writeMapToJson();
+		verify(engineNumberDao).writeMapToFile();
 	}
 
 	@Test
@@ -87,6 +87,6 @@ public class OBMServiceImplTest {
 		verify(engineNumberDao).find("02002F-414778");
 		verify(engineNumberDao).get("02002F-414778");
 		verify(engineNumberDao).delete("02002F-414778");
-		verify(engineNumberDao).writeMapToJson();
+		verify(engineNumberDao).writeMapToFile();
 	}
 }

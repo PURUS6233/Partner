@@ -20,5 +20,5 @@ public interface EngineNumberDao<T extends AbstractIntEngineNumberEntity> {
 
 	boolean init() throws DAOException;
 	
-	boolean writeMapToJson() throws DAOException;
+	boolean writeMapToFile() throws DAOException;
 }
