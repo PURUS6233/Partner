@@ -111,6 +111,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 	@SuppressWarnings("rawtypes")
 	protected abstract Class<? extends AbstractService> getEntityClass();
 
+	
 	@SuppressWarnings("rawtypes")
 	protected abstract EngineNumberDao getDaoEntity();
 }

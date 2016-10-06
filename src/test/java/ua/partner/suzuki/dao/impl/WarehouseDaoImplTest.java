@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Gson.class, Maps.class, Resources.class })
-public class OBMDaoImplTest {
+public class WarehouseDaoImplTest {
 
 	private static final String ENGINE_NUMBER = "02002F-414778";
 	private static final String MODEL_YEAR = "14";
@@ -51,57 +51,57 @@ public class OBMDaoImplTest {
 	private final FileWriter writer = mock(FileWriter.class);
 
 	@InjectMocks
-	private OBMDaoImpl obmDao = new OBMDaoImpl();
+	private WarehouseDaoImpl warehauseDao = new WarehouseDaoImpl();
 
 	@Test
 	public void test_init() throws DAOException {
 		PowerMockito.mockStatic(Maps.class);
 		PowerMockito.mockStatic(Resources.class);
-		assertEquals(true, obmDao.init());
+		assertEquals(true, warehauseDao.init());
 		verify(map).putAll(any());
 	}
 
 	@Test
 	public void test_find() throws DAOException {
-		when(obmDao.find("02002F-414778")).thenReturn(true);
-		assertEquals(true, obmDao.find("02002F-414778"));
+		when(warehauseDao.find("02002F-414778")).thenReturn(true);
+		assertEquals(true, warehauseDao.find("02002F-414778"));
 		verify(map).containsKey("02002F-414778");
 	}
 
 	@Test
 	public void test_add() throws DAOException {
-		assertEquals(obm, obmDao.add(obm));
+		assertEquals(obm, warehauseDao.add(obm));
 		verify(map).put("02002F-414778", obm);
 	}
 
 	@Test
 	public void test_get() throws DAOException {
-		obmDao.get("02002F-414778");
+		warehauseDao.get("02002F-414778");
 		verify(map).get("02002F-414778");
 	}
 
 	@Test
 	public void test_getAll() throws DAOException {
-		obmDao.getAll();
+		warehauseDao.getAll();
 		verify(map).values();
 	}
 
 	@Test
 	public void test_update() throws DAOException {
-		assertEquals(obm, obmDao.update("02002F-414778", obm));
+		assertEquals(obm, warehauseDao.update("02002F-414778", obm));
 		verify(map).put("02002F-414778", obm);
 	}
 
 	@Test
 	public void test_delete() throws DAOException {
-		assertEquals(true, obmDao.delete("02002F-414778"));
+		assertEquals(true, warehauseDao.delete("02002F-414778"));
 		verify(map).remove("02002F-414778");
 	}
 
 	@Test(expected = DAOException.class)
 	// TODO change test
 	public void test_writeMapToJson() throws DAOException {
-		assertEquals(true, obmDao.writeMapToFile());
+		assertEquals(true, warehauseDao.writeMapToFile());
 		verify(map).values();
 		verify(gson).toJson(anyCollection());
 		verify(prop).getDatabaseLocation();

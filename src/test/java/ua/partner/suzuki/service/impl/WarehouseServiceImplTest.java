@@ -13,13 +13,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.OBMDao;
+import ua.partner.suzuki.dao.WarehouseDao;
 import ua.partner.suzuki.domain.obm.Model;
 import ua.partner.suzuki.domain.obm.OBM;
 import ua.partner.suzuki.domain.obm.Status;
 import ua.partner.suzuki.service.ServiceException;
 
-public class OBMServiceImplTest {
+public class WarehouseServiceImplTest {
 
 	private static final String ENGINE_NUMBER = "02002F-414778";
 	private static final String MODEL_YEAR = "14";
@@ -31,10 +31,10 @@ public class OBMServiceImplTest {
 	private static final List<OBM> listOBM_A = Arrays.asList(obm_A);
 
 	@Mock
-	private OBMDao engineNumberDao;
+	private WarehouseDao engineNumberDao;
 
 	@InjectMocks
-	private OBMServiceImpl service = new OBMServiceImpl();
+	private WarehouseServiceImpl service = new WarehouseServiceImpl();
 
 	@Before
 	public void setUp() throws Exception {

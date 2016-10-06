@@ -2,9 +2,9 @@ package ua.partner.suzuki.domain.obm;
 
 import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
-public class OBMRegistration extends AbstractIntEngineNumberEntity {
+public class Registration extends AbstractIntEngineNumberEntity {
 
-	public OBMRegistration(String inputEngineNumber, String usage,
+	public Registration(String inputEngineNumber, String usage,
 			String dealerName, String dateSold, String dateRegistered,
 			String dateDelivered) {
 		

@@ -5,11 +5,10 @@ import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
 
-import ua.partner.suzuki.dao.OBMDao;
-import ua.partner.suzuki.domain.customer.Customer;
+import ua.partner.suzuki.dao.WarehouseDao;
 import ua.partner.suzuki.domain.obm.OBM;
 
-public class OBMDaoImpl extends AbstractFileDao<OBM> implements OBMDao {
+public class WarehouseDaoImpl extends AbstractFileDao<OBM> implements WarehouseDao {
 
 	@Override
 	protected Class<OBM> getEntityClass() {
@@ -18,11 +17,11 @@ public class OBMDaoImpl extends AbstractFileDao<OBM> implements OBMDao {
 
 	@Override
 	protected Type getListType() {
-		return new TypeToken<List<Customer>>(){}.getType();
+		return new TypeToken<List<OBM>>(){}.getType();
 	}
 
 	@Override
 	protected String getFileName() {
-		return "OBMs.json";
+		return "warehouse.json";
 	}
 }

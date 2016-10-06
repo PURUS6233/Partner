@@ -1,9 +1,16 @@
 package ua.partner.suzuki.domain.obm;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
+@XmlRootElement
 public class OBM extends AbstractIntEngineNumberEntity {
 
+	public OBM(){
+		
+	}
+	
 	public OBM(String engineNumber, String modelYear, Model model){
 		setEngineNumber(engineNumber);
 		setModelYear(modelYear);

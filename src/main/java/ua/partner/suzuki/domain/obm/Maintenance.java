@@ -2,7 +2,7 @@ package ua.partner.suzuki.domain.obm;
 
 import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
-public class OBMMaintenance extends AbstractIntEngineNumberEntity {
+public class Maintenance extends AbstractIntEngineNumberEntity {
 
 	@Override
 	public String getEngineNumber() {

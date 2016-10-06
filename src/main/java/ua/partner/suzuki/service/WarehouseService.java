@@ -4,7 +4,7 @@ import java.util.List;
 
 import ua.partner.suzuki.domain.obm.OBM;
 
-public interface OBMService {
+public interface WarehouseService {
 	
 	OBM add (OBM entity) throws ServiceException;
 	

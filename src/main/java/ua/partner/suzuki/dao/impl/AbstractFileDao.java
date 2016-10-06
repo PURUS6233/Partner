@@ -59,12 +59,8 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	public T add(T entity) throws DAOException {
-
-		try (FileWriter writer = new FileWriter(getFileName(), true)) {
+		try {
 			getMap().put(entity.getEngineNumber(), entity);
-			String jsonObject = gson.toJson(entity);
-			gson.toJson(jsonObject, writer);
-
 		} catch (UnsupportedOperationException e) {
 			logger.error(
 					"Can not add entity to map. put() operation is not supported by this map",
@@ -85,9 +81,6 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 					"Can not add entity to map. Property of the specified key or value prevents it from being stored in this map",
 					e);
 			throw new DAOException("Can not add entity to map.", e);
-		} catch (IOException e) {
-			logger.error("Can not add jsonObject to file", e);
-			throw new DAOException("Can not add jsonObject to file", e);
 		}
 		return entity;
 	}
@@ -114,8 +107,8 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
 		String dataToJsonFile = gson.toJson(mapValues);
-		String absolutePath = prop.getDatabaseLocation() + "/" + getFileName();
-		try (FileWriter writer = new FileWriter(absolutePath, true)) {
+		String pathToFile = prop.getDatabaseLocation() + "/" + getFileName();
+		try (FileWriter writer = new FileWriter(pathToFile, true)) {
 
 			gson.toJson(dataToJsonFile, writer);
 
