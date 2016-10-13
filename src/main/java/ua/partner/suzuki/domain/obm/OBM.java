@@ -7,17 +7,17 @@ import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 @XmlRootElement
 public class OBM extends AbstractIntEngineNumberEntity {
 
-	public OBM(){
-		
+	public OBM() {
+
 	}
-	
-	public OBM(String engineNumber, String modelYear, Model model){
+
+	public OBM(String engineNumber, String modelYear, Model model) {
 		setEngineNumber(engineNumber);
 		setModelYear(modelYear);
 		setModel(model);
 	}
-	
-	public OBM(String engineNumber, String modelYear, Model model, Status status){
+
+	public OBM(String engineNumber, String modelYear, Model model, Status status) {
 		setEngineNumber(engineNumber);
 		setModelYear(modelYear);
 		setModel(model);
@@ -39,7 +39,7 @@ public class OBM extends AbstractIntEngineNumberEntity {
 	private String modelYear;
 	private Model model;
 	private Status status = Status.IN_STOCK;
-	
+
 	@Override
 	public String getEngineNumber() {
 		return engineNumber;
@@ -79,5 +79,4 @@ public class OBM extends AbstractIntEngineNumberEntity {
 				+ ", Model Year=" + modelYear + ", Status=" + status + '}';
 	}
 
-	
 }

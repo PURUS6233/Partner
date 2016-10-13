@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
-import ua.partner.suzuki.domain.EngineNoValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import ua.partner.suzuki.domain.EngineNoValidator;
 import com.google.common.base.Preconditions;
 
 public class EngineNumbersLoader {
 
+	private Logger logger = LoggerFactory.getLogger(getClass()); //TODO
 	private Collection<String> engineNumbers;
 	private Scanner sourceSc;
 
@@ -68,6 +71,7 @@ public class EngineNumbersLoader {
 		}
 		Preconditions.checkArgument(!blankInputTermination(engineNumberList),
 				"Input contains no valid Engine Numbers.");
+		
 		return engineNumberList;
 	}
 
@@ -77,5 +81,4 @@ public class EngineNumbersLoader {
 		}
 		return false;	
 	}
-
 }

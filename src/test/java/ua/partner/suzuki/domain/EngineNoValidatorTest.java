@@ -65,9 +65,9 @@ public class EngineNoValidatorTest {
 	
 	@Test
 	public void test_divideEngineNumberToPrefixAndSerialNumber() {
-		String[] actuals = validator.divideEngineNumberToPrefixAndSerialNumber("02002F-310483");
-		String[] expecteds = {"02002F", "310483"}; 
-		Assert.assertArrayEquals(expecteds, actuals);
+		String[] actual = validator.divideEngineNumberToPrefixAndSerialNumber("02002F-310483");
+		String[] expected = {"02002F", "310483"}; 
+		Assert.assertArrayEquals(expected, actual);
 	}
 	
 	@Test

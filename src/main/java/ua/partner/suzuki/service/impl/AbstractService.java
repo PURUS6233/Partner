@@ -17,33 +17,11 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
 
 	@SuppressWarnings("unchecked")
-	public T add(T entity) throws ServiceException {
-		T response;
-		try {
-			// Read Data from Json file to map
-			getDaoEntity().init();
-			// Check if the entity already exists in database
-			logger.info("Check if entity is already exist", getEntityClass()
-					.getSimpleName());
-			Preconditions.checkState(!getDaoEntity().find(
-					entity.getEngineNumber()));
-			response = (T) getDaoEntity().add(entity);
-		} catch (IllegalStateException e) {
-			logger.error("Entity with this engine number already exists!", e);
-			throw new ServiceException("Can not add entity to map.", e);
-		} catch (DAOException e) {
-			logger.error("Problems occured while writing entity to json!", e);
-			throw new ServiceException("Can not add entity to file.", e);
-		}
-		return response;
-	}
-
-	@SuppressWarnings("unchecked")
 	public T get(String engineNumber) throws ServiceException {
 		T response;
 		try {
 			getDaoEntity().init();
-			Preconditions.checkState(!getDaoEntity().find(engineNumber));
+			Preconditions.checkState(getDaoEntity().find(engineNumber));
 			response = (T) getDaoEntity().get(engineNumber);
 			;
 		} catch (IllegalStateException e) {
@@ -69,13 +47,13 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public T update(String engineNumber, T entity) throws ServiceException {
+	public T update(T entity) throws ServiceException {
 		T response;
 		try {
 			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
-			response = (T) getDaoEntity().update(engineNumber, entity);
+			response = (T) getDaoEntity().update(entity.getEngineNumber(), entity);
 			logger.info("Writing data to json '{}'", getEntityClass()
 					.getSimpleName());
 			getDaoEntity().writeMapToFile();
@@ -95,7 +73,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
-			Preconditions.checkState(!getDaoEntity().find(engineNumber));
+			Preconditions.checkState(getDaoEntity().find(engineNumber));
 			response = (T) getDaoEntity().get(engineNumber);
 			getDaoEntity().delete(engineNumber);
 			getDaoEntity().writeMapToFile();

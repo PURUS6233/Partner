@@ -31,7 +31,7 @@ public class WarehouseServiceImplTest {
 	private static final List<OBM> listOBM_A = Arrays.asList(obm_A);
 
 	@Mock
-	private WarehouseDao engineNumberDao;
+	private WarehouseDao warehouseDao;
 
 	@InjectMocks
 	private WarehouseServiceImpl service = new WarehouseServiceImpl();
@@ -39,54 +39,55 @@ public class WarehouseServiceImplTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		when(engineNumberDao.add(obm_B)).thenReturn(obm_A);
-		when(engineNumberDao.delete("02002F-414778")).thenReturn(true);
-		when(engineNumberDao.find("02002F-414778")).thenReturn(false);
-		when(engineNumberDao.get("02002F-414778")).thenReturn(obm_A);
-		when(engineNumberDao.getAll()).thenReturn(listOBM_A);
-		when(engineNumberDao.init()).thenReturn(true);
-		when(engineNumberDao.update("02002F-414778", obm_B)).thenReturn(obm_A);
-		when(engineNumberDao.writeMapToFile()).thenReturn(true);
+		when(warehouseDao.add(obm_B)).thenReturn(obm_A);
+		when(warehouseDao.delete("02002F-414778")).thenReturn(true);
+		when(warehouseDao.find("02002F-414778")).thenReturn(true);
+		when(warehouseDao.get("02002F-414778")).thenReturn(obm_A);
+		when(warehouseDao.getAll()).thenReturn(listOBM_A);
+		when(warehouseDao.init()).thenReturn(true);
+		when(warehouseDao.update("02002F-414778", obm_B)).thenReturn(obm_A);
+		when(warehouseDao.writeMapToFile()).thenReturn(true);
 	}
 
 	@Test
 	public void test_add() throws ServiceException, DAOException {
-		assertEquals(obm_A, service.add(obm_B));
-		verify(engineNumberDao).init();
-		verify(engineNumberDao).find("02002F-414778");
-		verify(engineNumberDao).add(obm_B);
+		when(warehouseDao.find("02002F-414778")).thenReturn(false);
+		service.add(obm_B.getEngineNumber());
+		verify(warehouseDao).init();
+		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).add(any());
 	}
 
 	@Test
 	public void test_get() throws DAOException, ServiceException {
 		assertEquals(obm_A, service.get("02002F-414778"));
-		verify(engineNumberDao).init();
-		verify(engineNumberDao).find("02002F-414778");
-		verify(engineNumberDao).get("02002F-414778");
+		verify(warehouseDao).init();
+		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).get("02002F-414778");
 	}
 
 	@Test
 	public void test_getAll() throws DAOException, ServiceException {
 		assertEquals(listOBM_A, service.getAll());
-		verify(engineNumberDao).init();
-		verify(engineNumberDao).getAll();
+		verify(warehouseDao).init();
+		verify(warehouseDao).getAll();
 	}
 
 	@Test
 	public void test_update() throws DAOException, ServiceException {
-		assertEquals(obm_A, service.update("02002F-414778", obm_B));
-		verify(engineNumberDao).init();
-		verify(engineNumberDao).update("02002F-414778", obm_B);
-		verify(engineNumberDao).writeMapToFile();
+		assertEquals(obm_A, service.update(obm_B));
+		verify(warehouseDao).init();
+		verify(warehouseDao).update("02002F-414778", obm_B);
+		verify(warehouseDao).writeMapToFile();
 	}
 
 	@Test
 	public void test_remove() throws DAOException, ServiceException {
 		assertEquals(obm_A, service.remove("02002F-414778"));
-		verify(engineNumberDao).init();
-		verify(engineNumberDao).find("02002F-414778");
-		verify(engineNumberDao).get("02002F-414778");
-		verify(engineNumberDao).delete("02002F-414778");
-		verify(engineNumberDao).writeMapToFile();
+		verify(warehouseDao).init();
+		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).get("02002F-414778");
+		verify(warehouseDao).delete("02002F-414778");
+		verify(warehouseDao).writeMapToFile();
 	}
 }

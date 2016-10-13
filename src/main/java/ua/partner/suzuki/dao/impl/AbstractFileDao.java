@@ -11,12 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.Ignore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.properties.PropertiesReader;
+import ua.partner.suzuki.database.properties.PropertiesReader;
 import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 import com.google.common.base.Function;
@@ -59,16 +58,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	public T add(T entity) throws DAOException {
-		String dataToJsonFile = gson.toJson(entity);
-		String pathToFile = prop.getDatabaseLocation() + "/" + getFileName();
-		try (FileWriter writer = new FileWriter(pathToFile, true)) {
-
-			gson.toJson(dataToJsonFile, writer);
-
-		} catch (IOException e) {
-			logger.error("Can not write entity to file.", e);
-			throw new DAOException("Can not write entity to file.", e);
-		}
+		getMap().put(entity.getEngineNumber(), entity);
 		return entity;
 	}
 
@@ -93,12 +83,9 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	public boolean writeMapToFile() throws DAOException {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
-		String dataToJsonFile = gson.toJson(mapValues);
 		String pathToFile = prop.getDatabaseLocation() + "/" + getFileName();
 		try (FileWriter writer = new FileWriter(pathToFile)) {
-
-			gson.toJson(dataToJsonFile, writer);
-
+			gson.toJson(mapValues, writer);
 		} catch (IOException e) {
 			logger.error("Can not write map to file.", e);
 			throw new DAOException("Can not write map to file.", e);

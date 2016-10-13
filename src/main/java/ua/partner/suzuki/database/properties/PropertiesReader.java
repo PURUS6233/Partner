@@ -1,4 +1,4 @@
-package ua.partner.suzuki.dao.properties;
+package ua.partner.suzuki.database.properties;
 
 import java.io.IOException;
 import java.io.InputStream;

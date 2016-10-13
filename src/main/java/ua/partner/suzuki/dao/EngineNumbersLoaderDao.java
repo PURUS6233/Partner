@@ -6,7 +6,7 @@ import ua.partner.suzuki.domain.obm.EngineNumbersLoader;
 
 public interface EngineNumbersLoaderDao {
 
-	boolean writeToFile()throws DAOException;
+	boolean writeToFile(String engineNumbers)throws DAOException;
 
 	Collection<String> readFromFile() throws DAOException;
 
