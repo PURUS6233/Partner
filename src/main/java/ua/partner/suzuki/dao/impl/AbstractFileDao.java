@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -27,16 +28,21 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
 	private static final Gson gson = new Gson();
 	private Map<String, T> map = new ConcurrentHashMap<String, T>();
-	private static PropertiesReader prop = new PropertiesReader();
+	//private final PropertiesReader propertiesReader = new PropertiesReader();
+	private Properties suzuki_prop;
 
 	public Map<String, T> getMap() {
 		return map;
 	}
 
 	public boolean init() throws DAOException {
+		
+		PropertiesReader propertiesReader = new PropertiesReader();
+		
 		BufferedReader reader;
+		suzuki_prop = propertiesReader.propertyReader();
 		try {
-			reader = new BufferedReader(new FileReader((prop.getDatabaseLocation() + "/"
+			reader = new BufferedReader(new FileReader((suzuki_prop.getProperty("database.location") + "/"
 					+ getFileName())));
 		} catch (IOException e) {
 			logger.error("Can not read json file", e);
@@ -53,7 +59,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 		return true;
 	}
 
-	public boolean find(String engineNumber) {
+	public boolean isExist(String engineNumber) {
 		return getMap().containsKey(engineNumber);
 	}
 
@@ -83,7 +89,7 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	public boolean writeMapToFile() throws DAOException {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
-		String pathToFile = prop.getDatabaseLocation() + "/" + getFileName();
+		String pathToFile = suzuki_prop.getProperty("database.location") + "/" + getFileName();
 		try (FileWriter writer = new FileWriter(pathToFile)) {
 			gson.toJson(mapValues, writer);
 		} catch (IOException e) {

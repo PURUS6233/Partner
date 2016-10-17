@@ -26,39 +26,30 @@ public class EngineNoValidatorTest {
 	
 	@Test
 	public void test_checkWithRegExp(){
-		validator.setPatternExpresion(PATTERN);
-		boolean actual = validator.checkWithRegExp("14002F");
+		boolean actual = validator.checkWithRegExp("14002F", PATTERN);
 		assertTrue(actual);
 	}
-	
-	private static final String PREFIX_PATTERN = "^\\d\\d\\d\\d\\d(K|P|F)?$";
 
 	@Test
 	public void test_checkPrefix() throws DomainException {
-		validator.setPatternExpresion(PREFIX_PATTERN);
 		String actual = validator.checkPrefix("02002F");
 		assertEquals("02002F", actual);
 	}
 	
 	@Test(expected = DomainException.class)
 	public void test_checkPrefix_exception() throws DomainException{
-		validator.setPatternExpresion(PREFIX_PATTERN);
 		String actual = validator.checkPrefix("02002A");
 		assertEquals("02002F", actual);
 	}
-	
-	private static final String SERIAL_NUMBER_PATTERN = "^\\d\\d\\d\\d\\d\\d?$";
 
 	@Test
 	public void test_checkSerialNumber() throws DomainException {
-		validator.setPatternExpresion(SERIAL_NUMBER_PATTERN);
 		String actual = validator.checkSerialNumber("310483");
 		assertEquals("310483", actual);
 	}
 	
 	@Test(expected = DomainException.class)
 	public void test_checkSerialNumber_exception() throws DomainException {
-		validator.setPatternExpresion(SERIAL_NUMBER_PATTERN);
 		String actual = validator.checkSerialNumber("310A83");
 		assertEquals("310A83", actual);
 	}

@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Properties;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -20,11 +21,13 @@ import ua.partner.suzuki.domain.obm.EngineNumbersLoader;
 public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
-	private static PropertiesReader prop = new PropertiesReader();
+	private Properties suzuki_prop;
 
 	@Override
 	public boolean writeToFile(String engineNumbers) {
-		String pathToFile = prop.getDatabaseLocation() + "/" + getFileName();
+		PropertiesReader propertiesReader = new PropertiesReader();
+		suzuki_prop = propertiesReader.propertyReader();
+		String pathToFile = suzuki_prop.getProperty("database.location") + "/" + getFileName();
 		try (FileWriter writer = new FileWriter(pathToFile);
 				BufferedWriter bw = new BufferedWriter(writer)) {
 			bw.write(engineNumbers);
@@ -46,7 +49,7 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 	public Collection<String> readFromFile() throws DAOException {
 		Collection<String> list = new ArrayList<String>();
 		// Get file from resources folder
-		try (Scanner s = new Scanner(new File(prop.getDatabaseLocation() + "/"
+		try (Scanner s = new Scanner(new File(suzuki_prop.getProperty("database.location") + "/"
 				+ getFileName()))) {
 			while (s.hasNext()) {
 				list.add(s.next().replaceAll(WORDS_DELIMITERS_2_SKIP_REGEX, ""));

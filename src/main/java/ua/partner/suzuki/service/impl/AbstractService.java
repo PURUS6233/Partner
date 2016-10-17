@@ -21,7 +21,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 		T response;
 		try {
 			getDaoEntity().init();
-			Preconditions.checkState(getDaoEntity().find(engineNumber));
+			Preconditions.checkState(getDaoEntity().isExist(engineNumber));
 			response = (T) getDaoEntity().get(engineNumber);
 			;
 		} catch (IllegalStateException e) {
@@ -73,7 +73,7 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			getDaoEntity().init();
 			logger.info("Entity of class '{}' updating to Map",
 					getEntityClass().getSimpleName());
-			Preconditions.checkState(getDaoEntity().find(engineNumber));
+			Preconditions.checkState(getDaoEntity().isExist(engineNumber));
 			response = (T) getDaoEntity().get(engineNumber);
 			getDaoEntity().delete(engineNumber);
 			getDaoEntity().writeMapToFile();

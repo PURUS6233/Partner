@@ -68,14 +68,13 @@ public class DealerDaoImpl implements DealerDao{
 	}
 
 	public Dealer get(String login, String password) throws DAOException{
-		Dealer dealer;
-		try{
-			dealer = map.get(login);
-			Preconditions.checkState(!(dealer.getPassword().equals(password)),
-					"The Dealer password is not valid!");
-		}catch(IllegalStateException e){ 
-			logger.error("The Dealer password is not valid!",e);
-			throw new DAOException("The Dealer password is not valid!",e);
+		Dealer dealer = map.get(login);
+		if(dealer == null){
+			logger.error("The Dealer can not be found by login!" + login);
+			throw new DAOException("The Dealer can not be found by login!" + login);
+		} else if((!dealer.getPassword().equals(password))){
+			logger.error("The Dealer password is not valid!");
+			throw new DAOException("The Dealer password is not valid!");
 		}
 		return dealer;
 	}

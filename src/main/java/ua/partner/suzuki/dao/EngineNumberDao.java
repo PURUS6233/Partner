@@ -6,7 +6,7 @@ import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 
 public interface EngineNumberDao<T extends AbstractIntEngineNumberEntity> {
 
-	boolean find (String engineNumber);
+	boolean isExist (String engineNumber);
 	
 	T add (T entity) throws DAOException;
 	

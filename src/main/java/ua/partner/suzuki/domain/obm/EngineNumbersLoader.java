@@ -60,11 +60,10 @@ public class EngineNumbersLoader {
 	public Collection<String> engineNoLoader(Scanner sourceSc) {
 		Collection<String> engineNumberList = new ArrayList<>();
 		boolean valid;
-		validator.setPatternExpresion(ENGINE_NUMBER_PATTERN);
 		while (sourceSc.hasNext()) {
 			String word = sourceSc.next().replaceAll(
 					WORDS_DELIMITERS_2_SKIP_REGEX, "");
-			valid = validator.checkWithRegExp(word);
+			valid = validator.checkWithRegExp(word,ENGINE_NUMBER_PATTERN);
 			if (valid) {
 				engineNumberList.add(word);
 			}

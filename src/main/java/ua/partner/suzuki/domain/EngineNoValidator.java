@@ -4,15 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EngineNoValidator {
-
-	private String patternExpresion;
-
-	public void setPatternExpresion(String exp) {
-		this.patternExpresion = exp;
-	}
-
-	public String getPatternExpresion() {
-		return patternExpresion;
+	
+	public EngineNoValidator(){
+		
 	}
 
 	/**
@@ -29,8 +23,8 @@ public class EngineNoValidator {
 		return str;
 	}
 
-	public boolean checkWithRegExp(final String source) {
-		Pattern p = Pattern.compile(getPatternExpresion());
+	public boolean checkWithRegExp(String source, String pattern) {
+		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(source);
 		return m.matches();
 	}
@@ -38,9 +32,7 @@ public class EngineNoValidator {
 	private static final String PREFIX_PATTERN = "^\\d\\d\\d\\d\\d(K|P|F)?$";
 
 	public String checkPrefix(String prefix) throws DomainException {
-		boolean valid;
-		setPatternExpresion(PREFIX_PATTERN);
-		valid = checkWithRegExp(prefix);
+		boolean valid = checkWithRegExp(prefix,PREFIX_PATTERN);
 		if (valid) {
 			return prefix;
 		} else {
@@ -53,9 +45,7 @@ public class EngineNoValidator {
 	private static final String SERIAL_NUMBER_PATTERN = "^\\d\\d\\d\\d\\d\\d?$";
 
 	public String checkSerialNumber(String serialNumber) throws DomainException {
-		boolean valid;
-		setPatternExpresion(SERIAL_NUMBER_PATTERN);
-		valid = checkWithRegExp(serialNumber);
+		boolean valid = checkWithRegExp(serialNumber, SERIAL_NUMBER_PATTERN);
 		if (valid) {
 			return serialNumber;
 		} else {

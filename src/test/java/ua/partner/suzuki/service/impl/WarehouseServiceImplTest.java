@@ -41,7 +41,7 @@ public class WarehouseServiceImplTest {
 		MockitoAnnotations.initMocks(this);
 		when(warehouseDao.add(obm_B)).thenReturn(obm_A);
 		when(warehouseDao.delete("02002F-414778")).thenReturn(true);
-		when(warehouseDao.find("02002F-414778")).thenReturn(true);
+		when(warehouseDao.isExist("02002F-414778")).thenReturn(true);
 		when(warehouseDao.get("02002F-414778")).thenReturn(obm_A);
 		when(warehouseDao.getAll()).thenReturn(listOBM_A);
 		when(warehouseDao.init()).thenReturn(true);
@@ -51,10 +51,10 @@ public class WarehouseServiceImplTest {
 
 	@Test
 	public void test_add() throws ServiceException, DAOException {
-		when(warehouseDao.find("02002F-414778")).thenReturn(false);
+		when(warehouseDao.isExist("02002F-414778")).thenReturn(false);
 		service.add(obm_B.getEngineNumber());
 		verify(warehouseDao).init();
-		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).isExist("02002F-414778");
 		verify(warehouseDao).add(any());
 	}
 
@@ -62,7 +62,7 @@ public class WarehouseServiceImplTest {
 	public void test_get() throws DAOException, ServiceException {
 		assertEquals(obm_A, service.get("02002F-414778"));
 		verify(warehouseDao).init();
-		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).isExist("02002F-414778");
 		verify(warehouseDao).get("02002F-414778");
 	}
 
@@ -85,7 +85,7 @@ public class WarehouseServiceImplTest {
 	public void test_remove() throws DAOException, ServiceException {
 		assertEquals(obm_A, service.remove("02002F-414778"));
 		verify(warehouseDao).init();
-		verify(warehouseDao).find("02002F-414778");
+		verify(warehouseDao).isExist("02002F-414778");
 		verify(warehouseDao).get("02002F-414778");
 		verify(warehouseDao).delete("02002F-414778");
 		verify(warehouseDao).writeMapToFile();

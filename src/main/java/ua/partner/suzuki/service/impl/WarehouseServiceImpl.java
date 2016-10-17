@@ -73,7 +73,7 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 				// Check if the entity already exists in database
 				logger.info("Check if entity is already exist",
 						getEntityClass().getSimpleName());
-				Preconditions.checkState(!getDaoEntity().find(
+				Preconditions.checkState(!getDaoEntity().isExist(
 						obm.getEngineNumber()));
 				getDaoEntity().add(obm);
 				getDaoEntity().writeMapToFile();

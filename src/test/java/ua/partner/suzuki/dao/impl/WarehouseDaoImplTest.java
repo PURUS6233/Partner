@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.util.Map;
+import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,9 @@ public class WarehouseDaoImplTest {
 	private PropertiesReader prop;
 	
 	@Mock
+	private Properties prop_suzuki;
+	
+	@Mock
 	private BufferedReader reader;
 
 	@Mock
@@ -73,8 +77,8 @@ public class WarehouseDaoImplTest {
 	
 	@Test
 	public void test_find() throws DAOException {
-		when(warehauseDao.find("02002F-414778")).thenReturn(true);
-		assertEquals(true, warehauseDao.find("02002F-414778"));
+		when(warehauseDao.isExist("02002F-414778")).thenReturn(true);
+		assertEquals(true, warehauseDao.isExist("02002F-414778"));
 		verify(map).containsKey("02002F-414778");
 	}
 
@@ -111,6 +115,7 @@ public class WarehouseDaoImplTest {
 	@Test
 	// TODO change test
 	public void test_writeMapToJson() throws DAOException {
+		when(prop_suzuki.getProperty("database.location")).thenReturn("E:/Alex/Projects/eclipse_workspaces/suzuki_database");
 		assertEquals(true, warehauseDao.writeMapToFile());
 		verify(map).values();
 	}
