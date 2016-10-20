@@ -10,9 +10,8 @@ import ua.partner.suzuki.domain.customer.Customer;
 
 public class CustomerDaoImpl extends AbstractFileDao<Customer> implements CustomerDao {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	protected Class getEntityClass() {
+	protected Class<Customer> getEntityClass() {
 		return Customer.class;
 	}
 

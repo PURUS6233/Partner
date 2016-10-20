@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
 
 public class EngineNumbersLoader {
 
-	private Logger logger = LoggerFactory.getLogger(getClass()); //TODO
+	private Logger logger = LoggerFactory.getLogger(getClass()); // TODO
 	private Collection<String> engineNumbers;
 	private Scanner sourceSc;
 
@@ -29,7 +29,8 @@ public class EngineNumbersLoader {
 	 *             constructor
 	 */
 
-	public EngineNumbersLoader(InputStream inStream) throws EngineNoLoaderException {
+	public EngineNumbersLoader(InputStream inStream)
+			throws EngineNoLoaderException {
 		this.sourceSc = sourceRemake(inStream);
 		setEngineNumbers();
 	}
@@ -40,6 +41,8 @@ public class EngineNumbersLoader {
 
 	private Scanner sourceRemake(InputStream inStream) {
 		Scanner sc = new Scanner(inStream, StandardCharsets.UTF_8.name());
+		logger.info("Remaking InputStream to Scanner", getClass()
+				.getSimpleName());
 		return sc;
 	}
 
@@ -63,14 +66,16 @@ public class EngineNumbersLoader {
 		while (sourceSc.hasNext()) {
 			String word = sourceSc.next().replaceAll(
 					WORDS_DELIMITERS_2_SKIP_REGEX, "");
-			valid = validator.checkWithRegExp(word,ENGINE_NUMBER_PATTERN);
+			valid = validator.checkWithRegExp(word, ENGINE_NUMBER_PATTERN);
 			if (valid) {
 				engineNumberList.add(word);
 			}
 		}
 		Preconditions.checkArgument(!blankInputTermination(engineNumberList),
 				"Input contains no valid Engine Numbers.");
-		
+		logger.info("Engine numbers loaded from Stream", getClass()
+				.getSimpleName());
+
 		return engineNumberList;
 	}
 
@@ -78,6 +83,6 @@ public class EngineNumbersLoader {
 		if (list.isEmpty()) {
 			return true;
 		}
-		return false;	
+		return false;
 	}
 }

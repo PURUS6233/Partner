@@ -43,7 +43,6 @@ public abstract class AbstractService<T extends AbstractIntEngineNumberEntity> {
 			logger.error("Can not read entities from database", e);
 			throw new ServiceException("Can not read entities from database", e);
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")

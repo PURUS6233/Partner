@@ -1,14 +1,21 @@
 package ua.partner.suzuki.domain.adress;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.PersonalDataValidator;
 
 import com.google.common.base.Preconditions;
 
+@XmlRootElement
 public class Adress {
+	
+	public Adress(){
+		
+	}
 
 	public Adress(String street, String city, String district, String country,
-			String postCode, String phone, String email) throws DomainException {
+			String postCode, String phone, String email) {
 		setStreet(street);
 		setCity(city);
 		setDistrict(district);
@@ -26,13 +33,11 @@ public class Adress {
 	private String phone;
 	private String email;
 
-	PersonalDataValidator validator = new PersonalDataValidator();
-
 	public String getStreet() {
 		return street;
 	}
 
-	public void setStreet(String street) throws DomainException {
+	public void setStreet(String street) {
 		this.street = street;
 	}
 
@@ -40,7 +45,7 @@ public class Adress {
 		return city;
 	}
 
-	public void setCity(String city) throws DomainException {
+	public void setCity(String city) {
 		this.city = city;
 	}
 
@@ -48,7 +53,7 @@ public class Adress {
 		return district;
 	}
 
-	public void setDistrict(String district) throws DomainException {
+	public void setDistrict(String district) {
 		this.district = district;
 	}
 
@@ -56,7 +61,7 @@ public class Adress {
 		return country;
 	}
 
-	public void setCountry(String country) throws DomainException {
+	public void setCountry(String country) {
 		this.country = country;
 	}
 
@@ -64,7 +69,7 @@ public class Adress {
 		return postCode;
 	}
 
-	public void setPostCode(String postCode) throws DomainException {
+	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 
@@ -72,7 +77,7 @@ public class Adress {
 		return phone;
 	}
 
-	public void setPhone(String phone) throws DomainException {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -80,15 +85,15 @@ public class Adress {
 		return email;
 	}
 
-	public void setEmail(String email) throws DomainException {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	private static final String POSTCODE_PATTERN = "^\\d\\d\\d\\d\\d$";
+	private static final String POSTCODE_PATTERN = "^\\d{4,5}$";
 	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
 	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
 
-	public void validate() {
+	public boolean validate() throws DomainException {
 		// Street validate
 		Preconditions.checkState(!(getStreet().length() <= 1),
 				"The street name is not valid!");
@@ -101,19 +106,22 @@ public class Adress {
 		// Country validate
 		Preconditions.checkState(!(getCountry().length() <= 1),
 				"The country name is not valid!");
+		
+		PersonalDataValidator validator = new PersonalDataValidator();
+		
 		// PostCode validate
-		validator.setPatternExpresion(POSTCODE_PATTERN);
-		Preconditions.checkState(!(validator.checkWithRegExp(getPostCode())),
+		Preconditions.checkState(
+				(validator.checkWithRegExp(getPostCode(), POSTCODE_PATTERN)),
 				"The postCode is not valid!");
 		// Phone validate
-		validator.setPatternExpresion(PHONE_PATTERN);
-		Preconditions.checkState(!(validator.checkWithRegExp(getPhone())),
+		Preconditions.checkState(
+				(validator.checkWithRegExp(getPhone(), PHONE_PATTERN)),
 				"The phone is not valid!");
 		// Email validate
-		validator.setPatternExpresion(EMAIL_PATTERN);
-		Preconditions.checkState(!(validator.checkWithRegExp(getEmail())),
+		Preconditions.checkState(
+				(validator.checkWithRegExp(getEmail(), EMAIL_PATTERN)),
 				"The email is not valid!");
-
+		return true;
 	}
 
 	public String toString() {

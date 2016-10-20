@@ -1,5 +1,7 @@
 package ua.partner.suzuki.domain.customer;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
 import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.PersonalDataValidator;
@@ -7,8 +9,12 @@ import ua.partner.suzuki.domain.adress.Adress;
 
 import com.google.common.base.Preconditions;
 
+@XmlRootElement
 public class Customer extends AbstractIntEngineNumberEntity {
 
+	public Customer(){
+		
+	}
 	public Customer(String engineNumber, String name, String surname,
 			SexType sex, Adress adress,	BuyerType buyerType) {
 		setEngineNumber(engineNumber);
@@ -25,8 +31,6 @@ public class Customer extends AbstractIntEngineNumberEntity {
 	private SexType sex;
 	private Adress adress;
 	private BuyerType buyerType;
-
-	PersonalDataValidator validator = new PersonalDataValidator();
 
 	@Override
 	public String getEngineNumber() {
@@ -85,6 +89,9 @@ public class Customer extends AbstractIntEngineNumberEntity {
 		Preconditions.checkState(!(getSurname().length() <= 1),
 				"The Customer surname is not valid!");
 		// Male validate
+		
+		PersonalDataValidator validator = new PersonalDataValidator();
+		
 		Preconditions.checkState(!(validator.maleValidator(getSex())),
 				"There is no such buyerType identifier. Please, correct it!\n"
 						+ "You may use: COMPANY or PRIVATE_PERSON");

@@ -1,10 +1,15 @@
 package ua.partner.suzuki.dao.impl;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +30,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 
 public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
+
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
 	private static final Gson gson = new Gson();
 	private Map<String, T> map = new ConcurrentHashMap<String, T>();
@@ -36,24 +42,31 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	}
 
 	public boolean init() throws DAOException {
-		
+
 		PropertiesReader propertiesReader = new PropertiesReader();
-		
+
 		BufferedReader reader;
 		suzuki_prop = propertiesReader.propertyReader();
 		try {
-			reader = new BufferedReader(new FileReader((suzuki_prop.getProperty("database.location") + "/"
-					+ getFileName())));
+			reader = new BufferedReader(
+					new InputStreamReader(
+							new FileInputStream(
+									(suzuki_prop
+											.getProperty("database.location")
+											+ "/" + getFileName())), StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			logger.error("Can not read json file", e);
 			throw new DAOException("Can not read json file", e);
 		}
 		List<T> entities = gson.fromJson(reader, getListType());
-		getMap().putAll(Maps.uniqueIndex(entities, new Function<T, String>() {
-			public String apply(T input) {
-				return input.getEngineNumber();
-			}
-		}));
+		if (entities != null) {
+			getMap().putAll(
+					Maps.uniqueIndex(entities, new Function<T, String>() {
+						public String apply(T input) {
+							return input.getEngineNumber();
+						}
+					}));
+		}
 		logger.info("Entities of class '{}' loaded from json", getEntityClass()
 				.getSimpleName());
 		return true;
@@ -89,8 +102,10 @@ public abstract class AbstractFileDao<T extends AbstractIntEngineNumberEntity> {
 	public boolean writeMapToFile() throws DAOException {
 		Collection<T> mapValues = new ArrayList<T>();
 		mapValues = getMap().values();
-		String pathToFile = suzuki_prop.getProperty("database.location") + "/" + getFileName();
-		try (FileWriter writer = new FileWriter(pathToFile)) {
+		String pathToFile = suzuki_prop.getProperty("database.location") + "/"
+				+ getFileName();
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(pathToFile), StandardCharsets.UTF_8));){
 			gson.toJson(mapValues, writer);
 		} catch (IOException e) {
 			logger.error("Can not write map to file.", e);

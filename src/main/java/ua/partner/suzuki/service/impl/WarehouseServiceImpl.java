@@ -14,7 +14,6 @@ import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.obm.EngineNoLoaderException;
 import ua.partner.suzuki.domain.obm.OBM;
 import ua.partner.suzuki.domain.obm.OBMBuilder;
-import ua.partner.suzuki.service.EngineNumbersLoaderService;
 import ua.partner.suzuki.service.ServiceException;
 import ua.partner.suzuki.service.WarehouseService;
 
@@ -33,34 +32,6 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 	protected WarehouseDao getDaoEntity() {
 		return obmDao;
 	}
-//TODO
-//	public OBM add(String engineNumber) throws ServiceException {
-//
-//		OBMBuilder builder = new OBMBuilder();
-//
-//		OBM response;
-//		try {
-//			// Read Data from Json file to map
-//			getDaoEntity().init();
-//			// Check if the entity already exists in database
-//			logger.info("Check if entity is already exist", getEntityClass()
-//					.getSimpleName());
-//			Preconditions.checkState(!getDaoEntity().find(engineNumber));
-//			OBM obm = builder.createOBMFromEngineNumber(engineNumber);
-//			response = getDaoEntity().add(obm);
-//			getDaoEntity().writeMapToFile();
-//		} catch (IllegalStateException e) {
-//			logger.error("Entity with this engine number already exists!", e);
-//			throw new ServiceException("Can not add entity to map.", e);
-//		} catch (DAOException e) {
-//			logger.error("Problems occured while writing entity to json!", e);
-//			throw new ServiceException("Can not add entity to file.", e);
-//		} catch (DomainException e) {
-//			logger.error("Problem occured during OBM building!", e);
-//			throw new ServiceException("Can not create OBM entity.", e);
-//		}
-//		return response;
-//	}
 
 	public Collection<OBM> add(String engineNumbers) throws ServiceException {
 		Collection<OBM> listOBM;

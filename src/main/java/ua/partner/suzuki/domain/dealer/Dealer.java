@@ -1,15 +1,20 @@
 package ua.partner.suzuki.domain.dealer;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import ua.partner.suzuki.domain.DomainException;
-import ua.partner.suzuki.domain.PersonalDataValidator;
 import ua.partner.suzuki.domain.adress.Adress;
 
 import com.google.common.base.Preconditions;
 
+@XmlRootElement
 public class Dealer {
 
-	public Dealer(String name, Adress adress, String login, String password)
-			throws DomainException {
+	public Dealer() {
+
+	}
+
+	public Dealer(String name, Adress adress, String login, String password) {
 		setName(name);
 		setAdress(adress);
 		setLogin(login);
@@ -21,13 +26,11 @@ public class Dealer {
 	private String login;
 	private String password;
 
-	PersonalDataValidator validator = new PersonalDataValidator();
-
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name){
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -35,7 +38,7 @@ public class Dealer {
 		return adress;
 	}
 
-	public void setAdress(Adress adress){
+	public void setAdress(Adress adress) {
 		this.adress = adress;
 	}
 
@@ -43,7 +46,7 @@ public class Dealer {
 		return login;
 	}
 
-	public void setLogin(String login){
+	public void setLogin(String login) {
 		this.login = login;
 	}
 
@@ -51,11 +54,12 @@ public class Dealer {
 		return password;
 	}
 
-	public void setPassword(String password){
+	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public void validate() throws DomainException {
+
+	public boolean validate() throws DomainException {
+
 		// Name validate
 		Preconditions.checkState(!(getName().length() <= 1),
 				"The Customer name is not valid!");
@@ -63,11 +67,12 @@ public class Dealer {
 		Preconditions.checkNotNull(getAdress(),
 				"The Customer adress can not be NULL!");
 		// Login validate
-		Preconditions.checkState(!(getLogin().length() <= 3),
+		Preconditions.checkState(!(getLogin().length() <= 2),
 				"The Dealer login is not valid!");
-		//Password validate
-		Preconditions.checkState(!(getPassword().length() <= 5),
+		// Password validate
+		Preconditions.checkState(!(getPassword().length() <= 4),
 				"The Dealer password is not valid!");
+		return true;
 	}
 
 	public String toString() {

@@ -2,6 +2,7 @@ package ua.partner.suzuki.domain.adress;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -27,27 +28,22 @@ public class AdressTest {
 			+ ", City=" + CITY + ", District=" + DISTRICT + ", Country="
 			+ COUNTRY + ", Post Code=" + POST_CODE + ", Phone=" + PHONE
 			+ ", Email=" + EMAIL + '}';
-
-	public static Adress getCommonAdressData() {
-		Adress adress = null;
-		try {
-			adress = new Adress(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
-					PHONE, EMAIL);
-		} catch (DomainException e) {
-			e.printStackTrace();
-		}
-		return adress;
+	
+	private Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
+			PHONE, EMAIL);
+	
+	@Test
+	public void test_validate() throws DomainException {
+		assertTrue(adress.validate());
 	}
 
 	@Test
-	public void test_instantiation() throws Exception {
-		Adress adress = getCommonAdressData();
+	public void test_instantiation() {
 		assertNotNull(adress);
 	}
 
 	@Test
-	public void test_adress() throws Exception {
-		Adress adress = getCommonAdressData();
+	public void test_adress() {
 		assertEquals(expected, adress.toString());
 
 	}
