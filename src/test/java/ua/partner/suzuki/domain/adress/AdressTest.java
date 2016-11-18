@@ -7,13 +7,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import ua.partner.suzuki.domain.DomainException;
-import ua.partner.suzuki.domain.adress.Adress;
+import ua.partner.suzuki.domain.adress.Address;
 
 public class AdressTest {
 
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(Adress.class);
+		assertNotNull(Address.class);
 	}
 
 	private static final String STREET = "24, Лазаряна";
@@ -29,7 +29,7 @@ public class AdressTest {
 			+ COUNTRY + ", Post Code=" + POST_CODE + ", Phone=" + PHONE
 			+ ", Email=" + EMAIL + '}';
 	
-	private Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
+	private Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
 			PHONE, EMAIL);
 	
 	@Test

@@ -10,14 +10,6 @@ import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.EngineNoValidator;
 
 public class OBMBuilder {
-	
-	public OBMBuilder(){
-	}
-
-	public OBMBuilder(String engineNumbers)
-			throws DomainException, EngineNoLoaderException {
-		setObms(engineNumbers);
-	}
 
 	private Collection<OBM> obms;
 
@@ -29,7 +21,14 @@ public class OBMBuilder {
 			throws DomainException, EngineNoLoaderException {
 		this.obms = buildOBMFromEngineNumberList(engineNumbers);
 	}
+	
+	public OBMBuilder(){
+	}
 
+	public OBMBuilder(String engineNumbers)
+			throws DomainException, EngineNoLoaderException {
+		setObms(engineNumbers);
+	}
 	
 	public Collection<OBM> buildOBMFromEngineNumberList(
 			String engineNumbers)

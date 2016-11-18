@@ -3,7 +3,7 @@ package ua.partner.suzuki.domain;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.SexType;
 
 public class PersonalDataValidator {
@@ -23,8 +23,8 @@ public class PersonalDataValidator {
 		return false;
 	}
 
-	public boolean buyerTypeValidator(BuyerType type) {
-		for (BuyerType buyerType : BuyerType.values()) {
+	public boolean buyerTypeValidator(CustomerType type) {
+		for (CustomerType buyerType : CustomerType.values()) {
 			if (buyerType.equals(type)) {
 				return true;
 			}

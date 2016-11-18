@@ -2,35 +2,31 @@ package ua.partner.suzuki.domain.customer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import ua.partner.suzuki.domain.AbstractIntEngineNumberEntity;
+import ua.partner.suzuki.domain.EngineNumberIdentified;
 import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.PersonalDataValidator;
-import ua.partner.suzuki.domain.adress.Adress;
+import ua.partner.suzuki.domain.adress.Address;
 
 import com.google.common.base.Preconditions;
 
 @XmlRootElement
-public class Customer extends AbstractIntEngineNumberEntity {
+public class Customer implements EngineNumberIdentified {
 
-	public Customer(){
-		
-	}
-	public Customer(String engineNumber, String name, String surname,
-			SexType sex, Adress adress,	BuyerType buyerType) {
-		setEngineNumber(engineNumber);
-		setName(name);
-		setSurname(surname);
-		setSex(sex);
-		setAdress(adress);
-		setBuyerType(buyerType);
-	}
-
+	private String id;
 	private String engineNumber;
 	private String name;
 	private String surname;
 	private SexType sex;
-	private Adress adress;
-	private BuyerType buyerType;
+	private Address adress;
+	private CustomerType customerType;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@Override
 	public String getEngineNumber() {
@@ -65,20 +61,34 @@ public class Customer extends AbstractIntEngineNumberEntity {
 		this.sex = sex;
 	}
 
-	public Adress getAdress() {
+	public Address getAdress() {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) {
+	public void setAdress(Address adress) {
 		this.adress = adress;
 	}
 
-	public BuyerType getBuyerType() {
-		return buyerType;
+	public CustomerType getCustomerType() {
+		return customerType;
 	}
 
-	public void setBuyerType(BuyerType buyerType) {
-		this.buyerType = buyerType;
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+	
+	public Customer(){
+		
+	}
+	
+	public Customer(String engineNumber, String name, String surname,
+			SexType sex, Address adress,	CustomerType customerType) {
+		setEngineNumber(engineNumber);
+		setName(name);
+		setSurname(surname);
+		setSex(sex);
+		setAdress(adress);
+		setCustomerType(customerType);
 	}
 
 	public void validate() throws DomainException {
@@ -100,15 +110,15 @@ public class Customer extends AbstractIntEngineNumberEntity {
 				"The Customer adress can not be NULL!");
 		// BuyerType validate
 		Preconditions.checkState(
-				!(validator.buyerTypeValidator(getBuyerType())),
+				!(validator.buyerTypeValidator(getCustomerType())),
 				"There is no such buyerType identifier. Please, correct it!\n"
 						+ "You may use: COMPANY or PRIVATE_PERSON");
 	}
 
 	public String toString() {
 
-		return "Customer{" + "Engine Number=" + engineNumber + ", Name='"
+		return "Customer{" + "Id=" + id + "Engine Number=" + engineNumber + ", Name='"
 				+ name + ", Surname=" + surname + ", Male=" + sex + ", Adress="
-				+ adress.toString() + ", Buyer Type=" + buyerType + '}';
+				+ adress.toString() + ", Customer Type=" + customerType + '}';
 	}
 }

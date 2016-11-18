@@ -64,18 +64,17 @@ public class EngineNumbersLoader {
 		Collection<String> engineNumberList = new ArrayList<>();
 		boolean valid;
 		while (sourceSc.hasNext()) {
-			String word = sourceSc.next().replaceAll(
+			String engineNumber = sourceSc.next().replaceAll(
 					WORDS_DELIMITERS_2_SKIP_REGEX, "");
-			valid = validator.checkWithRegExp(word, ENGINE_NUMBER_PATTERN);
+			valid = validator.checkWithRegExp(engineNumber, ENGINE_NUMBER_PATTERN);
 			if (valid) {
-				engineNumberList.add(word);
+				engineNumberList.add(engineNumber);
 			}
 		}
 		Preconditions.checkArgument(!blankInputTermination(engineNumberList),
 				"Input contains no valid Engine Numbers.");
 		logger.info("Engine numbers loaded from Stream", getClass()
 				.getSimpleName());
-
 		return engineNumberList;
 	}
 

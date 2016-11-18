@@ -8,6 +8,6 @@ public class AbstractIntEngineNumberEntityTest {
 	
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(AbstractIntEngineNumberEntity.class);
+		assertNotNull(EngineNumberIdentified.class);
 	}
 }

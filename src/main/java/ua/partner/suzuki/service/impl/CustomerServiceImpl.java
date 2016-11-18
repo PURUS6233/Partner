@@ -7,15 +7,16 @@ import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.CustomerDao;
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.impl.CustomerDaoImpl;
+import ua.partner.suzuki.dao.postgres.PostgreCustomerDao;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.service.CustomerService;
 import ua.partner.suzuki.service.ServiceException;
 
-public class CustomerServiceImpl  extends AbstractService<Customer> implements CustomerService {
-	
+public class CustomerServiceImpl extends AbstractService<Customer> implements
+		CustomerService {
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private CustomerDao obmDao = new CustomerDaoImpl();
+	private CustomerDao obmDao = new PostgreCustomerDao();
 
 	@Override
 	protected Class<CustomerServiceImpl> getEntityClass() {
@@ -26,7 +27,7 @@ public class CustomerServiceImpl  extends AbstractService<Customer> implements C
 	protected CustomerDao getDaoEntity() {
 		return obmDao;
 	}
-	
+
 	@Override
 	public Customer add(Customer customer) throws ServiceException {
 		try {
@@ -35,8 +36,8 @@ public class CustomerServiceImpl  extends AbstractService<Customer> implements C
 			// Check if the entity already exists in database
 			logger.info("Check if entity is already exist", getEntityClass()
 					.getSimpleName());
-			Preconditions
-					.checkState(!getDaoEntity().isExist(customer.getEngineNumber()));
+			Preconditions.checkState(!getDaoEntity().isExist(
+					customer.getEngineNumber()));
 			getDaoEntity().add(customer);
 			getDaoEntity().writeMapToFile();
 

@@ -22,8 +22,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.dao.postgres.PostgreDealerDao;
 import ua.partner.suzuki.database.properties.PropertiesReader;
-import ua.partner.suzuki.domain.adress.Adress;
+import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.dealer.Dealer;
 
 import com.google.common.collect.Maps;
@@ -36,7 +37,7 @@ public class DealerDaoImplTest {
 
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(DealerDaoImpl.class);
+		assertNotNull(PostgreDealerDao.class);
 	}
 
 	private static final String STREET = "24, Лазаряна";
@@ -47,7 +48,7 @@ public class DealerDaoImplTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 
-	private static Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY,
+	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
 
 	private static final String NAME = "GGI";
@@ -78,7 +79,7 @@ public class DealerDaoImplTest {
 	private FileWriter writer;
 
 	@InjectMocks
-	private DealerDaoImpl dealerDao = new DealerDaoImpl();
+	private PostgreDealerDao dealerDao = new PostgreDealerDao();
 
 	@Before
 	public void setUp() throws Exception {

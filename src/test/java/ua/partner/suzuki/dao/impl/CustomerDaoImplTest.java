@@ -21,11 +21,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.dao.postgres.PostgreCustomerDao;
 import ua.partner.suzuki.database.properties.PropertiesReader;
-import ua.partner.suzuki.domain.adress.Adress;
-import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.adress.Address;
+import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.domain.customer.SexType;
+
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
@@ -42,7 +44,7 @@ public class CustomerDaoImplTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 	
-	private static Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY,
+	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
 
 	@Test
@@ -54,7 +56,7 @@ public class CustomerDaoImplTest {
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
 	private static final SexType SEX = SexType.MALE;
-	private static final BuyerType BUYER_TYPE = BuyerType.PRIVATE_PERSON;
+	private static final CustomerType BUYER_TYPE = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,
 				adress, BUYER_TYPE);
@@ -81,7 +83,7 @@ public class CustomerDaoImplTest {
 	private FileWriter writer;
 
 	@InjectMocks
-	private CustomerDaoImpl customerDao = new CustomerDaoImpl();
+	private PostgreCustomerDao customerDao = new PostgreCustomerDao();
 	
 	@Before
 	public void setUp() throws Exception {

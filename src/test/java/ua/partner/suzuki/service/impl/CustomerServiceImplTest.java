@@ -17,13 +17,18 @@ import org.mockito.MockitoAnnotations;
 
 import ua.partner.suzuki.dao.CustomerDao;
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.domain.adress.Adress;
-import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.adress.Address;
+import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.domain.customer.SexType;
 import ua.partner.suzuki.service.ServiceException;
 
 public class CustomerServiceImplTest {
+	
+	@Test
+	public void test_type() throws Exception {
+		assertNotNull(Customer.class);
+	}
 
 	private static final String STREET = "24, Лазаряна";
 	private static final String CITY = "Днепр";
@@ -33,19 +38,14 @@ public class CustomerServiceImplTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 	
-	private static Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY,
+	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
-
-	@Test
-	public void test_type() throws Exception {
-		assertNotNull(Customer.class);
-	}
 
 	private static final String ENGINE_NUMBER = "02002F-000000";
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
 	private static final SexType SEX = SexType.MALE;
-	private static final BuyerType BUYER_TYPE = BuyerType.PRIVATE_PERSON;
+	private static final CustomerType BUYER_TYPE = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer_A = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,
 				adress, BUYER_TYPE);
@@ -54,7 +54,7 @@ public class CustomerServiceImplTest {
 	private static final String NAME_B = "Александр";
 	private static final String SURNAME_B = "Комаренко";
 	private static final SexType SEX_B = SexType.MALE;
-	private static final BuyerType BUYER_TYPE_B = BuyerType.PRIVATE_PERSON;
+	private static final CustomerType BUYER_TYPE_B = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer_B = new Customer(ENGINE_NUMBER_B, NAME_B, SURNAME_B, SEX_B,
 				adress, BUYER_TYPE_B);

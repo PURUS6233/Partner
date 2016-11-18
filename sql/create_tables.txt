@@ -1,0 +1,86 @@
+CREATE TABLE IF NOT EXISTS SUZUKI.WAREHOUSE (
+  engine_number VARCHAR(13) NOT NULL ,
+  model_year VARCHAR(45) NOT NULL ,
+  model suzuki.model NOT NULL ,
+  status suzuki.status NOT NULL ,
+  PRIMARY KEY (engine_number) 
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.CUSTOMERS (
+  id VARCHAR(45) NOT NULL,
+  engine_number VARCHAR(13) NOT NULL ,
+  name VARCHAR(45) NOT NULL ,
+  surname VARCHAR(45) NOT NULL ,
+  sex suzuki.sex_type NOT NULL ,
+  customer_type suzuki.customer_type NOT NULL ,
+  street VARCHAR(45) NOT NULL ,
+  city VARCHAR(45) NOT NULL ,
+  district VARCHAR(45) NOT NULL ,
+  country VARCHAR(45) NOT NULL ,
+  post_code VARCHAR(45) NOT NULL ,
+  phone VARCHAR(45) NOT NULL ,
+  email VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (id)
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.DEALERS (
+  name VARCHAR(45) NOT NULL ,
+  login VARCHAR(45) NOT NULL ,
+  password VARCHAR(45) NOT NULL ,
+  street VARCHAR(45) NOT NULL ,
+  city VARCHAR(45) NOT NULL ,
+  district VARCHAR(45) NOT NULL ,
+  country VARCHAR(45) NOT NULL ,
+  post_code VARCHAR(45) NOT NULL ,
+  phone VARCHAR(45) NOT NULL ,
+  email VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (login) 
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.REGISTRATION (
+  engine_number VARCHAR(13) NOT NULL ,
+  warranty_type suzuki.warranty_type NOT NULL ,
+  dealer_login VARCHAR(45) NOT NULL ,
+  date_sold DATE NOT NULL ,
+  date_registered DATE NOT NULL ,
+  date_delivered DATE NOT NULL ,
+  warranty_expiration DATE NOT NULL ,
+  penalty INT NOT NULL ,
+  unit_survey suzuki.unit_survey NOT NULL,
+  unit_operation boolean NOT NULL ,
+  unit_maintenance boolean NOT NULL ,
+  safety_features boolean NOT NULL ,
+  warranty_policy boolean NOT NULL ,
+  owners_signature boolean NOT NULL ,
+  PRIMARY KEY (engine_number)
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.MAINTENANCE (
+  id SERIAL PRIMARY KEY,
+  engine_number VARCHAR(13) NOT NULL ,
+  execution_date DATE NOT NULL ,
+  maintenance_type suzuki.maintenance_type NOT NULL ,
+  service_type suzuki.service_type NOT NULL ,
+  hours VARCHAR(45) NOT NULL ,
+  note VARCHAR(45) NOT NULL ,
+  SDS_file VARCHAR(45) NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.CAMPAIGNS (
+  ID SERIAL PRIMARY KEY,
+  campaign_number VARCHAR(13) NOT NULL ,
+  description VARCHAR(13) NOT NULL ,
+  campaign_type suzuki.campaign_type NOT NULL ,
+  campaign_file VARCHAR(45) NOT NULL ,
+  campaign_date DATE NOT NULL ,
+  inspection boolean ,
+  repair boolean ,
+  labour_rate VARCHAR(13) NOT NULL,
+  campaign_status suzuki.campaign_status NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS SUZUKI.OBMCAMPAIGNS (
+  id SERIAL PRIMARY KEY,
+  campaign_Id VARCHAR(13) NOT NULL ,
+  engine_number VARCHAR(13) NOT NULL
+)

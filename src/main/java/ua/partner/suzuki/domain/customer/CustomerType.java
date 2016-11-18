@@ -1,5 +1,5 @@
 package ua.partner.suzuki.domain.customer;
 
-public enum BuyerType {
+public enum CustomerType {
 	COMPANY, PRIVATE_PERSON, GOVERMENT
 }

@@ -1,0 +1,2 @@
+INSERT INTO suzuki.warehouse(engine_number, model_year, model, status)
+VALUES('00252F-123456', '2015', 'DF2_5', 'STOLEN')

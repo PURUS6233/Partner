@@ -3,26 +3,15 @@ package ua.partner.suzuki.domain.dealer;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import ua.partner.suzuki.domain.DomainException;
-import ua.partner.suzuki.domain.adress.Adress;
+import ua.partner.suzuki.domain.adress.Address;
 
 import com.google.common.base.Preconditions;
 
 @XmlRootElement
 public class Dealer {
 
-	public Dealer() {
-
-	}
-
-	public Dealer(String name, Adress adress, String login, String password) {
-		setName(name);
-		setAdress(adress);
-		setLogin(login);
-		setPassword(password);
-	}
-
 	private String name;
-	private Adress adress;
+	private Address adress;
 	private String login;
 	private String password;
 
@@ -34,11 +23,11 @@ public class Dealer {
 		this.name = name;
 	}
 
-	public Adress getAdress() {
+	public Address getAdress() {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) {
+	public void setAdress(Address adress) {
 		this.adress = adress;
 	}
 
@@ -56,6 +45,17 @@ public class Dealer {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Dealer() {
+
+	}
+
+	public Dealer(String name, Address adress, String login, String password) {
+		setName(name);
+		setAdress(adress);
+		setLogin(login);
+		setPassword(password);
 	}
 
 	public boolean validate() throws DomainException {

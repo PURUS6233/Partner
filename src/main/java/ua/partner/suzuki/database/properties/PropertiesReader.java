@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.impl.AbstractFileDao;
+import ua.partner.suzuki.dao.postgres.AbstractJDBCDao;
 
 public class PropertiesReader {
 
@@ -26,7 +26,7 @@ public class PropertiesReader {
 	public Properties propertyReader() {
 		Properties prop = new Properties();
 
-		try (InputStream input = AbstractFileDao.class.getClassLoader()
+		try (InputStream input = AbstractJDBCDao.class.getClassLoader()
 				.getResourceAsStream(FILE);) {
 			if (input == null) {
 				logger.error("The proprerty file " + FILE

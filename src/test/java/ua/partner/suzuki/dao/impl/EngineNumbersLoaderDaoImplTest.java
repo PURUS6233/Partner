@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.EngineNumbersLoaderDao;
+import ua.partner.suzuki.dao.file.EngineNumbersLoaderDaoImpl;
 
 public class EngineNumbersLoaderDaoImplTest {
 

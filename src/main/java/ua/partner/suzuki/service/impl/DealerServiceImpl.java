@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.DealerDao;
-import ua.partner.suzuki.dao.impl.DealerDaoImpl;
+import ua.partner.suzuki.dao.postgres.PostgreDealerDao;
 import ua.partner.suzuki.domain.dealer.Dealer;
 import ua.partner.suzuki.service.DealerService;
 import ua.partner.suzuki.service.ServiceException;
@@ -17,7 +17,7 @@ import ua.partner.suzuki.service.ServiceException;
 public class DealerServiceImpl implements DealerService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private DealerDao obmDao = new DealerDaoImpl();
+	private DealerDao obmDao = new PostgreDealerDao();
 
 	protected DealerDao getDaoEntity() {
 		return obmDao;

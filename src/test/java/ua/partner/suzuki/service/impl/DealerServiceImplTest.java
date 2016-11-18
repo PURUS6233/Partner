@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.DealerDao;
-import ua.partner.suzuki.domain.adress.Adress;
+import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.dealer.Dealer;
 import ua.partner.suzuki.service.ServiceException;
 
@@ -30,7 +30,7 @@ public class DealerServiceImplTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 
-	private static Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY,
+	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
 
 	private static final String NAME = "GGI";

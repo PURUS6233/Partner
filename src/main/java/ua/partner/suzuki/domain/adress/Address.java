@@ -8,22 +8,7 @@ import ua.partner.suzuki.domain.PersonalDataValidator;
 import com.google.common.base.Preconditions;
 
 @XmlRootElement
-public class Adress {
-	
-	public Adress(){
-		
-	}
-
-	public Adress(String street, String city, String district, String country,
-			String postCode, String phone, String email) {
-		setStreet(street);
-		setCity(city);
-		setDistrict(district);
-		setCountry(country);
-		setPostCode(postCode);
-		setPhone(phone);
-		setEmail(email);
-	}
+public class Address {
 
 	private String street;
 	private String city;
@@ -89,6 +74,21 @@ public class Adress {
 		this.email = email;
 	}
 
+	public Address() {
+
+	}
+
+	public Address(String street, String city, String district, String country,
+			String postCode, String phone, String email) {
+		setStreet(street);
+		setCity(city);
+		setDistrict(district);
+		setCountry(country);
+		setPostCode(postCode);
+		setPhone(phone);
+		setEmail(email);
+	}
+
 	private static final String POSTCODE_PATTERN = "^\\d{4,5}$";
 	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
 	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
@@ -106,9 +106,9 @@ public class Adress {
 		// Country validate
 		Preconditions.checkState(!(getCountry().length() <= 1),
 				"The country name is not valid!");
-		
+
 		PersonalDataValidator validator = new PersonalDataValidator();
-		
+
 		// PostCode validate
 		Preconditions.checkState(
 				(validator.checkWithRegExp(getPostCode(), POSTCODE_PATTERN)),

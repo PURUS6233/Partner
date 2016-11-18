@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.EngineNumbersLoaderDao;
-import ua.partner.suzuki.dao.impl.EngineNumbersLoaderDaoImpl;
+import ua.partner.suzuki.dao.file.EngineNumbersLoaderDaoImpl;
 import ua.partner.suzuki.service.EngineNumbersLoaderService;
 
 public class EngineNumbersLoaderServiceImpl implements

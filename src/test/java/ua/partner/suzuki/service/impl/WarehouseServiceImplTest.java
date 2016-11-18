@@ -13,10 +13,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.WarehouseDao;
+import ua.partner.suzuki.dao.OBMDao;
 import ua.partner.suzuki.domain.obm.Model;
 import ua.partner.suzuki.domain.obm.OBM;
 import ua.partner.suzuki.domain.obm.Status;
+import ua.partner.suzuki.service.OBMWarehouseException;
 import ua.partner.suzuki.service.ServiceException;
 
 public class WarehouseServiceImplTest {
@@ -31,7 +32,7 @@ public class WarehouseServiceImplTest {
 	private static final List<OBM> listOBM_A = Arrays.asList(obm_A);
 
 	@Mock
-	private WarehouseDao warehouseDao;
+	private OBMDao warehouseDao;
 
 	@InjectMocks
 	private WarehouseServiceImpl service = new WarehouseServiceImpl();
@@ -89,5 +90,12 @@ public class WarehouseServiceImplTest {
 		verify(warehouseDao).get("02002F-414778");
 		verify(warehouseDao).delete("02002F-414778");
 		verify(warehouseDao).writeMapToFile();
+	}
+	
+	@Test
+	public void test_isExist() throws DAOException, ServiceException, OBMWarehouseException {
+		assertEquals(true, service.isExist("02002F-414778"));
+		verify(warehouseDao).init();
+		verify(warehouseDao).isExist("02002F-414778");
 	}
 }

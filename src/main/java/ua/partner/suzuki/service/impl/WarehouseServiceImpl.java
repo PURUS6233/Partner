@@ -8,12 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.WarehouseDao;
-import ua.partner.suzuki.dao.impl.WarehouseDaoImpl;
+import ua.partner.suzuki.dao.OBMDao;
+import ua.partner.suzuki.dao.postgres.PostgreOBMDao;
 import ua.partner.suzuki.domain.DomainException;
 import ua.partner.suzuki.domain.obm.EngineNoLoaderException;
 import ua.partner.suzuki.domain.obm.OBM;
 import ua.partner.suzuki.domain.obm.OBMBuilder;
+import ua.partner.suzuki.service.OBMWarehouseException;
 import ua.partner.suzuki.service.ServiceException;
 import ua.partner.suzuki.service.WarehouseService;
 
@@ -21,7 +22,7 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 		WarehouseService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private WarehouseDao obmDao = new WarehouseDaoImpl();
+	private OBMDao obmDao = new PostgreOBMDao();
 
 	@Override
 	protected Class<WarehouseServiceImpl> getEntityClass() {
@@ -29,7 +30,7 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 	}
 
 	@Override
-	protected WarehouseDao getDaoEntity() {
+	protected OBMDao getDaoEntity() {
 		return obmDao;
 	}
 
@@ -64,5 +65,22 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 			throw new ServiceException("Can not create OBM entity.", e);
 		}
 		return listOBM;
+	}
+
+	public boolean isExist(String engineNumber) throws OBMWarehouseException,
+			ServiceException {
+		try {
+			getDaoEntity().init();
+			Preconditions.checkState(getDaoEntity().isExist(engineNumber));
+		} catch (IllegalStateException e) {
+			logger.error("You are trying to register OBM that is not loaded to warehouse.", e);
+			throw new OBMWarehouseException(
+					"You are trying to register OBM that is not loaded to warehouse.",
+					e);
+		} catch (DAOException e) {
+			logger.error("Can not read json file", e);
+			throw new ServiceException("Can not retrieve entity", e);
+		}
+		return true;
 	}
 }

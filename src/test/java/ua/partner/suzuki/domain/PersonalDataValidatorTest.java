@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.SexType;
 
 public class PersonalDataValidatorTest {
@@ -30,7 +30,7 @@ public class PersonalDataValidatorTest {
 
 	@Test
 	public void testMaleValidator() {
-		assertTrue(valid.buyerTypeValidator(BuyerType.GOVERMENT));
+		assertTrue(valid.buyerTypeValidator(CustomerType.GOVERMENT));
 	}
 
 	@Test

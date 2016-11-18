@@ -1,4 +1,4 @@
-package ua.partner.suzuki.dao.impl;
+package ua.partner.suzuki.dao.file;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -20,6 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.dao.postgres.PostgreOBMDao;
 import ua.partner.suzuki.database.properties.PropertiesReader;
 import ua.partner.suzuki.domain.obm.Model;
 import ua.partner.suzuki.domain.obm.OBM;
@@ -61,7 +62,7 @@ public class WarehouseDaoImplTest {
 	private FileWriter writer;
 
 	@InjectMocks
-	private WarehouseDaoImpl warehauseDao = new WarehouseDaoImpl();
+	private PostgreOBMDao warehauseDao = new PostgreOBMDao();
 	
 	@Before
 	public void setUp() throws Exception {

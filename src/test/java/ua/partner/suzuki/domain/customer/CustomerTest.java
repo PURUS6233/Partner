@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import ua.partner.suzuki.domain.adress.Adress;
-import ua.partner.suzuki.domain.customer.BuyerType;
+import ua.partner.suzuki.domain.adress.Address;
+import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.domain.customer.SexType;
 
@@ -20,7 +20,7 @@ public class CustomerTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 	
-	private static Adress adress = new Adress(STREET, CITY, DISTRICT, COUNTRY,
+	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
 
 	@Test
@@ -32,15 +32,15 @@ public class CustomerTest {
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
 	private static final SexType SEX = SexType.MALE;
-	private static final BuyerType BUYER_TYPE = BuyerType.PRIVATE_PERSON;
+	private static final CustomerType CUSTOMER_TYPE = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,
-				adress, BUYER_TYPE);
+				adress, CUSTOMER_TYPE);
 	
 	private static final String expected = "Customer{" + "Engine Number="
 			+ ENGINE_NUMBER + ", Name='" + NAME + ", Surname=" + SURNAME
 			+ ", Male=" + SEX + ", Adress=" + adress.toString()
-			+ ", Buyer Type=" + BUYER_TYPE + '}';
+			+ ", Customer Type=" + CUSTOMER_TYPE + '}';
 
 	@Test
 	public void test_instantiation() throws Exception {

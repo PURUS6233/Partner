@@ -16,4 +16,7 @@ public interface WarehouseService {
 	OBM update (OBM entity) throws ServiceException ;
 	
 	OBM remove (String engineNumber) throws ServiceException ;
+	
+	boolean isExist(String engineNumber) throws OBMWarehouseException,
+	ServiceException;
 }
