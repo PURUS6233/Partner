@@ -67,7 +67,6 @@ CREATE TABLE IF NOT EXISTS SUZUKI.MAINTENANCE (
 )
 
 CREATE TABLE IF NOT EXISTS SUZUKI.CAMPAIGNS (
-  ID SERIAL PRIMARY KEY,
   campaign_number VARCHAR(13) NOT NULL ,
   description VARCHAR(13) NOT NULL ,
   campaign_type suzuki.campaign_type NOT NULL ,
@@ -76,11 +75,12 @@ CREATE TABLE IF NOT EXISTS SUZUKI.CAMPAIGNS (
   inspection boolean ,
   repair boolean ,
   labour_rate VARCHAR(13) NOT NULL,
-  campaign_status suzuki.campaign_status NOT NULL
+  PRIMARY KEY (campaign_number)
 )
 
 CREATE TABLE IF NOT EXISTS SUZUKI.OBMCAMPAIGNS (
   id SERIAL PRIMARY KEY,
-  campaign_Id VARCHAR(13) NOT NULL ,
-  engine_number VARCHAR(13) NOT NULL
+  campaign_number VARCHAR(13) NOT NULL ,
+  engine_number VARCHAR(13) NOT NULL,
+  campaign_status suzuki.campaign_status NOT NULL
 )
