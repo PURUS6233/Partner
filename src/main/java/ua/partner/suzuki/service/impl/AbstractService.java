@@ -9,10 +9,10 @@ import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.EngineNumberDao;
-import ua.partner.suzuki.domain.EngineNumberIdentified;
+import ua.partner.suzuki.domain.EngineNumberIdentifiable;
 import ua.partner.suzuki.service.ServiceException;
 
-public abstract class AbstractService<T extends EngineNumberIdentified> {
+public abstract class AbstractService<T extends EngineNumberIdentifiable> {
 
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
 

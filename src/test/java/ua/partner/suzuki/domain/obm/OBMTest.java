@@ -17,13 +17,13 @@ public class OBMTest {
 	private static final Model MODEL = Model.DF20A;
 	private static final Status STATUS = Status.STOLEN;
 
-	private static final String expected = "OBM{" + "Engine Number="
-			+ ENGINE_NUMBER + ", Model='" + MODEL + ", Model Year="
-			+ MODEL_YEAR + ", Status=" + Status.IN_STOCK + '}';
+	private static final String expected = "OBM [engineNumber=" + ENGINE_NUMBER
+			+ ", modelYear=" + MODEL_YEAR + ", model=" + MODEL + ", status="
+			+ Status.IN_STOCK + ']';
 
-	private static final String expected_2 = "OBM{" + "Engine Number="
-			+ ENGINE_NUMBER + ", Model='" + MODEL + ", Model Year="
-			+ MODEL_YEAR + ", Status=" + STATUS + '}';
+	private static final String expected_2 = "OBM [engineNumber=" + ENGINE_NUMBER
+			+ ", modelYear=" + MODEL_YEAR + ", model=" + MODEL + ", status="
+			+ STATUS + ']';
 
 	@Test
 	public void test_obm_$A() throws Exception {

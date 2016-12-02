@@ -1,5 +1,5 @@
 package ua.partner.suzuki.domain.customer;
 
-public enum SexType {
+public enum GenderType {
 	MALE, FEMALE
 }

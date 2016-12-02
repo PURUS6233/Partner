@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.MaintenanceDao;
 import ua.partner.suzuki.dao.postgres.PostgreMaintenanceDao;
-import ua.partner.suzuki.domain.obm.Maintenance;
+import ua.partner.suzuki.domain.obm.maintenance.Maintenance;
 import ua.partner.suzuki.service.OBMMaintenanceService;
 import ua.partner.suzuki.service.ServiceException;
 

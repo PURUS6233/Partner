@@ -83,4 +83,5 @@ CREATE TABLE IF NOT EXISTS SUZUKI.OBMCAMPAIGNS (
   campaign_number VARCHAR(13) NOT NULL ,
   engine_number VARCHAR(13) NOT NULL,
   campaign_status suzuki.campaign_status NOT NULL
+  FOREIGN KEY (campaign_number) REFERENCES SUZUKI.CAMPAIGNS(campaign_number)
 )

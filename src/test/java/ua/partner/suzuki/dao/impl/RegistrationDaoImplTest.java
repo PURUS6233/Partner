@@ -27,10 +27,10 @@ import ua.partner.suzuki.database.properties.PropertiesReader;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
-import ua.partner.suzuki.domain.customer.SexType;
-import ua.partner.suzuki.domain.obm.Registration;
-import ua.partner.suzuki.domain.obm.RegistrationBuilder;
-import ua.partner.suzuki.domain.obm.WarrantyType;
+import ua.partner.suzuki.domain.customer.GenderType;
+import ua.partner.suzuki.domain.obm.registration.Registration;
+import ua.partner.suzuki.domain.obm.registration.RegistrationFiller;
+import ua.partner.suzuki.domain.obm.registration.WarrantyType;
 
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -49,12 +49,12 @@ public class RegistrationDaoImplTest {
 			"Украина", "29100", "+380385247898", "blabla@mail.ru");
 
 	private static final Customer customer = new Customer("02002F-111111",
-			"Павел", "Лесев", SexType.MALE, adress, CustomerType.PRIVATE_PERSON);
+			"Павел", "Лесев", GenderType.MALE, adress, CustomerType.PRIVATE_PERSON);
 
 	private static final Date dateSold = new Date(new Date().getTime() - 17400000000L);
 	private static final Date dateDelivered = new Date(new Date().getTime() - 17400000000L);
 
-	final Registration registration = new RegistrationBuilder(engineNumber_prefix, engineNumber_serialNumber,
+	final Registration registration = new RegistrationFiller(engineNumber_prefix, engineNumber_serialNumber,
 			warrantyType, dealerName, customer, dateSold, dateDelivered).warrantyExpiration().penalty().createRegistration();
 	
 	@Mock

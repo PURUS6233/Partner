@@ -1,5 +1,6 @@
 package ua.partner.suzuki.service;
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import ua.partner.suzuki.domain.obm.OBM;
 
 public interface WarehouseService {
 	
-	Collection<OBM> add (String engineNumber) throws ServiceException;
+	Collection<String> add (InputStream engineNumber) throws ServiceException;
 	
 	OBM get(String engineNumber) throws ServiceException;
 	

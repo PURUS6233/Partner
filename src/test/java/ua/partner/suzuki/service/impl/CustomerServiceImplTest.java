@@ -20,7 +20,7 @@ import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
-import ua.partner.suzuki.domain.customer.SexType;
+import ua.partner.suzuki.domain.customer.GenderType;
 import ua.partner.suzuki.service.ServiceException;
 
 public class CustomerServiceImplTest {
@@ -44,7 +44,7 @@ public class CustomerServiceImplTest {
 	private static final String ENGINE_NUMBER = "02002F-000000";
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
-	private static final SexType SEX = SexType.MALE;
+	private static final GenderType SEX = GenderType.MALE;
 	private static final CustomerType BUYER_TYPE = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer_A = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,
@@ -53,7 +53,7 @@ public class CustomerServiceImplTest {
 	private static final String ENGINE_NUMBER_B = "14003A-000000";
 	private static final String NAME_B = "Александр";
 	private static final String SURNAME_B = "Комаренко";
-	private static final SexType SEX_B = SexType.MALE;
+	private static final GenderType SEX_B = GenderType.MALE;
 	private static final CustomerType BUYER_TYPE_B = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer_B = new Customer(ENGINE_NUMBER_B, NAME_B, SURNAME_B, SEX_B,

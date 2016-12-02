@@ -1,5 +1,6 @@
 package ua.partner.suzuki.service.impl;
 
+import java.io.InputStream;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -8,12 +9,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.OBMDao;
+import ua.partner.suzuki.dao.GenericDao;
 import ua.partner.suzuki.dao.postgres.PostgreOBMDao;
 import ua.partner.suzuki.domain.DomainException;
-import ua.partner.suzuki.domain.obm.EngineNoLoaderException;
+import ua.partner.suzuki.domain.EngineNoLoaderException;
+import ua.partner.suzuki.domain.EngineNumbersLoader;
 import ua.partner.suzuki.domain.obm.OBM;
-import ua.partner.suzuki.domain.obm.OBMBuilder;
+import ua.partner.suzuki.domain.obm.OBMConverter;
 import ua.partner.suzuki.service.OBMWarehouseException;
 import ua.partner.suzuki.service.ServiceException;
 import ua.partner.suzuki.service.WarehouseService;
@@ -22,7 +24,7 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 		WarehouseService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private OBMDao obmDao = new PostgreOBMDao();
+	private GenericDao obmDao = new PostgreOBMDao();
 
 	@Override
 	protected Class<WarehouseServiceImpl> getEntityClass() {
@@ -34,11 +36,16 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 		return obmDao;
 	}
 
-	public Collection<OBM> add(String engineNumbers) throws ServiceException {
+	@Override
+	public Collection<String> add(InputStream stream) throws ServiceException {
+		Collection<String> listWrongEngineNumbers;
 		Collection<OBM> listOBM;
 		try {
-			OBMBuilder builder = new OBMBuilder(engineNumbers);
-			listOBM = builder.getObms();
+			EngineNumbersLoader loader = new EngineNumbersLoader(stream);
+			listWrongEngineNumbers = loader.getEngineNumbers_wrong();
+			
+			OBMConverter converter = new OBMConverter(loader.getEngineNumbers());
+			listOBM = converter.getObms();
 			for (OBM obm : listOBM) {
 				// Read Data from Json file to map
 				getDaoEntity().init();
@@ -64,7 +71,7 @@ public class WarehouseServiceImpl extends AbstractService<OBM> implements
 			logger.error("Problem occured during OBM building!", e);
 			throw new ServiceException("Can not create OBM entity.", e);
 		}
-		return listOBM;
+		return listWrongEngineNumbers;
 	}
 
 	public boolean isExist(String engineNumber) throws OBMWarehouseException,

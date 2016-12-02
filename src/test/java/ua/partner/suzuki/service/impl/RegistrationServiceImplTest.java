@@ -20,10 +20,10 @@ import ua.partner.suzuki.dao.RegistrationDao;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
-import ua.partner.suzuki.domain.customer.SexType;
-import ua.partner.suzuki.domain.obm.Registration;
-import ua.partner.suzuki.domain.obm.RegistrationBuilder;
-import ua.partner.suzuki.domain.obm.WarrantyType;
+import ua.partner.suzuki.domain.customer.GenderType;
+import ua.partner.suzuki.domain.obm.registration.Registration;
+import ua.partner.suzuki.domain.obm.registration.RegistrationFiller;
+import ua.partner.suzuki.domain.obm.registration.WarrantyType;
 import ua.partner.suzuki.service.OBMWarehouseException;
 import ua.partner.suzuki.service.ServiceException;
 import ua.partner.suzuki.service.WarehouseService;
@@ -39,14 +39,14 @@ public class RegistrationServiceImplTest {
 			"ДИИТ", "Украина", "29100", "+380385247898", "blabla@mail.ru");
 
 	private static final Customer customer_A = new Customer("02002F-111111",
-			"Павел", "Лесев", SexType.MALE, adress_A, CustomerType.PRIVATE_PERSON);
+			"Павел", "Лесев", GenderType.MALE, adress_A, CustomerType.PRIVATE_PERSON);
 
 	private static final Date dateSold_A = new Date(
 			new Date().getTime() - 17400000000L);
 	private static final Date dateDelivered_A = new Date(
 			new Date().getTime() - 17400000000L);
 
-	final Registration registration_A = new RegistrationBuilder(
+	final Registration registration_A = new RegistrationFiller(
 			engineNumber_prefix_A, engineNumber_serialNumber_A, warrantyType_A, dealerName_A, customer_A,
 			dateSold_A, dateDelivered_A).engineNumber().warrantyExpiration().penalty()
 			.createRegistration();
@@ -57,12 +57,12 @@ public class RegistrationServiceImplTest {
 	private static final String dealerName_B = "Logos Sport";
 
 	private static final Customer customer_B = new Customer("14003F-111111",
-			"Павел", "Лесев", SexType.MALE, adress_A, CustomerType.PRIVATE_PERSON);
+			"Павел", "Лесев", GenderType.MALE, adress_A, CustomerType.PRIVATE_PERSON);
 
 	private static final Date dateSold_B = new Date();
 	private static final Date dateDelivered_B = new Date();
 
-	final Registration registration_B = new RegistrationBuilder(
+	final Registration registration_B = new RegistrationFiller(
 			engineNumber_prefix_B, engineNumber_serialNumber_B, warrantyType_B, dealerName_B, customer_B,
 			dateSold_B, dateDelivered_B).engineNumber().warrantyExpiration().penalty()
 			.createRegistration();

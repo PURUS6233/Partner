@@ -24,14 +24,14 @@ public class AdressTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 
-	private static final String expected = "Address {" + " Street=" + STREET
-			+ ", City=" + CITY + ", District=" + DISTRICT + ", Country="
-			+ COUNTRY + ", Post Code=" + POST_CODE + ", Phone=" + PHONE
-			+ ", Email=" + EMAIL + '}';
-	
-	private Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY, POST_CODE,
-			PHONE, EMAIL);
-	
+	private static final String expected = "Address [street=" + STREET
+			+ ", city=" + CITY + ", district=" + DISTRICT + ", country="
+			+ COUNTRY + ", postCode=" + POST_CODE + ", phone=" + PHONE
+			+ ", email=" + EMAIL + "]";
+
+	private Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
+			POST_CODE, PHONE, EMAIL);
+
 	@Test
 	public void test_validate() throws DomainException {
 		assertTrue(adress.validate());

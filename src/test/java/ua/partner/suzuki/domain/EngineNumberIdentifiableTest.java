@@ -4,10 +4,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class AbstractIntEngineNumberEntityTest {
+public class EngineNumberIdentifiableTest {
 	
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(EngineNumberIdentified.class);
+		assertNotNull(EngineNumberIdentifiable.class);
 	}
 }

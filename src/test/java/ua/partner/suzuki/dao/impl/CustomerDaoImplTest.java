@@ -26,7 +26,7 @@ import ua.partner.suzuki.database.properties.PropertiesReader;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
-import ua.partner.suzuki.domain.customer.SexType;
+import ua.partner.suzuki.domain.customer.GenderType;
 
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -55,7 +55,7 @@ public class CustomerDaoImplTest {
 	private static final String ENGINE_NUMBER = "02002F-000000";
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
-	private static final SexType SEX = SexType.MALE;
+	private static final GenderType SEX = GenderType.MALE;
 	private static final CustomerType BUYER_TYPE = CustomerType.PRIVATE_PERSON;
 
 	private Customer customer = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,

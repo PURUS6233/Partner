@@ -2,13 +2,17 @@ package ua.partner.suzuki.domain.adress;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import ua.partner.suzuki.domain.DomainException;
-import ua.partner.suzuki.domain.PersonalDataValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ua.partner.suzuki.domain.Constants;
+import ua.partner.suzuki.domain.DataValidator;
+import ua.partner.suzuki.domain.Validatable;
 
 import com.google.common.base.Preconditions;
 
 @XmlRootElement
-public class Address {
+public class Address implements Validatable {
 
 	private String street;
 	private String city;
@@ -18,61 +22,9 @@ public class Address {
 	private String phone;
 	private String email;
 
-	public String getStreet() {
-		return street;
-	}
+	private static DataValidator validator = new DataValidator();
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	private static Logger log = LoggerFactory.getLogger(Address.class);
 
 	public Address() {
 
@@ -87,48 +39,109 @@ public class Address {
 		setPostCode(postCode);
 		setPhone(phone);
 		setEmail(email);
+		log.trace("Created address: email = " + email);
 	}
 
-	private static final String POSTCODE_PATTERN = "^\\d{4,5}$";
-	private static final String PHONE_PATTERN = "^\\D\\d{8,13}$";
-	private static final String EMAIL_PATTERN = "^.+@\\w+\\.\\w+$";
+	public String getStreet() {
+		return street;
+	}
 
-	public boolean validate() throws DomainException {
+	public void setStreet(String street) {
+		this.street = street;
+		log.trace("Set street to = " + street);
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+		log.trace("Set street to = " + street);
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+		log.trace("Set district to = " + district);
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+		log.trace("Set country to = " + country);
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+		log.trace("Set postCode to = " + postCode);
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+		log.trace("Set phone to = " + phone);
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+		log.trace("Set email to = " + email);
+	}
+
+	@Override
+	public boolean validate() {
+		log.trace("Start validating Address object.");
 		// Street validate
-		Preconditions.checkState(!(getStreet().length() <= 1),
+		Preconditions.checkState(
+				!(getStreet().isEmpty() || getStreet() == null),
 				"The street name is not valid!");
 		// City validate
-		Preconditions.checkState(!(getCity().length() <= 1),
+		Preconditions.checkState(!(getCity().isEmpty() || getCity() == null),
 				"The city name is not valid!");
 		// District validate
-		Preconditions.checkState(!(getDistrict().length() <= 1),
+		Preconditions.checkState(
+				!(getDistrict().isEmpty() || getDistrict() == null),
 				"The district name is not valid!");
 		// Country validate
-		Preconditions.checkState(!(getCountry().length() <= 1),
+		Preconditions.checkState(
+				!(getCountry().isEmpty() || getCountry() == null),
 				"The country name is not valid!");
-
-		PersonalDataValidator validator = new PersonalDataValidator();
-
 		// PostCode validate
-		Preconditions.checkState(
-				(validator.checkWithRegExp(getPostCode(), POSTCODE_PATTERN)),
-				"The postCode is not valid!");
+		Preconditions.checkState((validator.checkWithRegExp(getPostCode(),
+				Constants.POSTCODE_PATTERN)), "The postCode is not valid!");
 		// Phone validate
-		Preconditions.checkState(
-				(validator.checkWithRegExp(getPhone(), PHONE_PATTERN)),
-				"The phone is not valid!");
+		Preconditions
+				.checkState((validator.checkWithRegExp(getPhone(),
+						Constants.PHONE_PATTERN)), "The phone is not valid!");
 		// Email validate
-		Preconditions.checkState(
-				(validator.checkWithRegExp(getEmail(), EMAIL_PATTERN)),
-				"The email is not valid!");
+		Preconditions
+				.checkState((validator.checkWithRegExp(getEmail(),
+						Constants.EMAIL_PATTERN)), "The email is not valid!");
+		log.trace("Address object validated.");
 		return true;
 	}
 
+	@Override
 	public String toString() {
-
-		return "Address {" + " Street=" + street + ", City=" + city
-				+ ", District=" + district + ", Country=" + country
-				+ ", Post Code=" + postCode + ", Phone=" + phone + ", Email="
-				+ email + '}';
+		return "Address [street=" + street + ", city=" + city + ", district="
+				+ district + ", country=" + country + ", postCode=" + postCode
+				+ ", phone=" + phone + ", email=" + email + "]";
 	}
 }

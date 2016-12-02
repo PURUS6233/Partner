@@ -1,5 +1,6 @@
 package ua.partner.suzuki.service.impl;
 
+import java.io.InputStream;
 import java.util.Collection;
 
 import ua.partner.suzuki.dao.DAOException;
@@ -13,8 +14,8 @@ public class EngineNumbersLoaderServiceImpl implements
 	private EngineNumbersLoaderDao dao = new EngineNumbersLoaderDaoImpl();
 
 	@Override
-	public boolean saveToFile(String engineNumbers) throws DAOException {
-		return dao.writeToFile(engineNumbers);
+	public boolean saveToFile(InputStream inputStream) throws DAOException {
+		return dao.writeToFile(inputStream);
 	}
 
 	@Override

@@ -22,17 +22,18 @@ public class DealerTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 
-	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
-			POST_CODE, PHONE, EMAIL);
+	private static Address adress = new Address(STREET, CITY, DISTRICT,
+			COUNTRY, POST_CODE, PHONE, EMAIL);
 
 	private static final String NAME = "GGI";
 	private static final String LOGIN = "GGI";
 	private static final String PASSWORD = "123123";
 
 	private Dealer dealer = new Dealer(NAME, adress, LOGIN, PASSWORD);
-	
-	private static final String expected = "Dealer{" + "Name='" + NAME + ", Adress=" + adress.toString()
-			+ ", Login=" + LOGIN + ", Password=" + PASSWORD + '}';
+
+	private static final String expected = "Dealer [" + "name=" + NAME
+			+ ", address=" + adress.toString() + ", login=" + LOGIN
+			+ ", password=" + PASSWORD + ']';
 
 	@Test
 	public void test_instantiation() throws Exception {
@@ -44,7 +45,7 @@ public class DealerTest {
 		System.out.println(dealer);
 		assertEquals(expected, dealer.toString());
 	}
-	
+
 	@Test
 	public void test_validate() throws DomainException {
 		assertTrue(dealer.validate());

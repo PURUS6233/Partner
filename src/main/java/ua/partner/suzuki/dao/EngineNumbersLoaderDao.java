@@ -1,11 +1,13 @@
 package ua.partner.suzuki.dao;
 
+import java.io.InputStream;
 import java.util.Collection;
-import ua.partner.suzuki.domain.obm.EngineNumbersLoader;
+
+import ua.partner.suzuki.domain.EngineNumbersLoader;
 
 public interface EngineNumbersLoaderDao {
 
-	boolean writeToFile(String engineNumbers)throws DAOException;
+	boolean writeToFile(InputStream inputStream)throws DAOException;
 
 	Collection<String> readFromFile() throws DAOException;
 

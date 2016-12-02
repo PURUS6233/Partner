@@ -52,7 +52,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 			Dealer dealer) throws DAOException {
 		log.info("Create prepare statement for Insert");
 		try {
-			Address address = dealer.getAdress();
+			Address address = dealer.getAddress();
 			statement.setString(1, dealer.getLogin());
 			statement.setString(2, dealer.getName());
 			statement.setString(3, dealer.getPassword());
@@ -78,7 +78,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 			Dealer dealer) throws DAOException {
 		log.info("Create prepare statement for Update");
 		try {
-			Address address = dealer.getAdress();
+			Address address = dealer.getAddress();
 			statement.setString(1, dealer.getName());
 			statement.setString(2, dealer.getPassword());
 			statement.setString(3, address.getStreet());
@@ -136,7 +136,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 				address.setPostCode(rs.getString("post_code"));
 				address.setPhone(rs.getString("phone"));
 				address.setEmail(rs.getString("email"));
-				dealer.setAdress(address);
+				dealer.setAddress(address);
 				result.add(dealer);
 			}
 		} catch (SQLException e) {

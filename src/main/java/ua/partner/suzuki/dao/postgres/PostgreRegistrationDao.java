@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.domain.obm.Registration;
-import ua.partner.suzuki.domain.obm.UnitSurvey;
-import ua.partner.suzuki.domain.obm.WarrantyType;
+import ua.partner.suzuki.domain.obm.registration.Registration;
+import ua.partner.suzuki.domain.obm.registration.UnitSurvey;
+import ua.partner.suzuki.domain.obm.registration.WarrantyType;
 
 public class PostgreRegistrationDao extends
 		AbstractJDBCDao<Registration, String> {

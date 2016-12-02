@@ -27,10 +27,10 @@ import com.google.gson.Gson;
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.postgres.PostgreMaintenanceDao;
 import ua.partner.suzuki.database.properties.PropertiesReader;
-import ua.partner.suzuki.domain.obm.Maintenance;
-import ua.partner.suzuki.domain.obm.MaintenanceType;
 import ua.partner.suzuki.domain.obm.OBMMaintenance;
-import ua.partner.suzuki.domain.obm.ServiceType;
+import ua.partner.suzuki.domain.obm.maintenance.Maintenance;
+import ua.partner.suzuki.domain.obm.maintenance.MaintenanceType;
+import ua.partner.suzuki.domain.obm.maintenance.ServiceType;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Gson.class, Maps.class, Resources.class })

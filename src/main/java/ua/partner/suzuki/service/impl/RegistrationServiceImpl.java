@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.RegistrationDao;
 import ua.partner.suzuki.dao.postgres.PostgreRegistrationDao;
-import ua.partner.suzuki.domain.obm.Registration;
+import ua.partner.suzuki.domain.obm.registration.Registration;
 import ua.partner.suzuki.service.OBMWarehouseException;
 import ua.partner.suzuki.service.RegistrationService;
 import ua.partner.suzuki.service.ServiceException;

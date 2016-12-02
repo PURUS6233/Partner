@@ -3,7 +3,7 @@ package ua.partner.suzuki.service;
 import java.util.Date;
 import java.util.Map;
 
-import ua.partner.suzuki.domain.obm.Maintenance;
+import ua.partner.suzuki.domain.obm.maintenance.Maintenance;
 
 public interface OBMMaintenanceService {
 	

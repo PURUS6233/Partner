@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.domain.obm.Maintenance;
-import ua.partner.suzuki.domain.obm.MaintenanceType;
-import ua.partner.suzuki.domain.obm.ServiceType;
+import ua.partner.suzuki.domain.obm.maintenance.Maintenance;
+import ua.partner.suzuki.domain.obm.maintenance.MaintenanceType;
+import ua.partner.suzuki.domain.obm.maintenance.ServiceType;
 
 public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, String> {
 

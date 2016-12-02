@@ -14,7 +14,7 @@ import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.domain.customer.CustomerType;
-import ua.partner.suzuki.domain.customer.SexType;
+import ua.partner.suzuki.domain.customer.GenderType;
 
 public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 
@@ -55,12 +55,12 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 			Customer customer) throws DAOException {
 		log.info("Create prepare statement for Insert");
 		try {
-			Address address = customer.getAdress();
+			Address address = customer.getAddress();
 			statement.setString(1, customer.getId());
 			statement.setString(2, customer.getEngineNumber());
 			statement.setString(3, customer.getName());
 			statement.setString(4, customer.getSurname());
-			statement.setString(5, customer.getSex().toString());
+			statement.setString(5, customer.getGender().toString());
 			statement.setString(6, customer.getCustomerType().toString());
 			statement.setString(7, address.getStreet());
 			statement.setString(8, address.getCity());
@@ -84,11 +84,11 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 			Customer customer) throws DAOException {
 		log.info("Create prepare statement for Update");
 		try {
-			Address address = customer.getAdress();
+			Address address = customer.getAddress();
 			statement.setString(1, customer.getEngineNumber());
 			statement.setString(2, customer.getName());
 			statement.setString(3, customer.getSurname());
-			statement.setString(4, customer.getSex().toString());
+			statement.setString(4, customer.getGender().toString());
 			statement.setString(5, customer.getCustomerType().toString());
 			statement.setString(6, address.getStreet());
 			statement.setString(7, address.getCity());
@@ -138,7 +138,7 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 				customer.setEngineNumber(rs.getString("engine_number"));
 				customer.setName(rs.getString("name"));
 				customer.setSurname(rs.getString("surname"));
-				customer.setSex(SexType.valueOf(rs.getString("sex")));
+				customer.setGender(GenderType.valueOf(rs.getString("sex")));
 				customer.setCustomerType(CustomerType.valueOf(rs.getString("customer_type")));
 				address.setStreet(rs.getString("street"));
 				address.setCity(rs.getString("city"));
@@ -147,7 +147,7 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 				address.setPostCode(rs.getString("post_code"));
 				address.setPhone(rs.getString("phone"));
 				address.setEmail(rs.getString("email"));
-				customer.setAdress(address);
+				customer.setAddress(address);
 				result.add(customer);
 			}
 		} catch (SQLException e) {

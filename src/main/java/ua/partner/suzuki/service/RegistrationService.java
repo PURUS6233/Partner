@@ -2,7 +2,7 @@ package ua.partner.suzuki.service;
 
 import java.util.List;
 
-import ua.partner.suzuki.domain.obm.Registration;
+import ua.partner.suzuki.domain.obm.registration.Registration;
 
 public interface RegistrationService {
 

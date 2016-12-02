@@ -1,4 +1,4 @@
-package ua.partner.suzuki.domain.campaign;
+package ua.partner.suzuki.domain.obm.campaign;
 
 public enum CampaignStatus {
 	

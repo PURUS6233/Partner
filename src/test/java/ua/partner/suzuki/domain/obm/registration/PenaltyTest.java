@@ -1,4 +1,4 @@
-package ua.partner.suzuki.domain.obm;
+package ua.partner.suzuki.domain.obm.registration;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
+
+import ua.partner.suzuki.domain.obm.registration.Penalty;
 
 public class PenaltyTest {
 
