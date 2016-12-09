@@ -1,6 +1,5 @@
 package ua.partner.suzuki.domain.adress;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -24,11 +23,6 @@ public class AdressTest {
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
 
-	private static final String expected = "Address [street=" + STREET
-			+ ", city=" + CITY + ", district=" + DISTRICT + ", country="
-			+ COUNTRY + ", postCode=" + POST_CODE + ", phone=" + PHONE
-			+ ", email=" + EMAIL + "]";
-
 	private Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
 			POST_CODE, PHONE, EMAIL);
 
@@ -44,7 +38,7 @@ public class AdressTest {
 
 	@Test
 	public void test_adress() {
-		assertEquals(expected, adress.toString());
+		assertTrue(adress.validate());
 
 	}
 }

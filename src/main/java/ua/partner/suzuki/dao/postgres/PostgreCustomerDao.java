@@ -21,54 +21,23 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 	private Logger log = LoggerFactory.getLogger(getEntityClass());
 
 	@Override
-	public String getCreateQuery() {
-		return "INSERT INTO suzuki.customers (id, engine_number, name, surname, sex,"
-				+ " customer_type, street, city, district, country, post_code, phone, email)"
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
-	}
-
-	@Override
-	public String getSelectQuery() {
-		return "SELECT * FROM suzuki.customers WHERE id =";
-	}
-
-	@Override
-	public String getSelectAllQuery() {
-		return "SELECT * FROM suzuki.customers";
-	}
-
-	@Override
-	public String getUpdateQuery() {
-		return "UPDATE suzuki.customers SET engine_number = ?, name = ?, surname = ?,"
-				+ " sex = ?, customer_type = ?, street = ?, city = ?, district = ?,"
-				+ " country = ?, post_code = ?, phone = ?, email = ?" 
-				+ " WHERE id = ?;";
-	}
-
-	@Override
-	public String getDeleteQuery() {
-		return "DELETE FROM suzuki.customers WHERE id = ?;";
-	}
-
-	@Override
 	public void prepareStatementForInsert(PreparedStatement statement,
 			Customer customer) throws DAOException {
 		log.info("Create prepare statement for Insert");
 		try {
 			Address address = customer.getAddress();
-			statement.setString(1, customer.getId());
-			statement.setString(2, customer.getEngineNumber());
-			statement.setString(3, customer.getName());
-			statement.setString(4, customer.getSurname());
-			statement.setString(5, customer.getGender().toString());
-			statement.setString(6, customer.getCustomerType().toString());
-			statement.setString(7, address.getStreet());
-			statement.setString(8, address.getCity());
-			statement.setString(9, address.getDistrict());
-			statement.setString(10, address.getCountry());
-			statement.setString(11, address.getPostCode());
-			statement.setString(12, address.getPhone());
-			statement.setString(13, address.getEmail());
+			statement.setString(1, customer.getEngineNumber());
+			statement.setString(2, customer.getName());
+			statement.setString(3, customer.getSurname());
+			statement.setString(4, customer.getGender().toString());
+			statement.setString(5, customer.getCustomerType().toString());
+			statement.setString(6, address.getStreet());
+			statement.setString(7, address.getCity());
+			statement.setString(8, address.getDistrict());
+			statement.setString(9, address.getCountry());
+			statement.setString(10, address.getPostCode());
+			statement.setString(11, address.getPhone());
+			statement.setString(12, address.getEmail());
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Insert"
@@ -85,19 +54,18 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 		log.info("Create prepare statement for Update");
 		try {
 			Address address = customer.getAddress();
-			statement.setString(1, customer.getEngineNumber());
-			statement.setString(2, customer.getName());
-			statement.setString(3, customer.getSurname());
-			statement.setString(4, customer.getGender().toString());
-			statement.setString(5, customer.getCustomerType().toString());
-			statement.setString(6, address.getStreet());
-			statement.setString(7, address.getCity());
-			statement.setString(8, address.getDistrict());
-			statement.setString(9, address.getCountry());
-			statement.setString(10, address.getPostCode());
-			statement.setString(11, address.getPhone());
-			statement.setString(12, address.getEmail());
-			statement.setString(13, customer.getId());
+			statement.setString(1, customer.getName());
+			statement.setString(2, customer.getSurname());
+			statement.setString(3, customer.getGender().toString());
+			statement.setString(4, customer.getCustomerType().toString());
+			statement.setString(5, address.getStreet());
+			statement.setString(6, address.getCity());
+			statement.setString(7, address.getDistrict());
+			statement.setString(8, address.getCountry());
+			statement.setString(9, address.getPostCode());
+			statement.setString(10, address.getPhone());
+			statement.setString(11, address.getEmail());
+			statement.setString(12, customer.getEngineNumber());
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Update"
@@ -110,10 +78,10 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 
 	@Override
 	public void prepareStatementForDelete(PreparedStatement statement,
-			Customer customer) throws DAOException {
+			String id) throws DAOException {
 		log.info("Create prepare statement for Delete");
 		try {
-			statement.setString(1, customer.getId());
+			statement.setString(1, id);
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Delate"
@@ -134,7 +102,6 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 			while (rs.next()) {
 				Customer customer = new Customer();
 				Address address = new Address();
-				customer.setId(rs.getString("id"));
 				customer.setEngineNumber(rs.getString("engine_number"));
 				customer.setName(rs.getString("name"));
 				customer.setSurname(rs.getString("surname"));
@@ -159,6 +126,11 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 		log.info("Registration instance created");
 		return result;
 	}
+	
+	@Override
+	protected List<Customer> parseResultSetGet(ResultSet rs) throws DAOException {
+		return parseResultSet(rs);
+	}
 
 	@Override
 	protected Class<Customer> getEntityClass() {
@@ -167,5 +139,10 @@ public class PostgreCustomerDao extends AbstractJDBCDao<Customer, String> {
 
 	public PostgreCustomerDao(Connection connection) {
 		super(connection);
+	}
+
+	@Override
+	protected String getQueryPropertyName() {
+		return "customer";
 	}
 }

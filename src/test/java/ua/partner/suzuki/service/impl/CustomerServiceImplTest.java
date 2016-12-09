@@ -6,7 +6,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
+import java.sql.Connection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -15,16 +16,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ua.partner.suzuki.dao.CustomerDao;
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.dao.DaoFactory;
+import ua.partner.suzuki.dao.postgres.PostgreCustomerDao;
 import ua.partner.suzuki.domain.adress.Address;
 import ua.partner.suzuki.domain.customer.CustomerType;
 import ua.partner.suzuki.domain.customer.Customer;
 import ua.partner.suzuki.domain.customer.GenderType;
+import ua.partner.suzuki.service.GenericService;
 import ua.partner.suzuki.service.ServiceException;
 
 public class CustomerServiceImplTest {
-	
+
 	@Test
 	public void test_type() throws Exception {
 		assertNotNull(Customer.class);
@@ -37,9 +40,9 @@ public class CustomerServiceImplTest {
 	private static final String POST_CODE = "29100";
 	private static final String PHONE = "+380385247898";
 	private static final String EMAIL = "blabla@mail.ru";
-	
-	private static Address adress = new Address(STREET, CITY, DISTRICT, COUNTRY,
-			POST_CODE, PHONE, EMAIL);
+
+	private static Address adress = new Address(STREET, CITY, DISTRICT,
+			COUNTRY, POST_CODE, PHONE, EMAIL);
 
 	private static final String ENGINE_NUMBER = "02002F-000000";
 	private static final String NAME = "Павел";
@@ -47,78 +50,72 @@ public class CustomerServiceImplTest {
 	private static final GenderType SEX = GenderType.MALE;
 	private static final CustomerType BUYER_TYPE = CustomerType.PRIVATE_PERSON;
 
-	private Customer customer_A = new Customer(ENGINE_NUMBER, NAME, SURNAME, SEX,
-				adress, BUYER_TYPE);
-	
+	private Customer customer_A = new Customer(ENGINE_NUMBER, NAME,
+			SURNAME, SEX, adress, BUYER_TYPE);
+
 	private static final String ENGINE_NUMBER_B = "14003A-000000";
 	private static final String NAME_B = "Александр";
 	private static final String SURNAME_B = "Комаренко";
 	private static final GenderType SEX_B = GenderType.MALE;
 	private static final CustomerType BUYER_TYPE_B = CustomerType.PRIVATE_PERSON;
 
-	private Customer customer_B = new Customer(ENGINE_NUMBER_B, NAME_B, SURNAME_B, SEX_B,
-				adress, BUYER_TYPE_B);
-	
-	private final List<Customer> listcustomer_A = Arrays.asList(customer_A);
-	
+	private Customer customer_B = new Customer(ENGINE_NUMBER_B, NAME_B,
+			SURNAME_B, SEX_B, adress, BUYER_TYPE_B);
+
+	private final List<Customer> listCustomers = new LinkedList<Customer>();
+
 	@Mock
-	private CustomerDao customerDao;
+	private DaoFactory<Connection> daoFactory;
+
+	@Mock
+	private PostgreCustomerDao dao;
 
 	@InjectMocks
-	private CustomerServiceImpl service = new CustomerServiceImpl();
+	private GenericService<Customer, String> service = new CustomerServiceImpl();
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws DAOException {
 		MockitoAnnotations.initMocks(this);
-		when(customerDao.add(customer_B)).thenReturn(customer_A);
-		when(customerDao.delete("02002F-000000")).thenReturn(true);
-		when(customerDao.isExist("02002F-000000")).thenReturn(true);
-		when(customerDao.get("02002F-000000")).thenReturn(customer_A);
-		when(customerDao.getAll()).thenReturn(listcustomer_A);
-		when(customerDao.init()).thenReturn(true);
-		when(customerDao.update("14003A-000000", customer_B)).thenReturn(customer_A);
-		when(customerDao.writeMapToFile()).thenReturn(true);
+		when(daoFactory.getConnection()).thenReturn(null);
+		when(daoFactory.getDao(null, Customer.class)).thenReturn(dao);
+		when(dao.add(customer_A)).thenReturn(customer_A);
+		when(dao.getByPK("14003A-000000")).thenReturn(customer_B);
+		when(dao.getAll()).thenReturn(listCustomers);
+		when(dao.update(customer_B)).thenReturn(customer_A);
+		when(dao.delete("2")).thenReturn(true);
 	}
 
 	@Test
 	public void test_add() throws ServiceException, DAOException {
-		when(customerDao.isExist("14003A-000000")).thenReturn(false);
-		service.add(customer_B);
-		verify(customerDao).init();
-		verify(customerDao).isExist("14003A-000000");
-		verify(customerDao).add(any());
+		assertEquals(customer_A, service.add(customer_A));
+		verify(dao).add(any(Customer.class));
 	}
 
 	@Test
-	public void test_get() throws DAOException, ServiceException {
-		assertEquals(customer_A, service.get("02002F-000000"));
-		verify(customerDao).init();
-		verify(customerDao).isExist("02002F-000000");
-		verify(customerDao).get("02002F-000000");
+	public void test_getByPK() throws DAOException, ServiceException {
+		assertEquals(customer_B, service.get("14003A-000000")
+				);
+		verify(dao).getByPK("14003A-000000");
 	}
 
 	@Test
 	public void test_getAll() throws DAOException, ServiceException {
-		assertEquals(listcustomer_A, service.getAll());
-		verify(customerDao).init();
-		verify(customerDao).getAll();
+		listCustomers.add(customer_B);
+		listCustomers.add(customer_A);
+		assertEquals(listCustomers, service.getAll());
+		verify(dao).getAll();
 	}
 
 	@Test
 	public void test_update() throws DAOException, ServiceException {
+		customer_B.setName("Artem");
 		assertEquals(customer_A, service.update(customer_B));
-		verify(customerDao).init();
-		verify(customerDao).update("14003A-000000", customer_B);
-		verify(customerDao).writeMapToFile();
+		verify(dao).update(customer_B);
 	}
 
 	@Test
 	public void test_remove() throws DAOException, ServiceException {
-		assertEquals(customer_A, service.remove("02002F-000000"));
-		verify(customerDao).init();
-		verify(customerDao).isExist("02002F-000000");
-		verify(customerDao).get("02002F-000000");
-		verify(customerDao).delete("02002F-000000");
-		verify(customerDao).writeMapToFile();
+		assertEquals(true, service.remove("2"));
+		verify(dao).delete("2");
 	}
 }

@@ -20,33 +20,6 @@ public class PostgreOBMDao extends AbstractJDBCDao<OBM, String> {
 	private Logger log = LoggerFactory.getLogger(getEntityClass());
 
 	@Override
-	public String getCreateQuery() {
-		return "INSERT INTO suzuki.warehouse (engine_number, model, model_year, status)"
-				+ "VALUES(?,?,?,?);";
-	}
-
-	@Override
-	public String getSelectQuery() {
-		return "SELECT * FROM suzuki.warehouse WHERE engineNumber =";
-	}
-
-	@Override
-	public String getSelectAllQuery() {
-		return "SELECT * FROM suzuki.warehouse";
-	}
-
-	@Override
-	public String getUpdateQuery() {
-		return "UPDATE suzuki.warehouse SET model = ?, model_year = ?, status = ?"
-				+ "WHERE engine_number = ?;";
-	}
-
-	@Override
-	public String getDeleteQuery() {
-		return "DELETE FROM suzuki.warehouse WHERE engine_number = ?;";
-	}
-
-	@Override
 	public void prepareStatementForInsert(PreparedStatement statement,
 			OBM entity) throws DAOException {
 		log.info("Create prepare statement for Insert");
@@ -84,10 +57,10 @@ public class PostgreOBMDao extends AbstractJDBCDao<OBM, String> {
 
 	@Override
 	public void prepareStatementForDelete(PreparedStatement statement,
-			OBM entity) throws DAOException {
+			String engineNumber) throws DAOException {
 		log.info("Create prepare statement for Delete");
 		try {
-			statement.setString(1, entity.getEngineNumber());
+			statement.setString(1, engineNumber);
 		} catch (SQLException e) {
 			log.error("Problems occured while creating PreparedStatement for Delate"
 					+ getEntityClass(), e);
@@ -121,6 +94,12 @@ public class PostgreOBMDao extends AbstractJDBCDao<OBM, String> {
 		log.info("OBM instance created");
 		return result;
 	}
+	
+	@Override
+	protected List<OBM> parseResultSetGet(ResultSet rs)
+			throws DAOException {
+		return parseResultSet(rs);
+	}
 
 	@Override
 	protected Class<OBM> getEntityClass() {
@@ -129,5 +108,10 @@ public class PostgreOBMDao extends AbstractJDBCDao<OBM, String> {
 
 	public PostgreOBMDao(Connection connection) {
 		super(connection);
+	}
+
+	@Override
+	protected String getQueryPropertyName() {
+		return "obm";
 	}
 }

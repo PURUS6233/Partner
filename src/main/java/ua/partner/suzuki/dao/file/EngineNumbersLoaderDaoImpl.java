@@ -16,19 +16,19 @@ import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.EngineNumbersLoaderDao;
-import ua.partner.suzuki.database.properties.PropertiesReader;
+import ua.partner.suzuki.database.properties.PropertiesHelper;
 import ua.partner.suzuki.domain.EngineNumbersLoader;
 
 public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 
 	private Logger logger = LoggerFactory.getLogger(getEntityClass());
-	private Properties suzuki_prop;
+	
+	private static final PropertiesHelper propertiesHelper = new PropertiesHelper();
+	private Properties suzuki_prop = propertiesHelper.propertyReader(PropertiesHelper.CONFIG_PROPERTIES_FILE);
 
 	@Override
-	public boolean writeToFile(InputStream inputStream) {
-		PropertiesReader propertiesReader = new PropertiesReader();
-		suzuki_prop = propertiesReader.propertyReader();
-		String pathToFile = suzuki_prop.getProperty("database.location") + "/"
+	public boolean writeToFile(InputStream inputStream) throws DAOException {
+		String pathToFile = suzuki_prop.getProperty("loader_file.location") + "/"
 				+ getFileName();
 		try (OutputStream outputStream = new FileOutputStream(new File(
 				pathToFile))) {
@@ -41,6 +41,7 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 			logger.error(
 					"Error occured during saving loaded engine Numbers to file"
 							+ getFileName(), e);
+			throw new DAOException("Can not find" + getFileName() + "file", e);
 		}
 		logger.info(
 				"Engine numbers loaded to the storage file" + getFileName(),
@@ -55,7 +56,7 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 		Collection<String> list = new ArrayList<String>();
 		// Get file from resources folder
 		try (Scanner s = new Scanner(new File(
-				suzuki_prop.getProperty("database.location") + "/"
+				suzuki_prop.getProperty("loader_file.location") + "/"
 						+ getFileName()))) {
 			while (s.hasNext()) {
 				list.add(s.next().replaceAll(WORDS_DELIMITERS_2_SKIP_REGEX, ""));
@@ -78,5 +79,4 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 	public String getFileName() {
 		return "engineNumbersLoader.txt";
 	}
-
 }

@@ -4,14 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.partner.suzuki.dao.CampaignDao;
 import ua.partner.suzuki.dao.DAOException;
+import ua.partner.suzuki.database.properties.PropertiesHelper;
 import ua.partner.suzuki.domain.obm.campaign.Campaign;
 import ua.partner.suzuki.domain.obm.campaign.CampaignStatus;
 import ua.partner.suzuki.domain.obm.campaign.CampaignType;
@@ -22,67 +25,58 @@ public class PostgreCampaignDao implements CampaignDao {
 	private Connection connection;
 	private Logger log = LoggerFactory.getLogger(PostgreCampaignDao.class);
 
+	private PropertiesHelper propertiesHelper = new PropertiesHelper();
+	private Properties suzuki_prop = propertiesHelper
+			.propertyReader(PropertiesHelper.DATABASE_PROP_FILE);
+
 	public PostgreCampaignDao(Connection connection) {
 		this.connection = connection;
 	}
 
 	public String getCreateQueryCampaigns() {
-		return "INSERT INTO suzuki.campaigns (campaign_number, description, campaign_type,"
-				+ " campaign_file, campaign_date, inspection, repair,labour_rate)"
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		return suzuki_prop.getProperty("campaign.create.query");
 	}
 
 	public String getCreateQueryOBMCampaign() {
-		return "INSERT INTO suzuki.campaigns (campaign_number, engine_number, campaign_status)"
-				+ " VALUES(?,?,?);";
+		return suzuki_prop.getProperty("obm_campaign.create.query");
 	}
 
 	public String getSelectAllCampaigns() {
-		return "SELECT * FROM suzuki.campaigns";
+		return suzuki_prop.getProperty("campaign.select_all.query");
 	}
 
 	public String getSelectCampaignQuery() {
-		return "SELECT * FROM suzuki.obmcampaigns WHERE campaign_number =";
+		return suzuki_prop.getProperty("campaign.select.query");
 	}
 
 	public String getSelectEngineNumberQuery() {
-		return "SELECT suzuki.campaigns.campaign_number, suzuki.campaigns.description, "
-				+ "suzuki.campaigns.campaign_type, suzuki.campaigns.campaign_date, "
-				+ "suzuki.obmcampaigns.engine_number, suzuki.obmcampaigns.campaign_status "
-				+ "FROM suzuki.campaigns "
-				+ "INNER JOINT suzuki.obmcampaigns "
-				+ "ON suzuki.campaigns.campaign_number=suzuki.obmcampaigns.campaign_number "
-				+ "WHERE suzuki.obmcampaigns.engine_number = ?"
-				+ "ORDER BY suzuki.campaigns.campaign_date";
+		return suzuki_prop.getProperty("campaign.select.engineNumber.query");
 	}
 
 	public String getUpdateCampaignQuery() {
-		return "UPDATE suzuki.campaigns SET description = ?, campaign_type = ?,"
-				+ " campaign_file = ?, campaign_date = ?, engine_number = ?, inspection = ?, repair = ?,"
-				+ " labour_rate = ?" + " WHERE campaign_number = ?;";
+		return suzuki_prop.getProperty("campaign.update.query");
 	}
 
 	public String getUpdateCampaignStatusQuery() {
-		return "UPDATE suzuki.obmcampaigns SET campaign_status = ?"
-				+ " WHERE campaign_number = ? AND engine_number = ?";
+		return suzuki_prop.getProperty("campaign_status.update.query");
 	}
 
 	public String getDeleteQuery() {
-		return "DELETE FROM suzuki.campaigns WHERE id = ?;";
+		return suzuki_prop.getProperty("campaign.delete.query");
 	}
 
 	public void prepareStatementForCampaignsInsert(PreparedStatement statement,
 			Campaign campaign) throws DAOException {
 		log.info("Create prepare statement for Insert");
 		try {
-			statement.setString(1, campaign.getCampaignNo());
+			statement.setString(1, campaign.getCampaignNumber());
 			statement.setString(2, campaign.getDescription());
 			statement.setString(3, campaign.getCampaignType().toString());
 			statement.setString(4, campaign.getCampaignFile());
 			statement.setDate(5, convert(campaign.getCampaignDate()));
 			statement.setBoolean(6, campaign.isInspection());
 			statement.setBoolean(7, campaign.isRepair());
-			statement.setString(8, campaign.getLabourRate());
+			statement.setInt(8, campaign.getLabourRate());
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Insert",
@@ -98,12 +92,13 @@ public class PostgreCampaignDao implements CampaignDao {
 			throws DAOException {
 		log.info("Create prepare statement for Insert");
 		try {
-			statement.setString(1, campaign.getCampaignNo());
+			statement.setString(1, campaign.getCampaignNumber());
 			statement.setString(2, engineNumber);
-			statement.setString(3, campaign.getCampaignStatus().toString());
+			// statement.setString(3, campaign.getCampaignStatus().toString());
 		} catch (SQLException e) {
 			log.error(
-					"Problems occured while creating PreparedStatement for Insert", e);
+					"Problems occured while creating PreparedStatement for Insert",
+					e);
 			throw new DAOException(
 					"Problems occured while creating PreparedStatement for Insert"
 							+ PostgreCampaignDao.class, e);
@@ -118,15 +113,14 @@ public class PostgreCampaignDao implements CampaignDao {
 			statement.setString(2, campaign.getCampaignType().toString());
 			statement.setString(3, campaign.getCampaignFile());
 			statement.setDate(4, convert(campaign.getCampaignDate()));
-			statement.setString(5, campaign.getEngineNumber());
-			statement.setBoolean(6, campaign.isInspection());
-			statement.setBoolean(7, campaign.isRepair());
-			statement.setString(8, campaign.getLabourRate());
-			statement.setString(9, campaign.getCampaignStatus().toString());
-			statement.setString(10, campaign.getCampaignNo());
+			statement.setBoolean(5, campaign.isInspection());
+			statement.setBoolean(6, campaign.isRepair());
+			statement.setInt(7, campaign.getLabourRate());
+			statement.setString(8, campaign.getCampaignNumber());
 		} catch (SQLException e) {
 			log.error(
-					"Problems occured while creating PreparedStatement for Update", e);
+					"Problems occured while creating PreparedStatement for Update",
+					e);
 			throw new DAOException(
 					"Problems occured while creating PreparedStatement for Update"
 							+ PostgreCampaignDao.class, e);
@@ -143,7 +137,8 @@ public class PostgreCampaignDao implements CampaignDao {
 			statement.setString(3, obmCampaign.getEngineNumber());
 		} catch (SQLException e) {
 			log.error(
-					"Problems occured while creating PreparedStatement for Update", e);
+					"Problems occured while creating PreparedStatement for Update",
+					e);
 			throw new DAOException(
 					"Problems occured while creating PreparedStatement for Update"
 							+ PostgreCampaignDao.class, e);
@@ -151,24 +146,26 @@ public class PostgreCampaignDao implements CampaignDao {
 	}
 
 	public void prepareStatementForDelete(PreparedStatement statement,
-			Campaign campaign) throws DAOException {
+			String campaignNumber) throws DAOException {
 		log.info("Create prepare statement for Delete");
 		try {
-			statement.setString(1, campaign.getCampaignNo());
+			statement.setString(1, campaignNumber);
 		} catch (SQLException e) {
 			log.error(
-					"Problems occured while creating PreparedStatement for Delate", e);
+					"Problems occured while creating PreparedStatement for Delate",
+					e);
 			throw new DAOException(
 					"Problems occured while creating PreparedStatement for Delete"
 							+ PostgreCampaignDao.class, e);
 		}
 	}
 
-	protected List<Campaign> parseResultSet(ResultSet rs) throws DAOException {
+	protected List<Campaign> parseResultSetCampaign(ResultSet rs)
+			throws DAOException {
 		List<Campaign> result = new LinkedList<Campaign>();
 		log.info("Reading data from ResultSet");
 		try {
-			log.info("Create Registration instance");
+			log.info("Create Campaign instance");
 			while (rs.next()) {
 				Campaign campaign = new Campaign();
 				campaign.setCampaignNumber(rs.getString("campaign_number"));
@@ -179,7 +176,7 @@ public class PostgreCampaignDao implements CampaignDao {
 				campaign.setCampaignDate(convert(rs.getDate("campaign_date")));
 				campaign.setInspection(rs.getBoolean("inspection"));
 				campaign.setRepair(rs.getBoolean("repair"));
-				campaign.setLabourRate(rs.getString("labour_rate"));
+				campaign.setLabourRate(rs.getInt("labour_rate"));
 				result.add(campaign);
 			}
 		} catch (SQLException e) {
@@ -187,7 +184,31 @@ public class PostgreCampaignDao implements CampaignDao {
 			throw new DAOException("Problems occured while parsing ResultSet"
 					+ PostgreCampaignDao.class, e);
 		}
-		log.info("Registration instance created");
+		log.info("Campaign instance created");
+		return result;
+	}
+
+	protected List<OBMCampaign> parseResultSetOBMCampaign(ResultSet rs)
+			throws DAOException {
+		List<OBMCampaign> result = new LinkedList<OBMCampaign>();
+		log.info("Reading data from ResultSet");
+		try {
+			log.info("Create OBMCampaign instance");
+			while (rs.next()) {
+				OBMCampaign obmCampaign = new OBMCampaign();
+				obmCampaign.setId(rs.getInt("id"));
+				obmCampaign.setCampaignNumber(rs.getString("campaign_number"));
+				obmCampaign.setCampaignStatus(CampaignStatus.valueOf(rs
+						.getString("campaign_status")));
+				obmCampaign.setEngineNumber(rs.getString("engine_number"));
+				result.add(obmCampaign);
+			}
+		} catch (SQLException e) {
+			log.error("Problems occured while parsing ResultSet", e);
+			throw new DAOException("Problems occured while parsing ResultSet"
+					+ PostgreCampaignDao.class, e);
+		}
+		log.info("OBMCampaign instance created");
 		return result;
 	}
 
@@ -248,8 +269,8 @@ public class PostgreCampaignDao implements CampaignDao {
 		Campaign addInstance;
 		String sql_campaign = getCreateQueryCampaigns();
 		String sql_obmCampaign = getCreateQueryOBMCampaign();
-		try (PreparedStatement statement = connection
-				.prepareStatement(sql_campaign)) {
+		try (PreparedStatement statement = connection.prepareStatement(
+				sql_campaign, Statement.RETURN_GENERATED_KEYS)) {
 			log.trace("Create PreparedStatement");
 			prepareStatementForCampaignsInsert(statement, campaign);
 			int count = statement.executeUpdate();
@@ -262,7 +283,7 @@ public class PostgreCampaignDao implements CampaignDao {
 			try (ResultSet rs = statement.getGeneratedKeys()) {
 				log.trace("Create result set");
 				log.info("Read instance of " + campaign.getClass());
-				List<Campaign> list = parseResultSet(rs);
+				List<Campaign> list = parseResultSetCampaign(rs);
 				if ((list == null) || (list.size() != 1)) {
 					log.debug("Receive zero result from DB for"
 							+ campaign.getClass());
@@ -283,8 +304,8 @@ public class PostgreCampaignDao implements CampaignDao {
 		log.info("Instance of" + campaign.getClass() + " created!");
 		List<String> campaignEngineNumbers = campaign.getEngineNumberList();
 		for (String engineNumber : campaignEngineNumbers) {
-			try (PreparedStatement statement = connection
-					.prepareStatement(sql_obmCampaign)) {
+			try (PreparedStatement statement = connection.prepareStatement(
+					sql_obmCampaign, Statement.RETURN_GENERATED_KEYS)) {
 				log.trace("Create PreparedStatement");
 				prepareStatementForOBMCampaignInsert(statement, campaign,
 						engineNumber);
@@ -298,7 +319,7 @@ public class PostgreCampaignDao implements CampaignDao {
 				try (ResultSet rs = statement.getGeneratedKeys()) {
 					log.trace("Create result set");
 					log.info("Read instance of " + campaign.getClass());
-					List<Campaign> list = parseResultSet(rs);
+					List<OBMCampaign> list = parseResultSetOBMCampaign(rs);
 					if ((list == null) || (list.size() != 1)) {
 						log.debug("Receive zero result from DB for"
 								+ campaign.getClass());
@@ -306,7 +327,6 @@ public class PostgreCampaignDao implements CampaignDao {
 								"Exception on findByPK new persist data.");
 					}
 					log.info("Instance of " + campaign.getClass() + " created!");
-					addInstance = list.iterator().next();
 				}
 			} catch (SQLException e) {
 				log.error(
@@ -327,7 +347,7 @@ public class PostgreCampaignDao implements CampaignDao {
 		String sql = getSelectAllCampaigns();
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			ResultSet rs = statement.executeQuery();
-			list = parseResultSet(rs);
+			list = parseResultSetCampaign(rs);
 		} catch (SQLException e) {
 			log.error("Problems occured while loading objects from DB. ", e);
 			throw new DAOException(
@@ -341,18 +361,16 @@ public class PostgreCampaignDao implements CampaignDao {
 	@Override
 	public List<OBMCampaign> getByCampaign(String campaignNumber)
 			throws DAOException {
-		log.info("Looking for entity " + OBMCampaign.class
-				+ " with key: " + campaignNumber);
+		log.info("Looking for entity " + OBMCampaign.class + " with key: "
+				+ campaignNumber);
 		List<OBMCampaign> list;
 		String sql = getSelectCampaignQuery();
-		sql += " = ?";
 		log.trace("Create PrepareStatement");
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setString(1, campaignNumber);
 			log.trace("Create ResultSet");
 			ResultSet rs = statement.executeQuery();
-			log.trace("Create entity of " + OBMCampaign.class
-					+ " to return");
+			log.trace("Create entity of " + OBMCampaign.class + " to return");
 			list = parseResultSetByCampaign(rs);
 		} catch (SQLException e) {
 			log.error("Problems occured while Object with key:"
@@ -368,14 +386,6 @@ public class PostgreCampaignDao implements CampaignDao {
 			throw new DAOException("Entity with key " + campaignNumber
 					+ "not found. Class: " + OBMCampaign.class);
 		}
-		if (list.size() > 1) {
-			log.debug("Received more than one record from DB with the following key"
-					+ campaignNumber + ". Class: " + OBMCampaign.class);
-			throw new DAOException(
-					"Received more than one record from DB with the following key"
-							+ campaignNumber + ". Class: "
-							+ OBMCampaign.class);
-		}
 		log.info("Returning Entity of Class: " + OBMCampaign.class
 				+ ". With key: " + campaignNumber);
 		return list;
@@ -384,17 +394,16 @@ public class PostgreCampaignDao implements CampaignDao {
 	@Override
 	public List<Campaign> getByEngineNumber(String engineNumber)
 			throws DAOException {
-		log.info("Looking for entity " + Campaign.class
-				+ " with key: " + engineNumber);
+		log.info("Looking for entity " + Campaign.class + " with key: "
+				+ engineNumber);
 		List<Campaign> list;
-		String sql = getSelectCampaignQuery();
+		String sql = getSelectEngineNumberQuery();
 		log.trace("Create PrepareStatement");
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
 			statement.setString(1, engineNumber);
 			log.trace("Create ResultSet");
 			ResultSet rs = statement.executeQuery();
-			log.trace("Create entity of " + Campaign.class
-					+ " to return");
+			log.trace("Create entity of " + Campaign.class + " to return");
 			list = parseResultSetByEngineNumber(rs);
 		} catch (SQLException e) {
 			log.error("Problems occured while Object with key:" + engineNumber
@@ -409,26 +418,19 @@ public class PostgreCampaignDao implements CampaignDao {
 			throw new DAOException("Entity with key " + engineNumber
 					+ "not found. Class: " + Campaign.class);
 		}
-		if (list.size() > 1) {
-			log.debug("Received more than one record from DB with the following key"
-					+ engineNumber + ". Class: " + Campaign.class);
-			throw new DAOException(
-					"Received more than one record from DB with the following key"
-							+ engineNumber + ". Class: "
-							+ Campaign.class);
-		}
 		log.info("Returning Entity of Class: " + Campaign.class
 				+ ". With key: " + engineNumber);
 		return list;
 	}
 
 	@Override
-	public Campaign updateCampaign(Campaign entity) throws DAOException {
+	public Campaign update(Campaign entity) throws DAOException {
 		Campaign updateInstance;
 		log.info("Updating instance " + entity.getClass().getName());
 		String sql = getUpdateCampaignQuery();
 		log.trace("Create result set");
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+		try (PreparedStatement statement = connection.prepareStatement(sql,
+				Statement.RETURN_GENERATED_KEYS)) {
 			log.trace("Create prepared statement");
 			prepareStatementForCampaignUpdate(statement, entity);
 			int count = statement.executeUpdate();
@@ -440,7 +442,7 @@ public class PostgreCampaignDao implements CampaignDao {
 			try (ResultSet rs = statement.getGeneratedKeys()) {
 				log.trace("Create result set");
 				log.info("Read instance of " + entity.getClass());
-				List<Campaign> list = parseResultSet(rs);
+				List<Campaign> list = parseResultSetCampaign(rs);
 				if ((list == null) || (list.size() != 1)) {
 					log.debug("Receive zero result from DB for"
 							+ entity.getClass());
@@ -467,9 +469,10 @@ public class PostgreCampaignDao implements CampaignDao {
 			throws DAOException {
 		OBMCampaign updateInstance;
 		log.info("Updating instance " + entity.getClass().getName());
-		String sql = getUpdateCampaignQuery();
+		String sql = getUpdateCampaignStatusQuery();
 		log.trace("Create result set");
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+		try (PreparedStatement statement = connection.prepareStatement(sql,
+				Statement.RETURN_GENERATED_KEYS)) {
 			log.trace("Create prepared statement");
 			prepareStatementForCampaignStatusUpdate(statement, entity);
 			int count = statement.executeUpdate();
@@ -504,12 +507,12 @@ public class PostgreCampaignDao implements CampaignDao {
 	}
 
 	@Override
-	public boolean delete(Campaign entity) throws DAOException {
-		log.info("Deleting instance " + entity.getClass().getName());
+	public boolean delete(String campaignNumber) throws DAOException {
+		log.info("Deleting instance " + campaignNumber);
 		String sql = getDeleteQuery();
 		log.trace("Create prepare statement");
 		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			prepareStatementForDelete(statement, entity);
+			prepareStatementForDelete(statement, campaignNumber);
 			int count = statement.executeUpdate();
 			if (count != 1) {
 				log.debug("On delete modify more then 1 record: " + count);
@@ -517,15 +520,13 @@ public class PostgreCampaignDao implements CampaignDao {
 						+ count);
 			}
 		} catch (SQLException e) {
-			log.error(
-					"Problems occured during deleting object "
-							+ entity.toString() + " in DB. " + Campaign.class,
-					e);
+			log.error("Problems occured during deleting object "
+					+ campaignNumber + " in DB. " + Campaign.class, e);
 			throw new DAOException(
 					"Problems occured during deleting object in DB. "
 							+ Campaign.class, e);
 		}
-		log.info("Entity : " + entity.toString() + Campaign.class
+		log.info("Entity : " + campaignNumber + Campaign.class
 				+ " deleted from DB");
 		return true;
 	}
@@ -535,5 +536,10 @@ public class PostgreCampaignDao implements CampaignDao {
 			return null;
 		}
 		return new java.sql.Date(date.getTime());
+	}
+
+	@Override
+	public Campaign getByPK(String key) throws DAOException {
+		throw new DAOException("This method is not supported!");
 	}
 }

@@ -19,35 +19,6 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 	private Logger log = LoggerFactory.getLogger(getEntityClass());
 	
 	@Override
-	public String getCreateQuery() {
-		return "INSERT INTO suzuki.dealers (login, name, password,"
-				+ " street, city, district, country, post_code, phone, email)"
-				+ " VALUES(?,?,?,?,?,?,?,?,?,?);";
-	}
-
-	@Override
-	public String getSelectQuery() {
-		return "SELECT * FROM suzuki.dealers WHERE login =";
-	}
-
-	@Override
-	public String getSelectAllQuery() {
-		return "SELECT * FROM suzuki.dealers";
-	}
-
-	@Override
-	public String getUpdateQuery() {
-		return "UPDATE suzuki.dealers SET name = ?, password = ?, street = ?, city = ?,"
-				+ " district = ?, country = ?, post_code = ?, phone = ?, email = ?"
-				+ " WHERE login = ?;";
-	}
-
-	@Override
-	public String getDeleteQuery() {
-		return "DELETE FROM suzuki.dealers WHERE login = ?;";
-	}
-	
-	@Override
 	public void prepareStatementForInsert(PreparedStatement statement,
 			Dealer dealer) throws DAOException {
 		log.info("Create prepare statement for Insert");
@@ -58,11 +29,11 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 			statement.setString(3, dealer.getPassword());
 			statement.setString(4, address.getStreet());
 			statement.setString(5, address.getCity());
-			statement.setString(5, address.getDistrict());
-			statement.setString(5, address.getCountry());
-			statement.setString(5, address.getPostCode());
-			statement.setString(6, address.getPhone());
-			statement.setString(7, address.getEmail());
+			statement.setString(6, address.getDistrict());
+			statement.setString(7, address.getCountry());
+			statement.setString(8, address.getPostCode());
+			statement.setString(9, address.getPhone());
+			statement.setString(10, address.getEmail());
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Insert"
@@ -101,10 +72,10 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 
 	@Override
 	public void prepareStatementForDelete(PreparedStatement statement,
-			Dealer dealer) throws DAOException {
+			String login) throws DAOException {
 		log.info("Create prepare statement for Delete");
 		try {
-			statement.setString(1, dealer.getLogin());
+			statement.setString(1, login);
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Delate"
@@ -148,6 +119,12 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 		log.info("Registration instance created");
 		return result;
 	}
+	
+	@Override
+	protected List<Dealer> parseResultSetGet(ResultSet rs)
+			throws DAOException {
+		return parseResultSet(rs);
+	}
 
 	@Override
 	protected Class<Dealer> getEntityClass() {
@@ -156,5 +133,10 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 
 	public PostgreDealerDao(Connection connection) {
 		super(connection);
+	}
+
+	@Override
+	protected String getQueryPropertyName() {
+		return "dealer";
 	}
 }

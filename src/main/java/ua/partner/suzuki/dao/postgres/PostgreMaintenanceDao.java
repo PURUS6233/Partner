@@ -15,37 +15,14 @@ import ua.partner.suzuki.domain.obm.maintenance.Maintenance;
 import ua.partner.suzuki.domain.obm.maintenance.MaintenanceType;
 import ua.partner.suzuki.domain.obm.maintenance.ServiceType;
 
-public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, String> {
+public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, Integer> {
 
 	private Logger log = LoggerFactory.getLogger(getEntityClass());
-
-	@Override
-	public String getCreateQuery() {
-		return "INSERT INTO suzuki.registrations (engine_number, execution_date, maintenance_type,"
-				+ " service_type, hours, note, SDS_file)"
-				+ " VALUES(?,?,?,?,?,?,?);";
-	}
-
-	@Override
-	public String getSelectQuery() {
-		return "SELECT * FROM suzuki.registrations WHERE id =";
-	}
-
-	@Override
-	public String getSelectAllQuery() {
-		return "SELECT * FROM suzuki.registrations WHERE engine_number =";
-	}
-
-	@Override
-	public String getUpdateQuery() {
-		return "UPDATE suzuki.registrations SET engine_number = ?, execution_date = ?,"
-				+ " maintenance_type = ?, service_type = ?, hours = ?, note = ?, SDS_file = ?"
-				+ " WHERE id = ?;";
-	}
-
-	@Override
-	public String getDeleteQuery() {
-		return "DELETE FROM suzuki.registrations WHERE id = ?;";
+	private Connection connection;
+	
+	public PostgreMaintenanceDao(Connection connection) {
+		super(connection);
+		this.connection = connection;
 	}
 	
 	@Override
@@ -95,10 +72,10 @@ public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, String> 
 
 	@Override
 	public void prepareStatementForDelete(PreparedStatement statement,
-			Maintenance entity) throws DAOException {
+			Integer id) throws DAOException {
 		log.info("Create prepare statement for Delete");
 		try {
-			statement.setInt(1, entity.getId());
+			statement.setInt(1, id);
 		} catch (SQLException e) {
 			log.error(
 					"Problems occured while creating PreparedStatement for Delate"
@@ -139,6 +116,32 @@ public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, String> 
 		log.info("Registration instance created");
 		return result;
 	}
+	
+	@Override
+	protected List<Maintenance> parseResultSetGet(ResultSet rs)
+			throws DAOException {
+		return parseResultSet(rs);
+	}
+	
+	public List<Maintenance> getAll(String engineNumber) throws DAOException { //TODO
+		List<Maintenance> list;
+		String sql = getSelectAllQuery();
+		System.out.println(sql);
+		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			statement.setString(1, engineNumber);
+			log.trace("Create ResultSet");
+			ResultSet rs = statement.executeQuery();
+			list = parseResultSet(rs);
+		} catch (SQLException e) {
+			log.error("Problems occured while loading objects from DB. "
+					+ getEntityClass().getName(), e);
+			throw new DAOException(
+					"Problems occured while loading objects from DB. "
+							+ getEntityClass().getName(), e);
+		}
+		log.info("Entitys loaded from DB");
+		return list;
+	}
 
 	protected java.sql.Date convert(java.util.Date date) {
 		if (date == null) {
@@ -152,7 +155,8 @@ public class PostgreMaintenanceDao extends AbstractJDBCDao<Maintenance, String> 
 		return Maintenance.class;
 	}
 
-	public PostgreMaintenanceDao(Connection connection) {
-		super(connection);
+	@Override
+	protected String getQueryPropertyName() {
+		return "maintenance";
 	}
 }

@@ -19,7 +19,7 @@ public class RegistrationTest {
 
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(RegistrationFiller.class);
+		assertNotNull(Registration.class);
 	}
 
 	private static final String engineNumber = "00252F-002255";

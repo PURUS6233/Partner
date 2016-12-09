@@ -6,26 +6,28 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import ua.partner.suzuki.database.properties.PropertiesReader;
+import ua.partner.suzuki.database.properties.PropertiesHelper;
 
 public class PropertiesReaderTest {
 	
+	private static final String propertyFile = "config/config.properties";
+	
 	@Test
 	public void test_type() throws Exception {
-		assertNotNull(PropertiesReader.class);
+		assertNotNull(PropertiesHelper.class);
 	}
 	
 	@Test
 	public void test_instantiation() throws Exception {
-		PropertiesReader valid = new PropertiesReader();
+		PropertiesHelper valid = new PropertiesHelper();
 		assertNotNull(valid);
 	}
 
 	@Test
 	public void test_getDatabaseLocation() {
-		PropertiesReader prop = new PropertiesReader();
-		Properties suzuki_prop = prop.propertyReader();
-		String actual = suzuki_prop.getProperty("database.location");
+		PropertiesHelper prop = new PropertiesHelper();
+		Properties suzuki_prop = prop.propertyReader(propertyFile);
+		String actual = suzuki_prop.getProperty("loader_file.location");
 		assertNotNull(actual);
 	}
 

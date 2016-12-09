@@ -14,6 +14,6 @@ public interface GenericDao<T, PK extends Serializable> {
 
 	T update(T entity) throws DAOException;
 
-	boolean delete(T entity) throws DAOException;
+	boolean delete(PK key) throws DAOException;
 
 }

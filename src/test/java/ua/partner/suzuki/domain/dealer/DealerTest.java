@@ -31,19 +31,9 @@ public class DealerTest {
 
 	private Dealer dealer = new Dealer(NAME, adress, LOGIN, PASSWORD);
 
-	private static final String expected = "Dealer [" + "name=" + NAME
-			+ ", address=" + adress.toString() + ", login=" + LOGIN
-			+ ", password=" + PASSWORD + ']';
-
 	@Test
 	public void test_instantiation() throws Exception {
 		assertNotNull(dealer);
-	}
-
-	@Test
-	public void test_dealer() throws Exception {
-		System.out.println(dealer);
-		assertEquals(expected, dealer.toString());
 	}
 
 	@Test

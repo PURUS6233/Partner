@@ -29,8 +29,7 @@ public class EngineNumbersLoader {
 	 *             constructor
 	 */
 
-	public EngineNumbersLoader(InputStream inStream)
-			throws EngineNoLoaderException {
+	public EngineNumbersLoader(InputStream inStream) {
 		this.sourceSc = sourceRemake(inStream);
 		setEngineNumbers();
 	}
@@ -45,7 +44,7 @@ public class EngineNumbersLoader {
 		return sc;
 	}
 
-	private Collection<String> engineNumbers = new ArrayList<>();// TODO
+	private Collection<String> engineNumbers = new ArrayList<>();
 	private Collection<String> engineNumbers_wrong = new ArrayList<>();
 
 	public Collection<String> getEngineNumbers_wrong() {
@@ -83,8 +82,7 @@ public class EngineNumbersLoader {
 	}
 
 	public void setEngineNumbers() {
-		Collection<String> engineNumbers = engineNoLoader(getSourceSc());
-		this.engineNumbers = engineNumbers;
+		this.engineNumbers = engineNoLoader(getSourceSc());
 	}
 
 }

@@ -14,7 +14,6 @@ import com.google.common.base.Preconditions;
 @XmlRootElement
 public class Customer implements EngineNumberIdentifiable<String>, Validatable {
 
-	private String id;
 	private String engineNumber;
 	private String name;
 	private String surname;
@@ -38,15 +37,6 @@ public class Customer implements EngineNumberIdentifiable<String>, Validatable {
 		setCustomerType(customerType);
 		log.trace("Created customer with name: " + name + ", surname: "
 				+ surname + ", engineNumber = " + engineNumber + ".");
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-		log.trace("Set id to = " + id);
 	}
 
 	@Override
@@ -116,7 +106,7 @@ public class Customer implements EngineNumberIdentifiable<String>, Validatable {
 				"The customer surname is not valid!");
 		Preconditions.checkState(!(getGender() == null),
 				"The customer gender is not valid!");
-		Preconditions.checkState(!(getAddress().validate()),
+		Preconditions.checkState((getAddress().validate()),
 				"The customer address is not valid!");
 		Preconditions.checkState(!(getCustomerType() == null),
 				"The customer type is not valid!");
@@ -126,7 +116,7 @@ public class Customer implements EngineNumberIdentifiable<String>, Validatable {
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", engineNumber=" + engineNumber
+		return "Customer [engineNumber=" + engineNumber
 				+ ", name=" + name + ", surname=" + surname + ", sex=" + gender
 				+ ", adress=" + address + ", customerType=" + customerType + "]";
 	}

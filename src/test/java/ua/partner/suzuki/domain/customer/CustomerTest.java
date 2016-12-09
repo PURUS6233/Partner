@@ -1,7 +1,7 @@
 package ua.partner.suzuki.domain.customer;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -28,7 +28,6 @@ public class CustomerTest {
 		assertNotNull(Customer.class);
 	}
 
-	private static final String ID = null;
 	private static final String ENGINE_NUMBER = "02002F-000000";
 	private static final String NAME = "Павел";
 	private static final String SURNAME = "Лесев";
@@ -38,19 +37,14 @@ public class CustomerTest {
 	private Customer customer = new Customer(ENGINE_NUMBER, NAME, SURNAME, GENDER,
 			ADDRESS, CUSTOMER_TYPE);
 	
-	private static final String expected = "Customer [id=" + ID + ", engineNumber=" + ENGINE_NUMBER
-			+ ", name=" + NAME + ", surname=" + SURNAME + ", sex=" + GENDER
-			+ ", adress=" + ADDRESS + ", customerType=" + CUSTOMER_TYPE + "]";
-
 	@Test
 	public void test_instantiation() throws Exception {
 		assertNotNull(customer);
 	}
-
+	
 	@Test
 	public void test_customer() throws Exception {
-		assertEquals(expected, customer.toString());
-
+		assertTrue(customer.validate());
 	}
 
 }

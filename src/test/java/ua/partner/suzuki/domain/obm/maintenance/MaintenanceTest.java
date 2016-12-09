@@ -17,7 +17,6 @@ public class MaintenanceTest {
 		assertNotNull(Maintenance.class);
 	}
 
-	private static final String ID = null; 
 	private static final String engineNumber = "00252F-001122";
 	private static final Date executionDate = new Date();
 	private static final MaintenanceType maintenanceType = MaintenanceType.FIRST_20_HOURS;
@@ -29,11 +28,6 @@ public class MaintenanceTest {
 	private static final Maintenance maintenance = new Maintenance(
 			engineNumber, executionDate, maintenanceType, serviceType, hours,
 			note, SDSFile);
-	
-	private static final String expected = "Maintenance [id=" + ID + ", engineNumber=" + engineNumber
-			+ ", executionDate=" + executionDate + ", maintenanceType="
-			+ maintenanceType + ", serviceType=" + serviceType + ", hours="
-			+ hours + ", note=" + note + ", SDSFile=" + SDSFile + "]";
 
 	@Test
 	public void test_instantiation() throws Exception {
@@ -43,10 +37,5 @@ public class MaintenanceTest {
 	@Test
 	public void test_maintenanceValidate() throws Exception {
 		assertTrue(maintenance.validate());
-	}
-
-	@Test
-	public void test_maintenance() throws Exception {
-		assertEquals(expected, maintenance.toString());
 	}
 }

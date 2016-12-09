@@ -3,9 +3,9 @@ package ua.partner.suzuki.service.impl;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -24,21 +24,22 @@ public class EngineNumbersLoaderServiceImplTest {
 	@InjectMocks
 	private EngineNumbersLoaderService service = new EngineNumbersLoaderServiceImpl();
 	
-	private static final Collection<String> INPUT = Arrays.asList(
-			"14003F-512134", "00252F-324069", "00602F-313027",
-			"14003F-411425", "14003F-512131", "14003F-411903", "14003F-411902",
-			"00602F-315594");
+	final String INPUT = "14003F-512134, 0900F-412288, "
+			+ "00252F-324069, 00602F-313027, 0, 14003F-411425, 14003F-512131, "
+			+ "14003F-411903, 14003F-411902, 00602F-315594, 00602F-3156";
+	final InputStream STREAM = new ByteArrayInputStream(
+			INPUT.getBytes(StandardCharsets.UTF_8));
 	
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		when(loaderDao.writeToFile(INPUT.toString())).thenReturn(true);
-		when(loaderDao.readFromFile()).thenReturn(INPUT);
+		when(loaderDao.writeToFile(STREAM)).thenReturn(true);
 	}
 
 	@Test
 	public void test_saveToFile() throws DAOException {
-		assertTrue(service.saveToFile(INPUT.toString()));
+		assertTrue(service.saveToFile(STREAM));
+		verify(loaderDao).writeToFile(STREAM);
 	}
 
 	@Test

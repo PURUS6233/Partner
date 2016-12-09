@@ -91,7 +91,7 @@ public class OBM implements EngineNumberIdentifiable<String>, Validatable {
 	@Override
 	public boolean validate() {
 		log.trace("Start validating OBM object.");
-		Preconditions.checkState(!(validator.checkWithRegExp(getEngineNumber(),
+		Preconditions.checkState((validator.checkWithRegExp(getEngineNumber(),
 				Constants.ENGINE_NUMBER_PATTERN)),
 				"The engine number is not valid!");
 		Preconditions.checkState(

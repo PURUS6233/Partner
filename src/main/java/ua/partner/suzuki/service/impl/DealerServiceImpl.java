@@ -1,5 +1,7 @@
 package ua.partner.suzuki.service.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,113 +10,127 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 import ua.partner.suzuki.dao.DAOException;
-import ua.partner.suzuki.dao.DealerDao;
+import ua.partner.suzuki.dao.DaoFactory;
+import ua.partner.suzuki.dao.GenericDao;
+import ua.partner.suzuki.dao.postgres.PostgreDaoFactory;
 import ua.partner.suzuki.dao.postgres.PostgreDealerDao;
 import ua.partner.suzuki.domain.dealer.Dealer;
-import ua.partner.suzuki.service.DealerService;
+import ua.partner.suzuki.service.GenericService;
 import ua.partner.suzuki.service.ServiceException;
 
-public class DealerServiceImpl implements DealerService {
+public class DealerServiceImpl implements GenericService<Dealer, String> {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
-	private DealerDao obmDao = new PostgreDealerDao();
+	private DaoFactory<Connection> daoFactory = new PostgreDaoFactory();
+	private Logger logger = LoggerFactory.getLogger(DealerServiceImpl.class);
 
-	protected DealerDao getDaoEntity() {
-		return obmDao;
-	}
-
-	protected Class<DealerServiceImpl> getEntityClass() {
-		return DealerServiceImpl.class;
-	}
-
-	@Override
 	public Dealer add(Dealer dealer) throws ServiceException {
-		try {
-			// Read Data from Json file to map
-			getDaoEntity().init();
-			// Check if the entity already exists in database
-			logger.info("Check if entity is already exist", getEntityClass()
-					.getSimpleName());
-			Preconditions
-					.checkState(!getDaoEntity().isExist(dealer.getLogin()));
-			getDaoEntity().add(dealer);
-			getDaoEntity().writeMapToFile();
-
+		Dealer entity = null;
+		try (Connection connection = daoFactory.getConnection()) {
+			GenericDao<Dealer, String> dao = (PostgreDealerDao) daoFactory
+					.getDao(connection, Dealer.class);
+			entity = dao.add(dealer);
+			Preconditions.checkState(!entity.equals(null));
 		} catch (IllegalStateException e) {
-			logger.error("Entity with this engine number already exists!", e);
-			throw new ServiceException("Can not add entity to map.", e);
+			logger.error("Problem occured while saving Dealer to Database!",
+					e);
+			throw new ServiceException(
+					"Problem occured while saving Dealer to Database!", e);
+		} catch (SQLException e) {
+			logger.error("Error occured while closing connection", e);
+			throw new ServiceException(
+					"Error occured while closing connection", e);
 		} catch (DAOException e) {
-			logger.error("Problems occured while writing entity to json!", e);
-			throw new ServiceException("Can not add entity to file.", e);
+			logger.error("Error while adding Dealer entities!", e);
+			throw new ServiceException("Error while adding Dealer entities!",
+					e);
 		}
-		return dealer;
+		return entity;
 	}
 
 	@Override
 	public Dealer get(String login) throws ServiceException {
-		Dealer response;
-		try {
-			getDaoEntity().init();
-			Preconditions.checkState(getDaoEntity().isExist(login));
-			response = getDaoEntity().get(login);
+		Dealer entity = null;
+		try (Connection connection = daoFactory.getConnection()) {
+			GenericDao<Dealer, String> dao = (PostgreDealerDao) daoFactory
+					.getDao(connection, Dealer.class);
+			entity = dao.getByPK(login);
+			Preconditions.checkState(!entity.equals(null));
 		} catch (IllegalStateException e) {
-			logger.error("Entity with this engine number already exists!", e);
-			throw new ServiceException("Can not retrieve entity.", e);
+			logger.error("Customer with login - " + login
+					+ ", does not exist!", e);
+			throw new ServiceException("Customer with login - "
+					+ login + ", does not exist!", e);
+		} catch (SQLException e) {
+			logger.error("Error occured while closing connection", e);
+			throw new ServiceException(
+					"Error occured while closing connection", e);
 		} catch (DAOException e) {
-			logger.error("Can not read json file", e);
-			throw new ServiceException("Can not retrieve entity", e);
+			logger.error(
+					"Error occured while loading entity with login:"
+							+ login, e);
+			throw new ServiceException(
+					"Error occured while loading entity with login:"
+							+ login, e);
 		}
-		return response;
+		return entity;
 	}
 
 	@Override
 	public List<Dealer> getAll() throws ServiceException {
-		try {
-			getDaoEntity().init();
-			return getDaoEntity().getAll();
+		try (Connection connection = daoFactory.getConnection()) {
+			GenericDao<Dealer, String> dao = (PostgreDealerDao) daoFactory
+					.getDao(connection, Dealer.class);
+			return dao.getAll();
+		} catch (SQLException e) {
+			logger.error("Error occured while closing connection", e);
+			throw new ServiceException(
+					"Error occured while closing connection", e);
 		} catch (DAOException e) {
-			logger.error("Can not read entities from database", e);
-			throw new ServiceException("Can not read entities from database", e);
+			logger.error("Error occured while loading Dealer entities!", e);
+			throw new ServiceException(
+					"Error occured while loading Dealer entities!", e);
 		}
 	}
 
 	@Override
-	public Dealer update(Dealer entity) throws ServiceException {
-		Dealer response;
-		try {
-			getDaoEntity().init();
-			logger.info("Entity of class '{}' updating to Map",
-					getEntityClass().getSimpleName());
-			response = getDaoEntity().update(entity.getLogin(), entity);
-			logger.info("Writing data to json '{}'", getEntityClass()
-					.getSimpleName());
-			getDaoEntity().writeMapToFile();
-		} catch (DAOException e) {
-			logger.error("Problem occured during updating entitye"
-					+ getEntityClass().getSimpleName(), e);
+	public Dealer update(Dealer dealer) throws ServiceException {
+		Dealer entity;
+		try (Connection connection = daoFactory.getConnection()) {
+			GenericDao<Dealer, String> dao = (PostgreDealerDao) daoFactory
+					.getDao(connection, Dealer.class);
+			entity = dao.update(dealer);
+		} catch (SQLException e) {
+			logger.error("Error occured while closing connection", e);
 			throw new ServiceException(
-					"Problem occured during updating entity", e);
+					"Error occured while closing connection", e);
+		} catch (DAOException e) {
+			logger.error(
+					"Problem occured during updating Customer entity with login: "
+							+ dealer.getLogin(), e);
+			throw new ServiceException(
+					"Problem occured during updating Customer entity with login: "
+							+ dealer.getLogin(), e);
 		}
-		return response;
+		return entity;
 	}
 
 	@Override
-	public Dealer remove(String login) throws ServiceException {
-		Dealer response;
-		try {
-			getDaoEntity().init();
-			logger.info("Entity of class '{}' updating to Map",
-					getEntityClass().getSimpleName());
-			Preconditions.checkState(getDaoEntity().isExist(login));
-			response = getDaoEntity().get(login);
-			getDaoEntity().delete(login);
-			getDaoEntity().writeMapToFile();
-		} catch (DAOException e) {
-			logger.error("Problem occured during entity deleating"
-					+ getEntityClass().getSimpleName(), e);
+	public boolean remove(String login) throws ServiceException {
+		try (Connection connection = daoFactory.getConnection()) {
+			GenericDao<Dealer, String> dao = (PostgreDealerDao) daoFactory
+					.getDao(connection, Dealer.class);
+			return dao.delete(login);
+		} catch (SQLException e) {
+			logger.error("Error occured while closing connection", e);
 			throw new ServiceException(
-					"Problem occured during entity deleating", e);
+					"Error occured while closing connection", e);
+		} catch (DAOException e) {
+			logger.error(
+					"Problem occured during deleting Dealer entity with login: "
+							+ login, e);
+			throw new ServiceException(
+					"Problem occured during deleting Dealer entity with login: "
+							+ login, e);
 		}
-		return response;
 	}
 }

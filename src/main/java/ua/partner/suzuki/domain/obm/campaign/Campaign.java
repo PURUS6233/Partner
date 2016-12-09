@@ -8,11 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
+import ua.partner.suzuki.domain.EngineNumberIdentifiable;
 import ua.partner.suzuki.domain.Validatable;
 
-public class Campaign implements Validatable {
+public class Campaign implements EngineNumberIdentifiable<String>, Validatable {
 
-	private String campaignNo;
+	private String campaignNumber;
 	private String description;
 	private CampaignType campaignType;
 	private String campaignFile;
@@ -21,7 +22,7 @@ public class Campaign implements Validatable {
 	private String engineNumber;
 	private boolean inspection;
 	private boolean repair;
-	private String labourRate;
+	private Integer labourRate;
 	private CampaignStatus campaignStatus;
 
 	private static Logger log = LoggerFactory.getLogger(Campaign.class);
@@ -30,12 +31,11 @@ public class Campaign implements Validatable {
 
 	}
 
-	public Campaign(String campaignNo, String description,
+	public Campaign(String campaignNumber, String description,
 			CampaignType campaignType, String campaignFile, Date campaignDate,
 			List<String> engineNumberList, boolean inspection, boolean repair,
-			String labourRate) {
-		super();
-		this.campaignNo = campaignNo;
+			Integer labourRate) {
+		this.campaignNumber = campaignNumber;
 		this.description = description;
 		this.campaignType = campaignType;
 		this.campaignFile = campaignFile;
@@ -46,13 +46,13 @@ public class Campaign implements Validatable {
 		this.labourRate = labourRate;
 	}
 
-	public String getCampaignNo() {
-		return campaignNo;
+	public String getCampaignNumber() {
+		return campaignNumber;
 	}
 
-	public void setCampaignNumber(String campaignNo) {
-		this.campaignNo = campaignNo;
-		log.trace("Set campaignNo to = " + campaignNo);
+	public void setCampaignNumber(String campaignNumber) {
+		this.campaignNumber = campaignNumber;
+		log.trace("Set campaignNumber to = " + campaignNumber);
 	}
 
 	public String getDescription() {
@@ -127,11 +127,11 @@ public class Campaign implements Validatable {
 		log.trace("Set repair to = " + repair);
 	}
 
-	public String getLabourRate() {
+	public Integer getLabourRate() {
 		return labourRate;
 	}
 
-	public void setLabourRate(String labourRate) {
+	public void setLabourRate(Integer labourRate) {
 		this.labourRate = labourRate;
 		log.trace("Set labourRate to = " + labourRate);
 	}
@@ -149,7 +149,7 @@ public class Campaign implements Validatable {
 	public boolean validate() {
 		log.trace("Start validating Campaign object.");
 		Preconditions.checkState(
-				!(getCampaignNo().isEmpty() || getCampaignNo() == null),
+				!(getCampaignNumber().isEmpty() || getCampaignNumber() == null),
 				"The street name is not valid!");
 		Preconditions.checkState(
 				!(getDescription().isEmpty() || getDescription() == null),
@@ -163,5 +163,16 @@ public class Campaign implements Validatable {
 				"The street name is not valid!");
 		log.trace("Campaign object validated.");
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Campaign [campaignNumber=" + campaignNumber + ", description="
+				+ description + ", campaignType=" + campaignType
+				+ ", campaignFile=" + campaignFile + ", campaignDate="
+				+ campaignDate + ", engineNumberList=" + engineNumberList
+				+ ", engineNumber=" + engineNumber + ", inspection="
+				+ inspection + ", repair=" + repair + ", labourRate="
+				+ labourRate + ", campaignStatus=" + campaignStatus + "]";
 	}
 }

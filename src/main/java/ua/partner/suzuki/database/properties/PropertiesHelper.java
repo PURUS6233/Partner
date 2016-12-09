@@ -10,36 +10,31 @@ import org.slf4j.LoggerFactory;
 import ua.partner.suzuki.dao.DAOException;
 import ua.partner.suzuki.dao.postgres.AbstractJDBCDao;
 
-public class PropertiesReader {
+public class PropertiesHelper {
+	
+	public static final String CONFIG_PROPERTIES_FILE = "config/config.properties";
+	public static final String DATABASE_PROP_FILE = "db/database.properties";
 
-	public PropertiesReader() {
-		
+	public PropertiesHelper() {
 	}
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private static final String FILE = "config/config.properties";
 
-	// Getters for specified property values
-	// Get database.location property
-
-
-	public Properties propertyReader() {
+	public Properties propertyReader(String propertyFile) {
 		Properties prop = new Properties();
-
 		try (InputStream input = AbstractJDBCDao.class.getClassLoader()
-				.getResourceAsStream(FILE);) {
+				.getResourceAsStream(propertyFile);) {
 			if (input == null) {
-				logger.error("The proprerty file " + FILE
+				logger.error("The proprerty file " + propertyFile
 						+ "can't be found");
-				throw new DAOException("The file " + FILE
+				throw new DAOException("The file " + propertyFile
 						+ "can't be found");
 			}
-			// load a properties file from class path, inside static method
 			prop.load(input);
 		} catch (IOException e) {
 			logger.error("Error occuared while property file loading", e);
 		} catch (DAOException e) {
-			logger.error("The proprerty file " + FILE + "can't be found", e);
+			logger.error("The proprerty file " + propertyFile + "can't be found", e);
 		}
 		return prop;
 	}

@@ -3,7 +3,12 @@ package ua.partner.suzuki.domain.obm.campaign;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OBMCampaign {
+import com.google.common.base.Preconditions;
+
+import ua.partner.suzuki.domain.EngineNumberIdentifiable;
+import ua.partner.suzuki.domain.Validatable;
+
+public class OBMCampaign implements EngineNumberIdentifiable<String>, Validatable {
 
 	private Integer id;
 	private String campaignNumber;
@@ -66,5 +71,20 @@ public class OBMCampaign {
 		return "OBMCampaign [id=" + id + ", campaignNumber=" + campaignNumber
 				+ ", engineNumber=" + engineNumber + ", campaignStatus="
 				+ campaignStatus.toString() + "]";
+	}
+
+	@Override
+	public boolean validate() {
+		log.trace("Start validating OBMCampaign object.");
+		Preconditions.checkState(
+				!(getCampaignNumber().isEmpty() || getCampaignNumber() == null),
+				"The street name is not valid!");
+		Preconditions.checkState(
+				!(getEngineNumber().isEmpty() || getEngineNumber() == null),
+				"The street name is not valid!");
+		Preconditions.checkState(!(getCampaignStatus() == null),
+				"The street name is not valid!");
+		log.trace("Campaign object validated.");
+		return true;
 	}
 }
