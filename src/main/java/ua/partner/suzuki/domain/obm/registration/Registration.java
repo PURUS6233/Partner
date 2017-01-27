@@ -22,7 +22,7 @@ public class Registration implements EngineNumberIdentifiable<String>,
 	private String dealerLogin;
 	private Customer customer;
 	private Date dateSold;
-	private Date dateRegistered;
+	private Date dateRegistered = new Date();
 	private Date dateDelivered;
 	private Date warrantyExpiration;
 	private int penalty;
@@ -48,7 +48,6 @@ public class Registration implements EngineNumberIdentifiable<String>,
 		this.dealerLogin = dealerLogin;
 		this.customer = customer;
 		this.dateSold = dateSold;
-		this.dateRegistered = new Date();
 		this.dateDelivered = dateDelivered;
 		this.unitSurvey = unitSurvey;
 		this.unitOperation = unitOperation;

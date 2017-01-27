@@ -42,6 +42,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 					"Problems occured while creating PreparedStatement for Insert"
 							+ getEntityClass(), e);
 		}
+		log.info("Prepare statement for Insert created");
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 		List<Dealer> result = new LinkedList<Dealer>();
 		log.info("Reading data from ResultSet");
 		try {
-			log.info("Create Registration instance");
+			log.info("Create Dealer instance");
 			while (rs.next()) {
 				Dealer dealer = new Dealer();
 				Address address = new Address();
@@ -116,7 +117,7 @@ public class PostgreDealerDao extends AbstractJDBCDao<Dealer, String> {
 			throw new DAOException("Problems occured while parsing ResultSet"
 					+ getEntityClass(), e);
 		}
-		log.info("Registration instance created");
+		log.info("Dealer instance created");
 		return result;
 	}
 	

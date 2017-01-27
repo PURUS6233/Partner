@@ -28,6 +28,9 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 
 	@Override
 	public boolean writeToFile(InputStream inputStream) throws DAOException {
+		logger.info(
+				"Start loading to the storage file" + getFileName(),
+				getEntityClass().getSimpleName());
 		String pathToFile = suzuki_prop.getProperty("loader_file.location") + "/"
 				+ getFileName();
 		try (OutputStream outputStream = new FileOutputStream(new File(
@@ -44,7 +47,7 @@ public class EngineNumbersLoaderDaoImpl implements EngineNumbersLoaderDao {
 			throw new DAOException("Can not find" + getFileName() + "file", e);
 		}
 		logger.info(
-				"Engine numbers loaded to the storage file" + getFileName(),
+				"Engine numbers loaded to file" + getFileName(),
 				getEntityClass().getSimpleName());
 		return true;
 	}

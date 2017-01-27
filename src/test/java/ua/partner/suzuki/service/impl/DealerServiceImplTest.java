@@ -37,7 +37,7 @@ public class DealerServiceImplTest {
 			COUNTRY, POST_CODE, PHONE, EMAIL);
 
 	private static final String NAME = "GGI";
-	private static final String LOGIN = "GGI";
+	private static final String LOGIN = "ggi";
 	private static final String PASSWORD = "123123";
 
 	private Dealer dealer_A = new Dealer(NAME, adress, LOGIN, PASSWORD);
@@ -101,6 +101,6 @@ public class DealerServiceImplTest {
 	 @Test
 	 public void test_remove() throws DAOException, ServiceException {
 	 assertEquals(true, service.remove("GGI"));
-	 verify(dao).delete("GGI");
+		verify(dao).delete("GGI");
 	 }
 }

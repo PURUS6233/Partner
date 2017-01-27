@@ -13,7 +13,7 @@ import com.google.common.base.Preconditions;
 
 public class EngineNumbersLoader {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(EngineNumbersLoader.class.getName());
 	private Scanner sourceSc;
 
 	private static DataValidator validator = new DataValidator();

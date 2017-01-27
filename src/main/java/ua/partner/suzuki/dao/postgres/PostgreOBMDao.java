@@ -53,6 +53,7 @@ public class PostgreOBMDao extends AbstractJDBCDao<OBM, String> {
 					"Problems occured while creating PreparedStatement for Update"
 							+ getEntityClass(), e);
 		}
+		log.info("Prepare statement for Update created for object: " + entity.toString());
 	}
 
 	@Override

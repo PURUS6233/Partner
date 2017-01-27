@@ -26,7 +26,7 @@ public class RegistrationFiller {
 
 	private static final DataValidator VALIDATOR = new DataValidator();
 
-	public Registration warrantyExpiration() {
+	public RegistrationFiller warrantyExpiration() {
 		log.trace("Warranty expiration date serching");
 		Calendar c = Calendar.getInstance();
 		String[] number = VALIDATOR
@@ -42,7 +42,7 @@ public class RegistrationFiller {
 			c.add(Calendar.MONTH, Constants.WARRANTY_PERIOD_4_STROKE);
 			registration.setWarrantyExpiration(c.getTime());
 			log.trace("Warranty expiration date is = " + c.getTime());
-			return registration;
+			return this;
 		} else if ((registration.getWarrantyType().equals(WarrantyType.PRIVATE) || registration
 				.getWarrantyType().equals(WarrantyType.DEMO))
 				&& VALIDATOR.checkWithRegExp(number[0],
@@ -50,22 +50,22 @@ public class RegistrationFiller {
 			c.add(Calendar.MONTH, Constants.WARRANTY_PERIOD_2_STROKE_PLEASURE);
 			registration.setWarrantyExpiration(c.getTime());
 			log.trace("Warranty expiration date is = " + c.getTime());
-			return registration;
+			return this;
 		} else {
 			c.add(Calendar.MONTH, Constants.WARRANTY_PERIOD_COMMERCIAL);
 			registration.setWarrantyExpiration(c.getTime());
 			log.trace("Warranty expiration date is = " + c.getTime());
-			return registration;
+			return this;
 		}
 	}
 
-	public Registration penalty() {
+	public RegistrationFiller penalty() {
 		log.trace("Penalty counting based of registered & delivered date.");
 		Penalty penalty = new Penalty(registration.getDateRegistered(),
 				registration.getDateDelivered());
 		registration.setPenalty(penalty.calculatePenalty());
 		log.trace("Penalty culculated!");
-		return registration;
+		return this;
 	}
 
 	public Registration fill() {
